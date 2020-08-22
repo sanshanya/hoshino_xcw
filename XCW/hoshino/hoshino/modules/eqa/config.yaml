@@ -1,0 +1,66 @@
+# 管理员
+admins:
+  - 389897773
+
+# 缓存存放目录 该目录包括存放问答数据库和图片
+cache_dir: ./data/
+
+# 是否图片转换base64  一般是docker的酷q使用的
+image_base64: false
+
+#命令 可以设置多行都可匹配 （所有的参数都在后面）
+comm:
+  # 怎么提问
+  answer_all:
+    - 大家说
+    - 有人说
+  answer_me: 我说
+
+  # 问后回答处理  比如 大家说1回答2  这里的回答定义文字
+  answer_handler: 回答
+
+  # 怎么删除
+  answer_delete: 不要回答
+
+  # 删除设置的全部问答 只允许超级管理员这么操作
+  answer_delete_all: 清空回答
+
+  # 显示个人设置的问答
+  show_question: 调教
+
+  #显示所有的问答
+  show_question_list:
+    - 全部调教
+    - 所有调教
+
+
+#规则
+rule:
+  # 超级管理员设置的是否为所有群问答
+  super_admin_is_all_group: true
+
+  # 只允许群管理员删除别人问答
+  only_admin_can_delete: true
+
+  # 是否能群管理删除超级管理员的问答
+  can_delete_super_admin_qa: false
+
+  # 删除回答时删除最近设置的问题 false就删除最开始设置的问题
+  question_del_last: true
+
+  # 设置重复的问题时 随机回答
+  multiple_question_random_answer: true
+
+  # 重复的问题时 优先回复自己设置的回答
+  priority_self_answer: true
+
+  # 群员是否能查询别人问题
+  member_can_show_other: true
+
+  # 是否能使用cq码的自定义url 需要链接前面带个? 比如 file=?http://
+  use_cq_code_image_url: true
+
+
+# 打印字符配置
+str:
+  print_all_split: |

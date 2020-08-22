@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+
+<head>
+    <meta charset="utf-8">
+    <title>竞技场解法</title>
+    <style>
+        #mark {
+            float: left;
+            position: relative;
+            bottom: 22px;
+            left: 2px;
+        }
+
+        .detail {
+            position: absolute;
+        }
+
+        h1 {
+            font-size: 40px
+        }
+
+        p {
+            font-size: 28px
+        }
+
+        .equip {
+            width: 16px;
+            height: 16px;
+            background: url("{{ public_base }}assets/chara_marks.png")-0 -0;
+        }
+
+        .star {
+            width: 16px;
+            height: 16px;
+            background: url("{{ public_base }}assets/chara_marks.png")-16px -0;
+        }
+
+        .star_disabled {
+            width: 16px;
+            height: 16px;
+            background: url("{{ public_base }}assets/chara_marks.png")-0 -16px;
+        }
+
+        .star_pink {
+            width: 16px;
+            height: 16px;
+            background: url("{{ public_base }}assets/chara_marks.png")-16px -16px;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>竞技场解法</h1>
+    <p>防守队伍：</p>
+    <div>
+        {% for (chara_id, _) in def_lst -%}
+        <img src="{{ public_base }}resource/icon/unit/{{ chara_id }}31.jpg">
+        {% endfor -%}
+    </div>
+    <p>{{ '国服' if region==2 else '台服' if region==3 else '日服' if region==4 else '' }}解法：</p>
+    <table border="0">
+        <tbody>
+            {% for solution in result -%}
+            <tr>
+                {% for chara in solution.team -%}
+                <td valign="top">
+                    <img src="{{ public_base }}resource/icon/unit/{{ chara.char_id }}{{ (61 if chara[1]==6 else 31) }}.jpg">
+                    <div class="detail">
+                        {% if chara.stars == 6 -%}
+                        <div class="star" id="mark"></div>
+                        <div class="star" id="mark"></div>
+                        <div class="star" id="mark"></div>
+                        <div class="star" id="mark"></div>
+                        <div class="star" id="mark"></div>
+                        <div class="star_pink" id="mark"></div>
+                        {% else -%}
+                        {% for i in range(chara.stars) -%}
+                        <div class="star" id="mark"></div>
+                        {% endfor -%}
+                        {% if chara.equip -%}
+                        <div class="equip" id="mark"></div>
+                        {% endif -%}
+                        {% endif -%}
+                    </div>
+                </td>
+                {% endfor -%}
+                <td>
+                    👍{{ solution.good }}<br>
+                    👎{{ solution.bad }}<br>
+                    {{ solution.time }}
+                </td>
+            </tr>
+            {% endfor -%}
+        </tbody>
+    </table>
+    {% if search_source=="nomae.net" -%}
+    <div>数据来源<a href="https://nomae.net/arenadb/">nomae.net</a></div>
+    {% elif search_source=="pcrdfans.com" -%}
+    <div>数据来源<a href="https://www.pcrdfans.com/battle">公主连结Re: Dive Fan Club</a></div>
+    {% endif -%}
+</body>
+
+</html>

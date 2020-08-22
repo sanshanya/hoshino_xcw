@@ -1,0 +1,34 @@
+{
+  "4316215": {
+    "platform": "bilibili",
+    "room": 4316215,
+    "subs_groups": [
+      907959319
+    ],
+    "latest_time": "Thu, 06 Aug 2020 13:00:54 GMT"
+  },
+  "307876": {
+    "platform": "douyu",
+    "room": 307876,
+    "subs_groups": [
+      907959319
+    ],
+    "latest_time": "Wed, 05 Aug 2020 10:25:49 GMT"
+  },
+  "2159209": {
+    "platform": "douyu",
+    "room": 2159209,
+    "subs_groups": [
+      907959319
+    ],
+    "latest_time": "Thu, 06 Aug 2020 05:12:23 GMT"
+  },
+  "21752694": {
+    "platform": "bilibili",
+    "room": 21752694,
+    "subs_groups": [
+      907959319
+    ],
+    "latest_time": "Thu, 06 Aug 2020 15:30:52 GMT"
+  }
+}

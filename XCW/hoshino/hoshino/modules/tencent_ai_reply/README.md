@@ -1,0 +1,12 @@
+作者：t佬
+修改：我永远爱莲华（待月佬迷弟）
+这个插件是我缝合了待月佬的shebot(待月佬天下第一)
+使用方法：
+1.申请腾讯AI的API，在tencent_ai_reply.py中加上自己的API
+2.把tencent_ai_reply放进modules
+3.在_bot_.py中添加'tencent_ai_reply'
+4.把service.py放到HoshinoBo文件夹
+触发方法：
+1.在群里发送“本群AI开启”可以让AI每一句都回复（适合对线）
+2.在群里发送“本群AI降低”让AI变成10%概率回复，如果嫌烦还可以自己改低
+待月佬牛逼！！！！！！！！！！！！！！狂粉

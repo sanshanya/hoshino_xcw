@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+
+<head>
+  <title>gacha</title>
+  <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+  <style>
+    #background {
+      width: 1104px;
+      height: 621px;
+      background-image: url("{{ url_for('yobot_resource', filename='background.jpg') }}");
+      background-size: 1104px 621px;
+    }
+
+    #container>img {
+      width: 110px;
+      height: 110px;
+      padding-right: 35px;
+      padding-bottom: 35px;
+    }
+
+    #container {
+      position: absolute;
+      top: 126px;
+      left: 207px;
+      white-space: nowrap;
+    }
+  </style>
+</head>
+
+<body>
+  <div id="background" onclick="gacha()">
+    <div id="container"></div>
+  </div>
+  <div id="result" style="font-size: 36px;">点击图片抽卡</div>
+</body>
+<script>var sourcebase = "{{ url_for('yobot_resource', filename='icon/unit/') }}";</script>
+<script src="{{ url_for('yobot_static', filename='gacha.js') }}"></script>
+
+</html>

@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+
+<head>
+	<meta name='viewport' content='width=device-width, initial-scale=1' charset="utf-8" />
+	<title>个人中心</title>
+	<script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+	<script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/index.js"></script>
+	<link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/theme-chalk/index.css">
+	<style>
+		.el-page-header {
+		    display: flex;
+		    line-height: 24px;
+		    margin-bottom: 25px;
+		}
+		
+		.el-avatar--circle {
+		    border-radius: 50%;
+		    height: 150px;
+		    width: 150px;
+		}
+		
+		.el-input,.el-input__inner {
+			width: 250px;
+		}
+	</style>
+
+</head>
+
+{% if user.qqid != visitor and visitor.authority_group > 100 %}{# 不是本人且不是管理员 -#}
+<body>
+	<h1>个人中心</h1>
+	<p>你无权查看这个页面</p>
+	<p><a href="#" onClick="javascript:history.go(-1);">返回</a></p>
+</body>
+{%- else %}{# 本人或管理员 -#}
+<body>
+	<div id="app">
+		<el-page-header @back="location='..'" content="个人中心"></el-page-header>
+		<div style="margin: 60px 40px 0px;">
+		<el-avatar :src="'https://q1.qlogo.cn/g?b=qq&nk=' + {{user.qqid}} + '&s=640'"></el-avatar>
+		<p :hidden="edit" @click="edit=true">用户名：[[ nickname ]]<!-- <el-button type="primary" size="mini" icon="el-icon-edit" @click="edit=true"
+			 circle></el-button> -->
+		</p>
+		<p :hidden="!edit">用户名：<el-input v-model="nickname" placeholder="昵称"></el-input>
+			<el-button type="success" size="mini" icon="el-icon-check" @click="edit_nickname" circle></el-button>
+		</p>
+		<p>用户权限：[[ authtype[{{ user.authority_group }}] ]]</p>
+		<p>公会战所在群：{{ user.clan_group_id }}</p>
+		<p>上次登录时间：[[ from_ts({{ session.get('last_login_time') }}) ]]</p>
+		<p>上次登录ip地址：{{ user.last_login_ipaddr }}（[[ addr.join('') ]]）</p>
+		</div>
+	</div>
+</body>
+<script>
+	var vm = new Vue({
+		el: '#app',
+		data: {
+			addr: [],
+			nickname: '{{ user.nickname }}',
+			edit: false,
+			authtype: {
+				1: '主人',
+				2: '机器人管理员',
+				10: '公会战管理员',
+				100: '成员',
+			},
+		},
+		mounted() {
+			var thisvue = this;
+			axios.get('{{ url_for("yobot_api_iplocation", ip=user.last_login_ipaddr) }}').then(function(res) {
+				thisvue.addr = res.data;
+			}).catch(function(error) {
+				console.log(error);
+				thisvue.addr = ['未知'];
+			});
+		},
+		methods: {
+			edit_nickname: function(event) {
+				var thisvue = this;
+				if (this.nickname === '') {
+					alert('用户名不可为空');
+					return;
+				}
+				axios.put('{{ url_for("yobot_user_info_api", qqid=user.qqid) }}', {
+					nickname: thisvue.nickname
+				}).then(function(res) {
+					thisvue.edit = false;
+				}).catch(function(error) {
+					alert('用户名修改失败');
+					console.log(error);
+				})
+			},
+			from_ts: function(ts) {
+				if (ts == 0) {
+					return '-';
+				}
+				var nd = new Date();
+				nd.setTime(ts * 1000);
+				return nd.toLocaleString('chinese', {
+					hour12: false
+				});
+			},
+		},
+		delimiters: ['[[', ']]'],
+	})
+</script>
+{%- endif %}
+
+</html>

@@ -1,0 +1,32 @@
+:root {
+  --primary-color-1: #3f51b5;/* 主色调1 */
+  --primary-color-2: #626ead;/* 主色调2 */
+  --secondary-color-1: #344080;/* 副色调1 */
+  --secondary-color-2: #3a177b;/* 副色调2 */
+  --background-color: #e8ebff;/* 背景色 */
+  --font-color: #032584;/* 文字颜色 */
+}
+
+/* CharacterspriteAnime */
+
+.character-container {
+	width: 200px;
+	height: 200px;
+	overflow: hidden;
+	background: url("../../images/sprite02.png");
+	background-size: 100%;
+}
+
+.character-container.char {
+	animation: spriteAnimechar 700ms steps(19) infinite;
+}
+
+@keyframes spriteAnimechar {
+	0% {
+		background-position: 0 0;
+	}
+
+	100% {
+		background-position: 0 -3800px;
+	}
+}
