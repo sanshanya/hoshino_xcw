@@ -86,42 +86,42 @@
 以下是其生成的config.json的范例及注释
 
 `{`
-	`"uin": 0,`	要进行配置的QQ号
-	`"password": "",`	QQ号密码
+	`"uin": 0,	要进行配置的QQ号`
+	`"password": "",	QQ号密码`
 	`"encrypt_password": false,`
 	`"password_encrypted": "",`
 	`"enable_db": true,`
-	`"access_token": "",`	可选，访问口令, 默认为空, 即不设置Token
+	`"access_token": "",	可选，访问口令, 默认为空, 即不设置Token`
 	`"relogin": true,`
 	`"relogin_delay": 3,`
 	`"ignore_invalid_cqcode": false,`
 	`"force_fragmented": true,`
-	`"heartbeat_interval": 0,`	心跳包发送间隔, 默认为 0毫秒,即是不发送
-	`"http_config": {`	 HTTP 相关配置
-		`"enabled": true,`	可选，是否启用HTTP API服务器, 默认为启用, 此项开始与否跟postUrl无关
-		`"host": "0.0.0.0",`	可选，HTTP API服务器监听地址, 默认为0.0.0.0
-		`"port": 5700,`	HTTP API服务器监听端口, 5700
+	`"heartbeat_interval": 0,	心跳包发送间隔, 默认为 0毫秒,即是不发送`
+	`"http_config": {	 HTTP 相关配置`
+		`"enabled": true,	可选，是否启用HTTP API服务器, 默认为启用, 此项开始与否跟postUrl无关`
+		`"host": "0.0.0.0",	可选，HTTP API服务器监听地址, 默认为0.0.0.0`
+		`"port": 5700,	HTTP API服务器监听端口, 5700`
 		`"timeout": 0,`
-		`"post_urls": {}`	可选，上报消息格式，string 为字符串格式，array 为数组格式, 默认为string
+		`"post_urls": {}	可选，上报消息格式，string 为字符串格式，array 为数组格式, 默认为string`
 	`},`
-	`"ws_config": {`	正向Websocket服务器
-		`"enabled": true,`	可选，是否启用正向Websocket服务器，默认不启用
-		`"host": "0.0.0.0",`	监听主机
-		`"port": 6700`	监听端口
-	`},`	可选，反向客户端服务
+	`"ws_config": {	正向Websocket服务器`
+		`"enabled": true,	可选，是否启用正向Websocket服务器，默认不启用`
+		`"host": "0.0.0.0",	监听主机`
+		`"port": 6700	监听端口`
+	`},	可选，反向客户端服务`
 	`"ws_reverse_servers": [`
 		`{`
-			`"enabled": true,`	可选，是否启用反向客户端，默认启用
-			`"reverse_url": "ws://47.94.93.250:9222/ws",`	反向Websocket路径
-			`"reverse_api_url": "ws://47.94.93.250:9222/api",`	可选, 反向Websocket Api路径, 默认为reversePath
-			`"reverse_event_url": "ws://47.94.93.250:9222/event",`	可选, 反向Websocket Event路径, 默认为reversePath
-			`"reverse_reconnect_interval": 3000`	反向 WebSocket 客户端断线重连间隔，单位毫秒
+			`"enabled": true,	可选，是否启用反向客户端，默认启用`
+			`"reverse_url": "ws://47.94.93.250:9222/ws",	反向Websocket路径`
+			`"reverse_api_url": "ws://47.94.93.250:9222/api",	可选, 反向Websocket Api路径, 默认为reversePath`
+			`"reverse_event_url": "ws://47.94.93.250:9222/event",	可选, 反向Websocket Event路径, 默认为reversePath`
+			`"reverse_reconnect_interval": 3000	反向 WebSocket 客户端断线重连间隔，单位毫秒`
 		`}`
 	`],`
-	`"post_message_format": "string",`	 可选，上报消息格式，string 为字符串格式，array 为数组格式, 默认为string
-	`"debug": false,`	Debug日志输出选项
+	`"post_message_format": "string",	 可选，上报消息格式，string 为字符串格式，array 为数组格式, 默认为string`
+	`"debug": false,	Debug日志输出选项`
 	`"log_level": ""`
-`}`</u>
+`}</u>`
 
 ## res
 
