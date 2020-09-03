@@ -1,13 +1,9 @@
-import random
 import asyncio
 import os
 import json
-import datetime
-from PIL import Image
-from io import BytesIO
 from .api import get_final_setu
 from queue import Queue
-import time
+
 
 class SetuWarehouse:
     def __init__(self,store_path,r18=0):
@@ -44,24 +40,6 @@ class SetuWarehouse:
 
         return send_pics
 
-def extract_file_md5(raw_message):
-    try:
-        lis=raw_message.split(',')
-        md5 = lis[1].split('.')[0].split('=')[1]
-        return md5
-    except Exception as ex:
-        print(ex)
-
-def get_random_pic(path):
-    files = os.listdir(path)
-    rfile = random.sample(files,1)[0]
-    print(f'随机选择图片{rfile}')
-    return rfile
-
-def add_to_delete(msg_id:int,to_delete:dict):
-        to_delete[msg_id] = time.time() + 10
-
-
 path = os.path.join(os.path.dirname(__file__),'setu_config.json')
 def save_config(config:dict):
     try:
@@ -80,13 +58,13 @@ def load_config():
     except:
         return {}
 
-async def send_setus(bot,ctx,setu_path,setus,with_url=False,is_to_delete=False,msgs_to_del={}):
-    folder = setu_path.split('/')[-1]
+from hoshino.util4sh import Res as R
+async def send_setus(bot,ctx,folder,setus,with_url=False,is_to_delete=False):
     reply = ''
     for setu in setus:
-        pic = f'[CQ:image,file={folder}/{setu.pid}]'
+        pic = R.image(f'{folder}/{setu.pid}')
         reply += f'{setu.title}\n画师：{setu.author}\npid:{setu.pid}{pic}'
-    ret = await bot.send(ctx,reply,at_sender=False)
+    ret = await bot.send(ctx, reply ,at_sender=False)
     if with_url:
         urls = ''
         for setu in setus:
@@ -94,12 +72,6 @@ async def send_setus(bot,ctx,setu_path,setus,with_url=False,is_to_delete=False,m
         await bot.send(ctx,urls.strip(),at_sender=False)
     if is_to_delete:
         msg_id = ret['message_id']
-        add_to_delete(msg_id,msgs_to_del)
-    
-
-
-
-
-
-                        
-#asyncio.run(get_setu(IMGPATH,1))
+        self_id = ctx['self_id']
+        await asyncio.sleep(30)
+        await bot.delete_msg(self_id=self_id, message_id=msg_id)

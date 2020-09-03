@@ -11,7 +11,6 @@ from PIL import Image, ImageDraw, ImageFont, ImageFilter
 from hoshino import R, Service
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64, FreqLimiter
-from random import choice
 
 sv = Service('generator', help_='''
 生成器
@@ -19,6 +18,7 @@ sv = Service('generator', help_='''
 [狗屁不通 主题] 狗屁不通生成器
 [记仇 天气/主题] 记仇表情包生成器
 [我朋友说他好了] 无中生友，无艾特时随机群员
+[日记 天气/主题] 舔狗日记生成器
 '''.strip())
 
 _flmt = FreqLimiter(300)
@@ -51,6 +51,18 @@ def measure(msg, font_size, img_width):
 def get_pic(qq):
     apiPath=f'http://q1.qlogo.cn/g?b=qq&nk={qq}&s=100'
     return requests.get(apiPath,timeout=20).content
+
+def get_name(qq):
+	url = 'http://r.qzone.qq.com/fcg-bin/cgi_get_portrait.fcg'
+	params = { 'uins': qq }
+	res = requests.get(url, params=params)
+	res.encoding = 'GBK'
+	data_match = re.search(r'\((?P<data>[^\(\)]*)\)', res.text)
+	if data_match:
+		j_str = data_match.group('data')
+		return json.loads(j_str)[qq][-2]
+	else:
+		return '富婆'
 
 @sv.on_prefix(('营销号'))
 async def yxh(bot, ev: CQEvent):
@@ -110,11 +122,11 @@ async def jc(bot, ev: CQEvent):
 
 @sv.on_rex(('^我(有个|一个|有一个)*朋友(想问问|说|让我问问|想问|让我问|想知道|让我帮他问问|让我帮他问|让我帮忙问|让我帮忙问问|问)*(?P<kw>.{0,30}$)'))
 async def friend(bot, ev: CQEvent):
-    if ev.user_id not in bot.config.SUPERUSERS:
-        # 定义非管理员的冷却时间
-        if not _flmt.check(ev.user_id):
-            return
-        _flmt.start_cd(ev.user_id)
+    # 定义非管理员的冷却时间
+    # if ev.user_id not in bot.config.SUPERUSERS:
+        # if not _flmt.check(ev.user_id):
+            # return
+        # _flmt.start_cd(ev.user_id)
     data = load_config(os.path.join(os.path.dirname(__file__),'config.json'))['friend']
     arr = []
     is_at = False
@@ -157,5 +169,64 @@ async def friend(bot, ev: CQEvent):
     image_back = Image.new('RGB', (700,150), (255, 255, 255))
     image_back.paste(img_origin, (25, 25))
     image_back.paste(image_text, (150, 40))
+    
+    await bot.send(ev, str(MessageSegment.image(pic2b64(image_back))))
+
+pre = 0
+@sv.on_rex(('日记'))
+async def diary(bot, ev: CQEvent):
+    global pre
+    name = '富婆'
+    for i in ev.message:
+        if i.get('type', False) == 'at':
+            name = get_name(i.data['qq'])
+    
+    kw = ev.message.extract_plain_text().strip()
+    time = datetime.datetime.now().strftime('%Y年%m月%d日')
+    arr = kw.split('/')
+    content = ''
+    if len(arr) >=2:
+        weather, content = arr
+        weather = weather.split(' ')[-1]
+    else:
+        weather = ''
+        if arr[0].split(' ') == 2:
+            weather = arr[0].split(' ')[-1]
+
+    if not content:
+        with open(os.path.join(os.path.dirname(__file__), 'diary_data.json')) as file:
+            diaries = json.load(file)
+            while True:
+                index = random.randint(0, len(diaries) - 1)
+                if index != pre:
+                    pre = index
+                    content = diaries[index]
+                    for s in '你她':
+                        content = content.replace(s, name)
+                    break
+            
+
+    image = Image.open(os.path.join(os.path.dirname(__file__),'diary.png'))
+    img_width, img_height = image.size
+    # 创建Font对象:
+    font_size = img_width // 18
+    font = ImageFont.truetype(os.path.join(os.path.dirname(__file__),'simhei.ttf'), font_size)
+    positions = measure(content, font_size, img_width)
+    str_list = list(content)
+    for pos in positions:
+        str_list.insert(pos,'\n')
+    # 日期单独一行
+    line = len(positions) + 2
+    content = f'{time}，{weather}\n' + "".join(str_list) 
+    line_h = font_size + 4
+    # 创建Draw对象:
+    image_text = Image.new('RGB', (img_width, line_h * line), (255, 255, 255))
+    draw = ImageDraw.Draw(image_text)
+    draw.text((0, 0), content, fill=(0 , 0, 0), font=font, spacing=2)
+    # 模糊:
+    # image_text = image_text.filter(ImageFilter.BLUR)
+    image_back = Image.new('RGB', (img_width, line_h * line + img_height), (255, 255, 255))
+    image_back.paste(image, (0, 0))
+    image_back.paste(image_text, (0, img_height))
     
     await bot.send(ev, str(MessageSegment.image(pic2b64(image_back))))

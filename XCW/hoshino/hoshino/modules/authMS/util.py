@@ -1,9 +1,6 @@
-import random
-import string
+from datetime import timedelta
+from . import *
 from datetime import *
-import nonebot
-from hoshino import msghandler, priv
-import hoshino
 key_dict = msghandler.key_dict
 group_dict = msghandler.group_dict
 trial_list = msghandler.trial_list
@@ -111,19 +108,50 @@ def change_authed_time(gid, time_change=0, operate=''):
         group_dict[gid] = today + timedelta(days=time_change)
     return group_dict[gid]
 
-def get_authed_group_list():
+async def get_group_name(group_id=0):
+    '''
+    1. 传入一个整型数字, 返回群名字符串
+    2. 传入一个list, 内含多个群ID, 返回一个字典, 键为群ID(int),值为群名 
+    3. 不填入参数, 返回一个包含所有群ID与群名对应关系的字典
+    '''
+
+    group_list_all = await get_group_list_all()
+    _gids=[]
+    _gnames=[]
+    # 获得的已加入群为列表形式, 处理为需要的字典形式
+    for it in group_list_all:
+        _gids.append(it['group_id'])
+        _gnames.append(it['group_name'])
+    group_name_dir_all = dict(zip(_gids,_gnames))
+
+    if group_id == 0:
+        return group_name_dir_all
+    if type(group_id) == list:
+        group_name_dir = {}
+        for gid in group_id:
+            group_name_dir[int(gid)] = group_name_dir_all.get(int(gid))
+        return group_name_dir
+    
+    
+    return group_name_dir
+
+async def get_authed_group_list():
     '''
     获取已授权的群
     '''
-    group_list = []
+    authed_group_list = []
+    group_name_dir = await get_group_name()
+
+
     for key, value in group_dict.iteritems():
-        deadline = f'{value.year}-{value.month}-{value.day}'
-        group_list.append({'gid': key, 'deadline': deadline})
-    return group_list
+        deadline = f'{value.year}年{value.month}月{value.day}日 {value.hour}时{value.minute}分'
+        group_name = group_name_dir.get(int(key),'未知')
+        authed_group_list.append({'gid': key, 'deadline': deadline, 'groupName': group_name})
+    return authed_group_list
 
 async def get_group_list_all():
     '''
-    获取所有群, 无论授权与否, 返回为原始类型
+    获取所有群, 无论授权与否, 返回为原始类型(列表)
     '''
     bot = nonebot.get_bot()
     self_ids = bot._wsr_api_clients.keys()
@@ -179,3 +207,33 @@ def new_group_check(gid):
     # 添加试用天数
     change_authed_time(gid=gid,time_change=config.NEW_GROUP_DAYS)
     return 'trial'
+
+def transfer_group(old_gid, new_gid):
+    '''
+    转移授权,新群如果已经有时长了则在现有时长上增加
+    '''
+    today = datetime.now()
+    left_time = group_dict[old_gid] - today if old_gid in group_dict else timedelta(days=0)
+    group_dict[new_gid] = left_time + (group_dict[new_gid] if new_gid in group_dict else today)
+    group_dict.pop(old_gid)
+
+async def gun_group(gid):
+    '''
+    退出群聊
+    '''
+    try:
+        await nonebot.get_bot().set_group_leave(group_id=gid)
+    except CQHttpError:
+        return False
+    return True
+
+
+async def notify_group(gid, txt):
+    '''
+    发送自定义提醒广播,顺带解决了HoshinoBot和Yobot的广播短板
+    '''
+    try:
+        await nonebot.get_bot().send_group_msg(group_id=gid, message=txt)
+    except CQHttpError:
+        return False
+    return True

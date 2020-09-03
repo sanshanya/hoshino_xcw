@@ -1,12 +1,10 @@
 import asyncio
 import aiohttp
-from PIL import Image
-from io import BytesIO
 import requests
 import os
-
-
-
+from io import BytesIO
+from PIL import Image
+from .config import APIKEY
 
 class Setu:
     def __init__(self,pid,title,url,r18,tags,author):
@@ -18,11 +16,10 @@ class Setu:
         self.author = author
 
 def get_setu(r18,keyword,num,size1200):
-    apikey='389337945f16c7ccda9b93'
     apiPath=r'https://api.lolicon.app/setu'
-    params = {'apikey':apikey,'r18':r18,'keyword':keyword,'num':num,'size1200':size1200}
+    params = {'apikey':APIKEY,'r18':r18,'keyword':keyword,'num':num,'size1200':size1200}
+    setu_list=[]
     try:
-        setu_list=[]
         with requests.get(apiPath,params=params,timeout=20) as resp:
             res = resp.json()
             data = res
@@ -33,13 +30,12 @@ def get_setu(r18,keyword,num,size1200):
                 r18 = item['r18']
                 tags = item['tags']
                 author = item['author']
-                print(url)
                 setu = Setu(pid,title,url,r18,tags,author)
                 setu_list.append(setu)
             return setu_list
     except Exception as ex:
         print(ex)
-        print("error")
+        print('多半是apikey填写错误或者ip被api屏蔽了，请尽快停止本插件')
     finally:
         return setu_list
 
@@ -47,6 +43,10 @@ async def Task (setu,storePath,PICTURES):
     url = setu.url
     r18 = setu.r18
     fileName = str(setu.pid)
+    filePath = os.path.join(storePath,fileName)
+    if os.path.exists(filePath):
+        print('本地已有缓存')
+        return
     try:
         timeout = aiohttp.ClientTimeout(total=30)
         async with aiohttp.ClientSession(timeout=timeout) as session:
@@ -54,7 +54,6 @@ async def Task (setu,storePath,PICTURES):
             async with session.get(url) as resp:
                 content = await resp.read()
                 print('一张下载完成')
-                filePath = os.path.join(storePath,fileName)
                 with open(filePath,'wb') as f:
                     if r18==0:
                         f.write(content)
@@ -71,7 +70,7 @@ async def Task (setu,storePath,PICTURES):
     except Exception as ex:
         print(ex)
 
-async def task_creator(setu_list,storePath,PICTURES):
+async def gather(setu_list,storePath,PICTURES):
     tasks = []
     for setu in setu_list:
         task = asyncio.create_task(Task(setu,storePath,PICTURES))
@@ -81,13 +80,12 @@ async def task_creator(setu_list,storePath,PICTURES):
 def get_final_setu(storePath,num=1,r18=2,keyword='',size1200='false'):
     PICTURES=[]
     setu_list = get_setu(r18=r18,num=num,keyword=keyword,size1200=size1200)
-    asyncio.run(task_creator(setu_list,storePath,PICTURES))
+    asyncio.run(gather(setu_list,storePath,PICTURES))
     return PICTURES
     
 async def get_final_setu_async(storePath,num=1,r18=2,keyword='',size1200='false'):
-    PICTURES=[]
     setu_list = get_setu(r18=r18,num=num,keyword=keyword,size1200=size1200)
-    await task_creator(setu_list,storePath,PICTURES)
-    return PICTURES
+    return setu_list
+
 
 

@@ -10,7 +10,7 @@ import aiohttp
 import filetype
 import os
 
-logger = new_logger('shebot_new')
+logger = new_logger('shebot')
 
 async def download_async(url: str, save_path: str, save_name: str, suffix=None) -> None:
     timeout = aiohttp.ClientTimeout(total=30)

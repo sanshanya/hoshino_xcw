@@ -32,3 +32,6 @@ pysqlite3
 canvas
 orjson
 filetype==1.0.7
+logzero
+jieba
+pinyin
