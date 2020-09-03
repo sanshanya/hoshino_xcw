@@ -1,0 +1,12 @@
+{
+  "need_priv": 1,
+  "manage_priv": 21,
+  "enable_groups": [],
+  "disable_groups": [],
+  "black_groups": {},
+  "black_users": {},
+  "default_enable": true,
+  "enable": true,
+  "allow_private": true,
+  "allow_group": true
+}

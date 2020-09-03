@@ -1,0 +1,7 @@
+﻿# API_KEY 申请地址https://www.acg-gov.com/account
+ACG_GOV_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWtlbHVvIiwidXVpZCI6ImFmZDE5MThmZDhhZjRmNjA5YTNkNTI2YWI3MDRlNjA3IiwiaWF0IjoxNTk2NTU3ODY4LCJhY2NvdW50Ijoie1wiZW1haWxcIjpcIjEwNTcwNjk2NzdAcXEuY29tXCIsXCJnZW5kZXJcIjotMSxcImhhc1Byb25cIjowLFwiaWRcIjozNSxcInBhc3NXb3JkXCI6XCJjOTMwMzBiMmUxMDgzZGMxMDFlZGU3ZjgxYjc0MzgwN1wiLFwic3RhdHVzXCI6MCxcInVzZXJOYW1lXCI6XCJrZWtlbHVvXCJ9IiwianRpIjoiMzUifQ.IOxcreWf4cilMSi4wuOQbv56-3RVyeDsQAngB1vN35o"
+ACG_GOV_AMAZING_PIC_URL = "https://api.acg-gov.com/public/setu"
+
+# 必须是酷Q pro/data/image这个路径，最后不能有斜杠 例如：E:/酷Q Pro/data/image
+ACG_GOV_IMG_PATH = "C:/XCW/miraiOK/jre/bin/data/image"
+ACG_GOV_PIC_ORIGIN = True
