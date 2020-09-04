@@ -1,8 +1,9 @@
 # hoshino_XCW
 
 一款自用的xcwbot,功能丰富,部署十分方便.
-如果想要部署教程或插件详情,请移步wiki
-https://github.com/sanshanya/hoshino_xcw/wiki
+如果想要部署教程或插件详情,请移步[wiki](https://github.com/sanshanya/hoshino_xcw/wiki)
+
+
 # 目录
 
 | 文件名  | 描述                          |
