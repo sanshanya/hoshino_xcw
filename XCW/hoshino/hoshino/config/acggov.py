@@ -3,5 +3,5 @@ ACG_GOV_API_KEY = "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWtlbHVvIiwidXVpZCI6ImFmZDE5
 ACG_GOV_AMAZING_PIC_URL = "https://api.acg-gov.com/public/setu"
 
 # 必须是酷Q pro/data/image这个路径，最后不能有斜杠 例如：E:/酷Q Pro/data/image
-ACG_GOV_IMG_PATH = "C:/XCW/miraiOK/jre/bin/data/image"
+ACG_GOV_IMG_PATH = "C:/XCW/miraiOK/jre/bin/data/images"
 ACG_GOV_PIC_ORIGIN = True
