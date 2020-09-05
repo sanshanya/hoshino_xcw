@@ -1,7 +1,7 @@
 var vm = new Vue({
   el: '#app',
   data: {
-    api_url : 'http://ip:端口/reply/api/',
+    api_url : 'http://333.33.33.33:9222/reply/api/',
     tableData : [],
     dialogFormVisible : false,
     form: {

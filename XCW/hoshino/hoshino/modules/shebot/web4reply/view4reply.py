@@ -80,9 +80,9 @@ import nonebot
 from datetime import timedelta
 
 app = nonebot.get_bot().server_app
-public_address = 'xxx.xx.xx.xx' #改为你服务器的公网ip
+public_address = '333.33.33.33' #改为你服务器的公网ip
 port = nonebot.get_bot().config.PORT
-passwd = '123456' #登录密码
+passwd = 'xcw' #登录密码
 @reply.before_request
 async def _():
     user_ip = request.remote_addr

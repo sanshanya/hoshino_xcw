@@ -149,7 +149,7 @@ async def broadcast(msg,groups=None,sv_name=None):
 
 class RSS():
     def __init__(self):
-        self.base_url = 'http://112.74.76.48:1200'
+        self.base_url = 'http://333.33.33.33:9222'
         self.route :str= None
         self.xml : bytes = None
         self.filter : dict = dict()
