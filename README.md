@@ -1,8 +1,8 @@
 # hoshino_XCW
 
-一款自用的xcwbot,功能丰富,部署十分方便.
-如果想要部署教程或插件详情,请移步[wiki](https://github.com/sanshanya/hoshino_xcw/wiki)
-
+一款**自用**的xcwbot,功能丰富,部署十分方便.
+如果想要部署教程或插件详情,请移步[wiki](https://github.com/sanshanya/hoshino_xcw/wiki)  
+<s>看到那个**自用**没有,另外涩图apikey是上传公用的,方便第一次搭bot的人尝试,没人逼你搭这个bot,那些能自己动手获取的就别用了</s>
 
 # 目录
 
