@@ -1,8 +1,10 @@
 # hoshino_XCW
 
-一款自用的xcwbot,功能丰富,部署十分方便.
-如果想要部署教程或插件详情,请移步[wiki](https://github.com/sanshanya/hoshino_xcw/wiki)
-
+一款**自用**的xcwbot,功能丰富,部署十分方便.
+如果想要部署教程或插件详情,请移步[wiki](https://github.com/sanshanya/hoshino_xcw/wiki)  
+<s>看到那个**自用**没有,另外涩图apikey是上传**公用**的,方便第一次搭bot的人尝试,没人逼你搭这个bot,那些能自己动手获取apikey的就别用本仓库的apikey</s>
+***
+另外本仓库原本就是一个收集hoshino插件的仓库,最近有人找我搭bot,为了方便自己**顺便**方便他人搭bot才进行修改的,请不要拿本仓库和其它公主连结bot的installer比较
 
 # 目录
 
