@@ -45,7 +45,7 @@ MODULES_ON = {
     # 'twitter',#推特订阅，需要apikey
     'yobot',#yobot会战功能
     'hourcallyao',#买药提醒
-    #'shebot_old',#色图功能，需要apikey——mirai需要按说明适配,本版本shebot可以直接私聊,请勿和下方版本同时开启,下方有集成优化版
+    'shebot_old',#色图功能，需要apikey——mirai需要按说明适配,本版本shebot可以直接私聊,请勿和下方版本同时开启,下方有集成优化版
     'reload',#重启，暂时不知是否能生效
     'longwang',#迫害龙王功能
     'tarot',#塔罗牌，需要修改路径
@@ -78,7 +78,7 @@ MODULES_ON = {
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色
-    #'shebot',#集合了许多插件,请勿和shebot及QA同时开启,本版本shebot私聊需要修改
+    #'shebot',##集合了许多插件,请勿和shebot及QA同时开启,本版本shebot与猜人物插件不兼容,谨慎开启
     #'ranking',#自助群头衔
     #'nmsl',#抽象抽象抽抽抽像像像
     #'clanbattle_report',#远程api生成会战报告
