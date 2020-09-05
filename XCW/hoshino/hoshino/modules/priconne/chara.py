@@ -16,7 +16,6 @@ logger = log.new_logger('chara', hoshino.config.DEBUG)
 UNKNOWN = 1000
 UnavailableChara = {
     1067,   # 穗希
-    1068,   # 晶
     1069,   # 霸瞳
     1072,   # 可萝爹
     1073,   # 拉基拉基
