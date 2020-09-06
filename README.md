@@ -47,7 +47,6 @@
 | **vortune**          | 生成运势小卡片                               | 默认添加方法                                                 | 你喜欢的vtuber给你的小卡片                          |
 | **acggov**           | 涩图功能+日排行                              | 默认添加方法,且在*config*内添加*acggov.py*,需要apikey才能启用 | 太pro,纯度太高                                      |
 | bot_manager_web      | 网页端的"*lssv*"                             | 默认添加方法,且在*config*内添加*bot_manager_web.py*,且按说明进行配置 | 非常实用的功能                                      |
-| homework             | 网页端图片存取                               | 默认添加方法,且按说明配置*homework.py*                       | 被修改成了一个相册功能                              |
 | voiceguess           | 通过语音猜角色                               | 暂时不可用                                                   | 暂时不可用                                          |
 | eclanrank            | 定时提醒工会的排名                           | 默认添加方法                                                 | 定时播报,显示档线和名次变化幅度,emm....班主任的感觉 |
 | tencent_ai_reply     | 腾讯AI闲聊                                   | 默认添加方法,需要相应apikey                                  | 有点鸡肋                                            |
@@ -64,7 +63,6 @@
 | **picapi**           | 自定义拉取图片                               | 默认添加方法                                                 | apikey和图床地址,moduomoduo....                     |
 | aircon               | 群空调                                       | 默认添加方法                                                 | 天气这么热,开点精神上的空调                         |
 | authMS               | 群授权功能                                   | 默认添加方法,暂时有一定问题                                  | 开启后自行寻找解决办法                              |
-| memegenerator        | 另外一款表情包生成器                         | 默认添加方法                                                 | 猫猫:"牙白"                                         |
 | schedule             | 国服日程表                                   | 默认添加方法                                                 | ...........                                         |
 | bilisearchspider     | b站订阅                                      | 默认添加方法                                                 | ...........                                         |
 | pcravatarguess       | 图片猜角色                                   | 默认添加方法                                                 | 考验你厨力的时候到了                                |
@@ -74,6 +72,7 @@
 | baidupan             | 百度网盘或秒传链接解析                       | 默认添加方法                                                 | ...........                                         |
 | calendar             | 又一个查看日程的插件                         | 默认添加方法                                                 | 优点是全服务器可用                                  |
 | clanbattle_report    | 可通过api生成会战报告                        | 默认添加方法                                                 | 海星..........                                      |
+| meme_web             | 合并原homework和memegenerator                | 默认添加方法                                                 | web端和群聊上传和删除表情以及搜索表情               |
 
 **加粗部分的插件需要修改路径才能正常使用**
 

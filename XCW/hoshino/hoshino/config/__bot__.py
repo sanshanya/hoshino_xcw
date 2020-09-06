@@ -56,7 +56,6 @@ MODULES_ON = {
     'vortune',#运势功能
     #'acggov',#搜图，需要apikey，mirai需要按说明适配
     'bot_manager_web',#新版webmanage
-    'homework',#轴上传,注意修改账号和密码
     #'voiceguess',#猜语音,Mirai后续版本可用
     #'eclanrank',#会战排名提醒，定时播报，会战时启用
     #'tencent_ai_reply',#需要apikey，用前修改概率
@@ -73,7 +72,6 @@ MODULES_ON = {
     'picapi',#自定义拉取图片
     'aircon',#群空调
     #'authMS',#群授权,目前存在一定问题,自行通过报错解决
-    #'memegenerator',#另外一款表情包生成器
     #'schedule',#国服日程表
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色

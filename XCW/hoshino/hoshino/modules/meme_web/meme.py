@@ -34,7 +34,7 @@ async def meme_query(bot, ev):
         if path.name.find(arv) >= 0:
             msg += f'[CQ:image,file=file:///{path.as_posix()}]'
     if msg == '':
-        await bot.send(ev,f'没有找到{arv}！', at_sender=True)
+        await bot.send(ev,f'没有找到{arv}表情！', at_sender=True)
         return        
     await bot.send(ev,msg)
     
@@ -99,7 +99,7 @@ async def get_meme_list():
     return jsonify(meme_list)
 
 
-@sv.on_fullmatch("表情包管理",only_to_me=True)
+@sv.on_fullmatch("表情管理",only_to_me=True)
 async def get_uploader_url(bot, ev):
     cfg = config.__bot__
     await bot.send(ev,f'http://{public_address}:{cfg.PORT}/meme')
