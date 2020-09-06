@@ -73,7 +73,7 @@ MODULES_ON = {
     'picapi',#自定义拉取图片
     'aircon',#群空调
     #'authMS',#群授权,目前存在一定问题,自行通过报错解决
-    'memegenerator',#另外一款表情包生成器
+    #'memegenerator',#另外一款表情包生成器
     #'schedule',#国服日程表
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色
@@ -84,4 +84,5 @@ MODULES_ON = {
     #'clanbattle_report',#远程api生成会战报告
     'baidupan',#百度盘解析
     'calendar',#查看日程表,实用的全服务器可用的功能
+    'meme_web',#memegenerator的web化,勿同时开启
 }
