@@ -63,7 +63,6 @@ MODULES_ON = {
     'hiumsentences',#网抑云语录
     'generator',#营销文生成等五个小功能
     'ontree_scheduler',#挂树优化提醒
-    'image',#自定义生成表情包
     #'eqa',#问答功能2
     'russian',#俄罗斯轮盘赌
     'explosion',#每天一发惠惠
@@ -83,4 +82,7 @@ MODULES_ON = {
     'baidupan',#百度盘解析
     'calendar',#查看日程表,实用的全服务器可用的功能
     'meme_web',#memegenerator的web化,勿同时开启
+    #'pcrmiddaymusic',#公主连结午间音乐
+    #'image_generate',#取代原image
+    'music'#点歌插件
 }

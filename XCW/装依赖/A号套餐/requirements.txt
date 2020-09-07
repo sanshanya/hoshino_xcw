@@ -35,3 +35,6 @@ filetype==1.0.7
 logzero
 jieba
 pinyin
+xlrd
+pycryptodome
+pycryptodomex

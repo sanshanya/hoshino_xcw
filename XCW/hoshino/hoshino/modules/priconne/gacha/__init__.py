@@ -90,7 +90,7 @@ async def set_pool(bot, ev: CQEvent):
     elif name in ('限定'):
         await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装限定\n> 选择卡池 万圣限定\n> 选择卡池 圣诞限定\n> 选择卡池 春节限定\n> 选择卡池 情人节限定')
     elif name in ('泳装限定'):
-        await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装佩可\n> 选择卡池 泳装铃莓\n> 选择卡池 泳装凯露\n> 选择卡池 泳装珠希\n> 选择卡池 泳装铃奈\n> 选择卡池 泳装咲恋\n> 选择卡池 泳装真琴\n> 选择卡池 泳装真步\n> 选择卡池 泳装流夏')
+        await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装佩可\n> 选择卡池 泳装铃莓\n> 选择卡池 泳装凯露\n> 选择卡池 泳装珠希\n> 选择卡池 泳装铃奈\n> 选择卡池 泳装咲恋\n> 选择卡池 泳装真琴\n> 选择卡池 泳装真步\n> 选择卡池 泳装流夏\n> 选择卡池 泳装纯\n> 选择卡池 泳装镜华')
     elif name in ('泳装佩可', '泳装吃货', '水吃'):
         name = '泳裝-佩可'
     elif name in ('泳装铃莓', '泳装女仆', '水女仆'):
@@ -111,6 +111,8 @@ async def set_pool(bot, ev: CQEvent):
         name = '泳裝-流夏'
     elif name in ('泳装纯', '泳装黑骑','水纯'):
         name = '泳裝-纯'
+    elif name in ('泳装镜华', '泳装小仓唯','水仓唯'):
+        name = '泳裝-镜华'
     elif name in ('万圣限定'):
         await bot.finish(ev,'请选择以下卡池\n> 选择卡池 万圣忍\n> 选择卡池 万圣美咲\n> 选择卡池 万圣小仓唯')
     elif name in ('万圣忍', '瓜忍'):
