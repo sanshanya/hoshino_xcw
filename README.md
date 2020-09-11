@@ -44,8 +44,8 @@
 | shitu                | 识图功能                                     | 默认添加方法,需要apikey才能正常使用                          | 可进行一些自定义的修改,具体参照源码                        |
 | shifan               | 搜番功能                                     | 默认添加方法                                                 | 可进行一些自定义的修改,具体参照源码                        |
 | **ClanBattleReport** | 会战报告生成                                 | 默认添加方法,需要修改ip                                      | 生成离职和会战报告,未来会有更多样式                        |
-| **vortune**          | 生成运势小卡片                               | 默认添加方法                                                 | 你喜欢的vtuber给你的小卡片                                 |
-| **acggov**           | 涩图功能+日排行                              | 默认添加方法,且在*config*内添加*acggov.py*,需要apikey才能启用 | 太pro,纯度太高                                             |
+| **portune**          | 生成运势小卡片                               | 默认添加方法,需要对应的res文件                                | PCR角色给你的小卡片                                 |
+| **setu_acggov**           | 涩图功能+日排行                              | 默认添加方法,且在*config*内添加*acggov.py*,需要apikey才能启用 | 太pro,纯度太高                                             |
 | bot_manager_web      | 网页端的"*lssv*"                             | 默认添加方法,且在*config*内添加*bot_manager_web.py*,且按说明进行配置 | 非常实用的功能                                             |
 | voiceguess           | 通过语音猜角色                               | 暂时不可用                                                   | 暂时不可用                                                 |
 | eclanrank            | 定时提醒工会的排名                           | 默认添加方法                                                 | 定时播报,显示档线和名次变化幅度,emm....班主任的感觉        |
