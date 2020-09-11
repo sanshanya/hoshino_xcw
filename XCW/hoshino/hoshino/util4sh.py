@@ -9,6 +9,8 @@ import random
 import aiohttp
 import filetype
 import os
+import hoshino
+from hoshino import R, Service
 
 logger = new_logger('shebot')
 
@@ -149,7 +151,7 @@ async def broadcast(msg,groups=None,sv_name=None):
 
 class RSS():
     def __init__(self):
-        self.base_url = 'http://333.33.33.33:9222'
+        self.base_url = public_address = hoshino.config.IP#修改为服务器公网ip
         self.route :str= None
         self.xml : bytes = None
         self.filter : dict = dict()

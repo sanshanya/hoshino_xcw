@@ -1,0 +1,40 @@
+{
+	"uin": 0,
+	"password": "",
+	"encrypt_password": false,
+	"password_encrypted": "",
+	"enable_db": true,
+	"access_token": "",
+	"relogin": {
+		"enabled": true,
+		"relogin_delay": 3,
+		"max_relogin_times": 0
+	},
+	"ignore_invalid_cqcode": false,
+	"force_fragmented": true,
+	"heartbeat_interval": 3,
+	"http_config": {
+		"enabled": true,
+		"host": "0.0.0.0",
+		"port": 5700,
+		"timeout": 0,
+		"post_urls": {}
+	},
+	"ws_config": {
+		"enabled": true,
+		"host": "0.0.0.0",
+		"port": 6700
+	},
+	"ws_reverse_servers": [
+		{
+			"enabled": true,
+			"reverse_url": "ws://333.33.33.33:9222/ws",
+			"reverse_api_url": "ws://333.33.33.33:9222/api",
+			"reverse_event_url": "ws://333.33.33.33:9222/event",
+			"reverse_reconnect_interval": 3000
+		}
+	],
+	"post_message_format": "string",
+	"debug": false,
+	"log_level": ""
+}

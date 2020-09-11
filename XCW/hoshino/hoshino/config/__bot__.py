@@ -12,7 +12,16 @@ DEBUG = False           # 调试模式
 
 SUPERUSERS = [1057069677]    # 填写超级用户的QQ号，可填多个用半角逗号","隔开
 PYS ={2212276520}            #高级权限用户的QQ号
-NICKNAME = '镜华'           # 机器人的昵称。呼叫昵称等同于@bot，可用元组配置多个昵称
+
+
+#接下来是hoshino_xcw的专用配置，如果使用hoshino_xcw整合包请一定要修改
+
+NICKNAME = r'镜华|小仓唯|露娜|at,qq=2380695163'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot
+IP = '333.33.33.3'                                      #修改为你的服务器ip
+public_address = '333.33.33.3:9222'                     #修改为你的服务器ip+端口
+IMAGE_PATH = "C:/XCW/miraiGO/data/images"                 #MiraiGO用这条
+
+#hoshino_xcw的专用配置结束
 
 COMMAND_START = {''}    # 命令前缀（空字符串匹配任何消息）
 COMMAND_SEP = set()     # 命令分隔符（hoshino不需要该特性，保持为set()即可）
@@ -53,8 +62,7 @@ MODULES_ON = {
     'shitu',#识图功能需要apikey
     'shifan',#识别番剧
     'ClanBattleReport',#会战报告生成，需要修改路径
-    'vortune',#运势功能
-    #'acggov',#搜图，需要apikey，mirai需要按说明适配
+    #'setu_acggov',#搜图，需要apikey，mirai需要按说明适配
     'bot_manager_web',#新版webmanage
     #'voiceguess',#猜语音,Mirai后续版本可用
     #'eclanrank',#会战排名提醒，定时播报，会战时启用
@@ -85,4 +93,5 @@ MODULES_ON = {
     #'pcrmiddaymusic',#公主连结午间音乐
     #'image_generate',#取代原image
     'music'#点歌插件
+    'pcrmemorygames',#公主连结记忆小游戏
 }

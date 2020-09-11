@@ -15,10 +15,10 @@ sv = Service('avatarguess', bundle='pcr娱乐', help_='''
 '''.strip())
 
 
-PIC_SIDE_LENGTH = 25 
+PIC_SIDE_LENGTH = 25
 ONE_TURN_TIME = 20
 DB_PATH = os.path.expanduser('~/.hoshino/pcr_avatar_guess_winning_counter.db')
-BLACKLIST_ID = [1072, 1908, 4031, 9000]
+BLACKLIST_ID = [1072, 1908, 4031, 9000, 1000]
 
 class WinnerJudger:
     def __init__(self):
@@ -80,14 +80,14 @@ class WinningCounter:
             conn = self._connect()
             conn.execute("INSERT OR REPLACE INTO WINNINGCOUNTER (GID,UID,COUNT) \
                                 VALUES (?,?,?)", (gid, uid, winning_number+1))
-            conn.commit()       
+            conn.commit()
         except:
             raise Exception('更新表发生错误')
 
 
     def _get_winning_number(self, gid, uid):
         try:
-            r = self._connect().execute("SELECT COUNT FROM WINNINGCOUNTER WHERE GID=? AND UID=?",(gid,uid)).fetchone()        
+            r = self._connect().execute("SELECT COUNT FROM WINNINGCOUNTER WHERE GID=? AND UID=?",(gid,uid)).fetchone()
             return 0 if r is None else r[0]
         except:
             raise Exception('查找表发生错误')
@@ -132,21 +132,22 @@ async def avatar_guess(bot, ev: CQEvent):
             return
         winner_judger.turn_on(ev.group_id)
         chara_id_list = list(_pcr_data.CHARA_NAME.keys())
+        list_len = len(chara_id_list) - 1
         while True:
-            random.shuffle(chara_id_list)
-            if chara_id_list[0] not in BLACKLIST_ID: break
-        winner_judger.set_correct_chara_id(ev.group_id, chara_id_list[0])
+            index = random.randint(0, list_len)
+            if chara_id_list[index] not in BLACKLIST_ID: break
+        winner_judger.set_correct_chara_id(ev.group_id, chara_id_list[index])
         dir_path = os.path.join(os.path.expanduser(hoshino.config.RES_DIR), 'img', 'priconne', 'unit')
         if not os.path.exists(dir_path):
             os.makedirs(dir_path)
-        c = chara.fromid(chara_id_list[0])
+        c = chara.fromid(chara_id_list[index])
         img = c.icon.open()
         left = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
         upper = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
         cropped = img.crop((left, upper, left+PIC_SIDE_LENGTH, upper+PIC_SIDE_LENGTH))
         file_path = os.path.join(dir_path, 'cropped_avatar.png')
         cropped.save(file_path)
-        image = MessageSegment.image(f'file:///{os.path.abspath(file_path)}')   
+        image = MessageSegment.image(f'file:///{os.path.abspath(file_path)}')
         msg = f'猜猜这个图片是哪位角色头像的一部分?({ONE_TURN_TIME}s后公布答案){image}'
         await bot.send(ev, msg)
         await asyncio.sleep(ONE_TURN_TIME)

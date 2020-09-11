@@ -1,113 +1,79 @@
-# require pycryptodomex
-import base64
-import binascii
+"""
+Reference link:
+https://github.com/bluetomlee/NetEase-MusicBox/blob/master/src/api.py
+"""
 import json
-import os
-from http.cookiejar import Cookie
 
 import httpx
-from Cryptodome.Cipher import AES
 
-BASE_URL = "http://music.163.com"
-MODULUS = (
-    "00e0b509f6259df8642dbc35662901477df22677ec152b5ff68ace615bb7"
-    "b725152b3ab17a876aea8a5aa76d2e417629ec4ee341f56135fccf695280"
-    "104e0312ecbda92557c93870114af6c9d05c4f7f0c3685b7a46bee255932"
-    "575cce10b424d813cfe4875d3e82047b97ddef52741d546b8e289dc6935b"
-    "3ece0462db0a22b8e7"
-)
-PUBKEY = "010001"
-NONCE = b"0CoJUm6Qyw8W8jud"
+from hoshino import logger
 
 
-def encrypted_request(text):
-    # type: (str) -> dict
-    data = json.dumps(text).encode("utf-8")
-    secret = create_key(16)
-    params = aes(aes(data, NONCE), secret)
-    encseckey = rsa(secret, PUBKEY, MODULUS)
-    return {"params": params, "encSecKey": encseckey}
+class NetEase:
+    def __init__(self):
+        self.header = {
+            'Accept': '*/*',
+            'Accept-Encoding': 'gzip,deflate,sdch',
+            'Accept-Language': 'zh-CN,zh;q=0.8,gl;q=0.6,zh-TW;q=0.4',
+            'Connection': 'keep-alive',
+            'Content-Type': 'application/x-www-form-urlencoded',
+            'Host': 'music.163.com',
+            'Referer': 'http://music.163.com/search/',
+            'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) '
+            + 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 '
+            + 'Safari/537.36',
+            # 'X-Real-IP': '此处替换为一个国内IP',
+            # 'X-Forwarded-For': '与上方IP相同',
+        }
+        self.cookies = {
+            'appver': '1.5.2'
+        }
+
+    def httpRequest(self, action, query=None):
+        connection = httpx.post(
+            action,
+            data=query,
+            headers=self.header,
+            timeout=3
+        )
+
+        connection.encoding = "UTF-8"
+        connection = json.loads(connection.text)
+        return connection
+
+    def search(self, s, stype=1, offset=0, total='true'):
+        action = 'http://music.163.com/api/search/get/web'
+        data = {
+            's': s,
+            'type': stype,
+            'offset': offset,
+            'total': total,
+            'limit': 60
+        }
+        return self.httpRequest(action, data)
 
 
-def aes(text, key):
-    pad = 16 - len(text) % 16
-    text = text + bytearray([pad] * pad)
-    encryptor = AES.new(key, 2, b"0102030405060708")
-    ciphertext = encryptor.encrypt(text)
-    return base64.b64encode(ciphertext)
-
-
-def rsa(text, pubkey, modulus):
-    text = text[::-1]
-    rs = pow(int(binascii.hexlify(text), 16),
-             int(pubkey, 16), int(modulus, 16))
-    return format(rs, "x").zfill(256)
-
-
-def create_key(size):
-    return binascii.hexlify(os.urandom(size))[:16]
-
-
-# 搜索单曲(1)，歌手(100)，专辑(10)，歌单(1000)，用户(1002) *(type)*
-def search(keywords, stype=1, offset=0, total="true", limit=50):
+def search(keyword: str, result_num: int = 3):
+    n = NetEase()
     song_list = []
-    path = "/weapi/search/get"
-    params = dict(s=keywords, type=stype, offset=offset,
-                  total=total, limit=limit)
-    data = request('POST', path, params)
-    if data:
-        for item in data['result']['songs'][:3]:
-            song_list.append(
-                {
-                    'name': item['name'],
-                    'id': item['id'],
-                    'artists': ' '.join(
-                        [artist['name'] for artist in item['artists']]
-                    ),
-                    'type': '163'
-                }
-            )
-        return song_list
-    return data
-
-
-def request(method, path, params={},  custom_cookies={}):
-    endpoint = "{}{}".format(BASE_URL, path)
-    data = None
-
-    cookie = {}
-    for key, value in custom_cookies.items():
-        cookie = make_cookie(key, value)
-
-    params = encrypted_request(params)
-    try:
-        resp = httpx.request(method, endpoint, data=params,
-                             cookies=cookie, timeout=3)
-        data = resp.json()
-    finally:
-        return data
-
-
-# 生成Cookie对象
-def make_cookie(name, value):
-    return Cookie(
-        version=0,
-        name=name,
-        value=value,
-        port=None,
-        port_specified=False,
-        domain="music.163.com",
-        domain_specified=True,
-        domain_initial_dot=False,
-        path="/",
-        path_specified=True,
-        secure=False,
-        expires=None,
-        discard=False,
-        comment=None,
-        comment_url=None,
-        rest=None,
-    )
+    data = n.search(keyword)
+    if data and data['code'] == 200:
+        try:
+            for item in data['result']['songs'][:result_num]:
+                song_list.append(
+                    {
+                        'name': item['name'],
+                        'id': item['id'],
+                        'artists': ' '.join(
+                            [artist['name'] for artist in item['artists']]
+                        ),
+                        'type': '163'
+                    }
+                )
+            return song_list
+        except Exception as e:
+            logger.error(f'获取网易云歌曲失败, 返回数据data={data}, 错误信息error={e}')
+    return song_list
 
 
 if __name__ == "__main__":

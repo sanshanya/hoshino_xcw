@@ -1,21 +1,21 @@
 import importlib
-from io import BytesIO
-
 import pygtrie
-import requests
+import random
 from fuzzywuzzy import fuzz, process
 from PIL import Image
+from io import BytesIO
+import requests
 
-import hoshino
 from hoshino import R, log, sucmd, util
 from hoshino.typing import CommandSession
 
 from . import _pcr_data
 
-logger = log.new_logger('chara', hoshino.config.DEBUG)
+logger = log.new_logger('chara')
 UNKNOWN = 1000
 UnavailableChara = {
     1067,   # 穗希
+    1068,   # 晶
     1069,   # 霸瞳
     1072,   # 可萝爹
     1073,   # 拉基拉基
@@ -143,8 +143,10 @@ class Chara:
 
     @property
     def icon(self):
-        star = '3' if 1 <= self.star <= 5 else '6'
+        star = random.choice([0,1,3,6])
         res = R.img(f'priconne/unit/icon_unit_{self.id}{star}1.png')
+        if not res.exist:
+            res = R.img(f'priconne/unit/icon_unit_{self.id}61.png')
         if not res.exist:
             res = R.img(f'priconne/unit/icon_unit_{self.id}31.png')
         if not res.exist:
@@ -197,24 +199,10 @@ class Chara:
 
 
 
-@sucmd('reload-pcr-chara', force_private=False, aliases=('重载花名册', ))
+@sucmd('reload-pcr-chara', force_private=False, aliases=('重载角色花名册', ))
 async def reload_pcr_chara(session: CommandSession):
     try:
         roster.update()
-        await session.send('ok')
-    except Exception as e:
-        logger.exception(e)
-        await session.send(f'Error: {type(e)}')
-
-
-@sucmd('download-pcr-chara-icon', force_private=False, aliases=('下载角色头像'))
-async def download_pcr_chara_icon(session: CommandSession):
-    try:
-        id_ = roster.get_id(session.current_arg_text.strip())
-        assert id_ != UNKNOWN, '未知角色名'
-        download_chara_icon(id_, 6)
-        download_chara_icon(id_, 3)
-        download_chara_icon(id_, 1)
         await session.send('ok')
     except Exception as e:
         logger.exception(e)

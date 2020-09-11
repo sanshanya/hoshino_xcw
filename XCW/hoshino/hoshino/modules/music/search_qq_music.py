@@ -4,7 +4,7 @@ from hoshino import logger
 USER_AGENT = "Mozilla/5.0 (iPhone; CPU iPhone OS 9_1 like Mac OS X) AppleWebKit/601.1.46 (KHTML, like Gecko) Version/9.0 Mobile/13B143 Safari/601.1"
 
 
-def search(keyword):
+def search(keyword, result_num: int = 3):
     """ 搜索音乐 """
     number = 5
     song_list = []
@@ -24,7 +24,7 @@ def search(keyword):
     except httpx.ReadTimeout as e:
         logger.error(f'Request QQ Music Timeout {e}')
         return None
-    for item in res_data['data']['song']['list'][:3]:
+    for item in res_data['data']['song']['list'][:result_num]:
         song_list.append(
             {
                 'name': item['songname'],
