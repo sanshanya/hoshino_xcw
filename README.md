@@ -74,7 +74,8 @@
 | meme_web             | 合并原homework和memegenerator                | 默认添加方法                                                 | web端和群聊上传和删除表情以及搜索表情                      |
 | image_generator      | 替代原有的image                              | 配合res资源包食用                                            | 更精细化的表情包生成器                                     |
 | music                | 点歌插件                                     | 默认添加方法                                                 | 搜素歌曲并选择                                             |
-| pcrmemorygames      | 游戏插件                                     | 默认添加方法                                                 | 来自糖豆人的配队关卡    |
+| pcrmemorygames      | 游戏插件                                     | 默认添加方法                                                 | 来自糖豆人的配队关卡    
+|
 **加粗部分的插件需要修改路径才能正常使用**
 
 ......
