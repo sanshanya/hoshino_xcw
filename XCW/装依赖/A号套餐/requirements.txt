@@ -39,3 +39,4 @@ xlrd
 pycryptodome
 pycryptodomex
 httpx
+pixivpy

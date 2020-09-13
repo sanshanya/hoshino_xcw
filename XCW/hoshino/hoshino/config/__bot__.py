@@ -64,13 +64,13 @@ MODULES_ON = {
     'ClanBattleReport',#会战报告生成，需要修改路径
     #'setu_acggov',#搜图，需要apikey，mirai需要按说明适配
     'bot_manager_web',#新版webmanage
-    #'voiceguess',#猜语音,Mirai后续版本可用
+    #'voiceguess',#猜语音
     #'eclanrank',#会战排名提醒，定时播报，会战时启用
     #'tencent_ai_reply',#需要apikey，用前修改概率
     #'QA',#问答功能,下方有集成优化版
     'hiumsentences',#网抑云语录
     'generator',#营销文生成等五个小功能
-    'ontree_scheduler',#挂树优化提醒
+    #'ontree_scheduler',#挂树优化提醒
     #'eqa',#问答功能2
     'russian',#俄罗斯轮盘赌
     'explosion',#每天一发惠惠
@@ -92,7 +92,9 @@ MODULES_ON = {
     #'image_generate',#取代原image
     'music',#点歌插件
     'pcrmemorygames',#公主连结记忆小游戏
-    'epixiv',#需要pixiv站账号
-    'emergeface',#换脸插件,需要apikey
+    #'epixiv',#需要pixiv站账号
+    #'emergeface',#换脸插件,需要apikey
     'eclanblack',#兰德索尔黑名单
+    'memberguess',#猜群友头像
+    #'acggov',#与setu_acggov相似,5.0版本进行融合
 }
