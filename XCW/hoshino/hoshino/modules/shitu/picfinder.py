@@ -9,13 +9,14 @@ from collections import OrderedDict
 
 from hoshino import Service
 from hoshino.typing import CQEvent, MessageSegment
+from hoshino.util import pic2b64
 
 sv = Service('picfinder', help_='''
 [识图+图片] 查询图片来源
 '''.strip())
 
-api_key="23eadc0c3e4898ddb9abb8813a3be795468869f0"#https://saucenao.com/自行申请
-minsim='80!'#相似度下限，低于下限不显示结果(80!指80%)
+api_key="23eadc0c3e4898ddb9abb8813a3be795468869f0"#填写你自己的api_key
+minsim='70!'#相似度下限，低于下限不显示结果
 thumbSize = (250,250)
 
 #启用或禁用索引，1：启用，0：禁用
@@ -63,7 +64,7 @@ db_bitmask = int(index_mangadex+index_madokami+index_pawoo+index_da+index_portal
 def get_pic(address):
     return requests.get(address,timeout=20).content
 
-@sv.on_prefix(('识图'))
+@sv.on_prefix(('识图','搜图','查图','找图'))
 async def picfinder(bot, ev: CQEvent):
     ret = re.match(r"\[CQ:image,file=(.*),url=(.*)\]", str(ev.message))
     image = Image.open(BytesIO(get_pic(ret.group(2))))
@@ -117,6 +118,8 @@ async def picfinder(bot, ev: CQEvent):
             if float(results['results'][0]['header']['similarity']) > float(results['header']['minimum_similarity']):
                 hit = str(results['results'][0]['header']['similarity'])
                 ext_urls = results['results'][0]['data']['ext_urls'][0]
+                thumbnail_url = results['results'][0]['header']['thumbnail']
+                thumbnail_image = str(MessageSegment.image(pic2b64(Image.open(BytesIO(get_pic(thumbnail_url))))))
                 service_name = ''
                 illust_id = 0
                 member_id = -1
@@ -233,15 +236,15 @@ async def picfinder(bot, ev: CQEvent):
                     
                 try:
                     if member_id >= 0:
-                        if not author_name:
-                            await bot.send(ev, '相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n作者:'+author_name+'('+str(member_id)+')'+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
+                        if author_name:
+                            await bot.send(ev, thumbnail_image+'\n相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n作者:'+author_name+'('+str(member_id)+')'+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
                         else:
-                            await bot.send(ev, '相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
+                            await bot.send(ev, thumbnail_image+'\n相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
                     else:
-                        if not author_name:
-                            await bot.send(ev, '相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n作者:'+author_name+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
+                        if author_name:
+                            await bot.send(ev, thumbnail_image+'\n相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n作者:'+author_name+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
                         else:
-                            await bot.send(ev, '相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
+                            await bot.send(ev, thumbnail_image+'\n相似度:'+hit+'\n来源:'+service_name+'\n标题:'+title+'\n编号:'+str(illust_id)+page_string+'\nurl:'+ext_urls)
                 except Exception as e:
                     print(e)
                 
