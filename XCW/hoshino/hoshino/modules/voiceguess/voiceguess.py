@@ -97,7 +97,7 @@ async def description_guess_group_ranking(bot, ev: CQEvent):
     await bot.send(ev, "\n".join(msg))
 
 
-@sv.on_prefix('cygames')
+@sv.on_prefix(('cygames', '猜语音'), only_to_me= False)
 async def cygames_voice_guess(bot, ev: CQEvent):
     if gm.is_playing(ev.group_id):
         await bot.finish(ev, "游戏仍在进行中…")
