@@ -194,7 +194,7 @@ async def diary(bot, ev: CQEvent):
             weather = arr[0].split(' ')[-1]
 
     if not content:
-        with open(os.path.join(os.path.dirname(__file__), 'diary_data.json')) as file:
+        with open(os.path.join(os.path.dirname(__file__), 'diary_data.json'),'r',encoding='utf-8') as file:
             diaries = json.load(file)
             while True:
                 index = random.randint(0, len(diaries) - 1)

@@ -54,7 +54,7 @@ MODULES_ON = {
     # 'twitter',#推特订阅，需要apikey
     'yobot',#yobot会战功能
     'hourcallyao',#买药提醒
-    'shebot_old',#色图功能，需要apikey——mirai需要按说明适配,本版本shebot可以直接私聊,请勿和下方版本同时开启,下方有集成优化版
+    #'shebot_old',#色图功能，需要apikey——mirai需要按说明适配,本版本shebot可以直接私聊,请勿和下方版本同时开启,下方有集成优化版
     'reload',#重启，暂时不知是否能生效
     'longwang',#迫害龙王功能
     'tarot',#塔罗牌，需要修改路径
@@ -92,6 +92,6 @@ MODULES_ON = {
     'meme_web',#memegenerator的web化,勿同时开启
     #'pcrmiddaymusic',#公主连结午间音乐
     #'image_generate',#取代原image
-    'music'#点歌插件
+    'music',#点歌插件
     'pcrmemorygames',#公主连结记忆小游戏
 }

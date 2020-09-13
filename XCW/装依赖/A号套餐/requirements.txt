@@ -38,3 +38,4 @@ pinyin
 xlrd
 pycryptodome
 pycryptodomex
+httpx
