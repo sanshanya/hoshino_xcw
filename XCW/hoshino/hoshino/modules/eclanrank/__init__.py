@@ -1,7 +1,7 @@
 """
 作者艾琳有栖
 
-版本 0.0.1
+版本 0.1.0
 
 基于 nonebot pcr公会站排行插件
 
@@ -11,6 +11,10 @@
 会战解锁公会名 解锁一个公会
 
 公会排行 查询绑定的公会
+
+
+查询记录之前的排名
+
 """
 from nonebot import *
 from . import util
@@ -50,3 +54,5 @@ async def epck_main(*params):
     keyword = util.get_msg_keyword(config['comm']['defaultLucked'], msg, True)
     if keyword == '':
         return await bot.send(ctx, locked.default_rank(ctx['group_id']))
+
+

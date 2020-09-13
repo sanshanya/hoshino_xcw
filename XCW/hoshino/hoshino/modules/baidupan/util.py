@@ -125,7 +125,7 @@ class send_process:
     async def __send__(self, msg):
         self.index += 1
         if self.index > self.size:
-            self.size = self.index
+            self.index = 1
         res = await bot.send(self.ctx, ''.join(['▓'] * self.index + ['░'] * (self.size - self.index)) + ' ' + msg)
         self.msg_id = res['message_id']
 

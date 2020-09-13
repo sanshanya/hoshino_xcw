@@ -115,7 +115,7 @@ def pan_parse(pan_url: str):
         return parse_ali213(pan_url)
     elif re.search(r'^(BaiduPCS-Go|rapidupload)', pan_url, re.I):
         return parse_pcsgo(pan_url)
-    elif re.search(r'^https?://.*?bdlink=', pan_url, re.I):
+    elif re.search(r'.*?bdlink=', pan_url, re.I):
         return parse_bdlink(pan_url)
     else:
         try:

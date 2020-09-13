@@ -1,7 +1,10 @@
 # -*- coding: UTF-8 -*-
 from sqlitedict import SqliteDict
 from nonebot import *
-import math
+import uuid
+import base64
+import imghdr
+import requests
 import yaml
 import json
 import os
@@ -11,8 +14,11 @@ bot = get_bot()
 
 
 class Dict(dict):
-    __setattr__ = dict.__setitem__
-    __getattr__ = dict.__getitem__
+    def __getattr__(self, attr):
+        return self.get(attr)
+
+    def __setattr__(self, attr, value):
+        self[attr] = value
 
 
 def dict_to_object(dict_obj):
@@ -26,8 +32,16 @@ def dict_to_object(dict_obj):
 
 # 获取配置
 def get_config():
-    file = open(os.path.join(os.path.dirname(__file__), "config.yaml"), 'r', encoding="utf-8")
+    file = open(os.path.join(os.path.dirname(__file__), "config.yml"), 'r', encoding="utf-8")
     return dict_to_object(yaml.load(file.read(), Loader=yaml.FullLoader))
+
+
+def get_json(file_name):
+    with open(get_path(file_name), 'r', encoding="utf-8") as file:
+        return json.loads(file.read())
+
+
+config = get_config()
 
 
 # 获取字符串中的关键字
@@ -52,10 +66,10 @@ db = {}
 
 
 # 初始化数据库
-def init_db(db_dir, db_name='db.sqlite') -> SqliteDict:
+def init_db(db_dir, db_name='db', db_suffix='.sqlite') -> SqliteDict:
     if db.get(db_name):
         return db[db_name]
-    db[db_name] = SqliteDict(get_path(db_dir, db_name),
+    db[db_name] = SqliteDict(get_path(db_dir, f'{db_name}{db_suffix}'),
                              encode=json.dumps,
                              decode=json.loads,
                              autocommit=True)
@@ -79,47 +93,8 @@ def filter_list(plist, func):
     return list(filter(func, plist))
 
 
-# 获取群内的群友名字
-async def get_group_member_name(group_id, user_id):
-    qq_info = await bot.get_group_member_info(group_id=group_id, user_id=user_id)
-    return qq_info['card'] or qq_info['nickname']
-
-
-bossData = {
-    'scoreRate': [
-        [1, 1, 1.1, 1.1, 1.2],
-        [1.2, 1.2, 1.5, 1.7, 2],
-    ],
-    'hp': [6000000, 8000000, 10000000, 12000000, 20000000],
-    'max': 2,
-}
-
-
-def calc_hp(hp_base: int):
-    zm = 1
-    king = 1
-    cc = 0.0
-    remain = 0.0
-    damage = 0
-    remainHp = 0.0
-    remainPer = 0.0
-
-    while True:
-        nowZm = bossData['max'] - 1 if zm > bossData['max'] else zm - 1
-        cc += bossData['scoreRate'][nowZm][king - 1] * bossData['hp'][king - 1]
-        if cc > hp_base:
-            cc -= bossData['scoreRate'][nowZm][king - 1] * bossData['hp'][king - 1]
-            remain = (hp_base - cc) / bossData['scoreRate'][nowZm][king - 1]
-            damage += remain
-            remainPer = 1.0 - remain / bossData['hp'][king - 1]
-            remainHp = bossData['hp'][king - 1] - remain
-            break
-        damage += bossData['hp'][king - 1]
-        if king == 5:
-            zm += 1
-            king = 1
-            continue
-        king += 1
-    remainPer *= 100
-    bdk = bossData['hp'][king - 1]
-    return f'{zm}周目{king}王 [{math.floor(remainHp)}/{bdk}]  {round(remainPer, 2)}%'
+def get_illust_id(keyword):
+    keyword = keyword.strip()
+    if not keyword.isdigit():
+        return None
+    return int(keyword)

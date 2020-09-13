@@ -35,3 +35,7 @@ p#或pan#  | 解析一个度盘链接 | p#分享地址 提取码<br>p#秒传链�
 https://pan.baidu.com/s/xxx#提取码 | 同上 | 同上
 ru# | 获取秒传链接 | #ru分享地址 提取码
 panhelp  | 显示链接下载帮助 | panhelp
+
+# 鸣谢
+[baiduwp](https://github.com/TkzcM/baiduwp) <br>
+[BaiduPCS-Go](https://github.com/Angey40/BaiduPCS-Go) <br>

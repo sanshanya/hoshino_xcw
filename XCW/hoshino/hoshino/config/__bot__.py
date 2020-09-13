@@ -92,4 +92,7 @@ MODULES_ON = {
     #'image_generate',#取代原image
     'music',#点歌插件
     'pcrmemorygames',#公主连结记忆小游戏
+    'epixiv',#需要pixiv站账号
+    'emergeface',#换脸插件,需要apikey
+    'eclanblack',#兰德索尔黑名单
 }

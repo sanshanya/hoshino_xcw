@@ -1,7 +1,6 @@
 # -*- coding: UTF-8 -*-
 from typing import List, Set
 from sqlitedict import SqliteDict
-from io import BytesIO
 from nonebot import *
 import base64
 import requests
@@ -23,8 +22,11 @@ def get_config():
 
 # 获取字符串中的关键字  is_first为true返回后面 false返回 前面和后面
 def get_msg_keyword(keyword, msg, is_first=False):
-    res = re.split(format_reg(keyword, is_first), msg, 1)
-    res = tuple(res[::-1]) if len(res) == 2 else False
+    try:
+        res = re.split(format_reg(keyword, is_first), msg, 1)
+        res = tuple(res[::-1]) if len(res) == 2 else False
+    except TypeError:
+        return False
     return ''.join(res) if is_first and res else res
 
 
@@ -135,7 +137,10 @@ def delete_message_image_file(message):
         # 如果包含file协议就删除
         urls = list(i[8:] if 'file:///' in i else i for i in urls)
         # 直接删除
-        ok = list(os.remove(i) for i in urls)
+        try:
+            ok = list(os.remove(i) for i in urls)
+        except FileNotFoundError as e:
+            print(e)
 
 
 # 获取消息中字符串 处理md5值
@@ -149,8 +154,12 @@ def get_message_str(message):
             continue
         # 处理图片
         if ms['type'] == 'image':
-            _id = re.match('{.+}', ms['data']['file']).group()[1:-1]
-            res += _id.split('-')[-1]
+            file = ms['data']['file']
+            try:
+                _id = re.match('{.+}', file).group()[1:-1]
+                res += _id.split('-')[-1]
+            except AttributeError:
+                res += ms['data']['file'].split('.')[0].lower()
             continue
         res += str(ms)
     return res
@@ -165,9 +174,13 @@ async def cq_msg2str(msg: List[str] or Set[str], group_id=None):
             qq = int(at.group(1))
             try:
                 name = await get_group_member_name(group_id, qq)
+                msg[index] = f'@{name}'
             except:
                 # name = await bot.get_stranger_info(user_id=qq)
                 # name = name["nickname"]
-                name = qq
-            msg[index] = f'@{name}'
+                # name = qq
+                # name = ''
+                msg.pop(index)
+                pass
+
     return msg

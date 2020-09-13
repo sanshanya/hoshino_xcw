@@ -26,16 +26,19 @@ comm:
   answer_delete_all: 清空回答
 
   # 显示个人设置的问答
-  show_question: 调教
+  show_question: 问答
 
   #显示所有的问答
   show_question_list:
-    - 全部调教
-    - 所有调教
+    - 全部问答
+    - 所有问答
 
 
 #规则
 rule:
+  # 是否只允许管理员（包括群管）设置 comm.answer_all 的问题, true 的话群员就只能用 comm.answer_me 设置的问题了
+  only_admin_answer_all: false
+
   # 超级管理员设置的是否为所有群问答
   super_admin_is_all_group: true
 
@@ -63,4 +66,7 @@ rule:
 
 # 打印字符配置
 str:
-  print_all_split: |
+  # 使用命令回答前缀 谨慎修改
+  cmd_head_str: '='
+
+  print_all_split: ' | '

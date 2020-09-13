@@ -22,16 +22,11 @@ def rapidupload(md5, md5s, size, file_name, dir_name='temp/'):
     return res['info']
 
 
-# 修复秒传文件
-def fix_rapidupload():
-    pass
-
-
 # 根据下载链接获取秒传信息
 def get_rapidupload_info(download_link, ua=None):
     try:
         headers = {
-            'User-Agent': ua if ua else 'LogStatistic',
+            'User-Agent': ua if ua else api.get_pan_ua(),
             'Cookie': f'BDUSS={config.BDUSS};',
             'Range': 'bytes=0-262143'
         }

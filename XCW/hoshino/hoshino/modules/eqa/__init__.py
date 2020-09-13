@@ -2,7 +2,7 @@
 """
 作者艾琳有栖
 
-版本 0.0.7
+版本 0.0.8
 
 基于 nonebot 问答
 """
@@ -35,17 +35,23 @@ async def eqa_main(*params):
     # 处理回答所有人的问题
     keyword = util.get_msg_keyword(config['comm']['answer_all'], msg, True)
     if keyword:
-        return await bot.send(ctx, await ask(ctx, keyword, False))
+        msg = await ask(ctx, keyword, False)
+        if msg:
+            return await bot.send(ctx, msg)
 
     # 处理回答自己的问题
     keyword = util.get_msg_keyword(config['comm']['answer_me'], msg, True)
     if keyword:
-        return await bot.send(ctx, await ask(ctx, keyword, True))
+        msg = await ask(ctx, keyword, True)
+        if msg:
+            return await bot.send(ctx, msg)
 
     # 回复消息
     ans = await answer(ctx)
-    if ans:
+    if isinstance(ans, list):
         return await bot.send(ctx, ans)
+    # elif isinstance(ans, str):
+    #     return ans
 
     # 显示全部设置的问题
     show_target = util.get_msg_keyword(config['comm']['show_question_list'], msg, True)
@@ -70,9 +76,19 @@ async def eqa_main(*params):
 
 # 设置问题的函数
 async def ask(ctx, keyword, is_me):
+    is_super_admin = ctx['user_id'] in admins
+    is_admin = util.is_group_admin(ctx) or is_super_admin
+
+    if config['rule']['only_admin_answer_all'] and not is_me and not is_admin:
+        return '回答所有人的只能管理设置啦'
+
     question_handler = config['comm']['answer_me'] if is_me else config['comm']['answer_all']
     answer_handler = config['comm']['answer_handler']
-    ans, qus = util.get_msg_keyword(answer_handler, keyword)
+    qa_msg = util.get_msg_keyword(answer_handler, keyword)
+    if not qa_msg:
+        # return f'嗯嗯，加上{answer_handler}后再重新设置试试看吧~'
+        return False
+    ans, qus = qa_msg
     qus = f'{qus}'.strip()
     if not str(qus).strip():
         return '问题呢? 问题呢??'
@@ -133,7 +149,7 @@ async def answer(ctx):
 
     # 木有在这群
     if not ans_list:
-        return ''
+        return False
 
     # 是否优先自己的回答 是的话则选择自己的列表
     if priority_self_answer:
@@ -152,14 +168,23 @@ async def answer(ctx):
     if ans['is_me']:
         # 如果是自己的回复 但是人不对就返回
         if ans['user_id'] != user_id:
-            return ''
+            return False
+
+    msg = ans['message']
+    if len(msg) == 1:  # str(Message(msg))
+        _msg = msg[0]
+        if _msg['type'] == 'text' and _msg['data']['text'][:1] == config['str']['cmd_head_str']:
+            ctx['raw_message'] = _msg['data']['text'][1:]
+            ctx['message'] = Message(ctx['raw_message'])
+            _bot.on_message(ctx)
+            return False
 
     # 如果使用了base64 那么需要把信息里的图片转换一下
     if config['image_base64']:
         ans['message'] = util.message_image2base64(ans['message'])
 
     # 最后就是把验证成功的消息返回去
-    return ans['message']
+    return msg
 
 
 # 显示问题的函数

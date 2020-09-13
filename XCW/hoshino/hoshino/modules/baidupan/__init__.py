@@ -1,7 +1,7 @@
-from nonebot import *
-from nonebot.log import logger
-from . import util, api, dupan_link, share, ru
+import re
 
+from nonebot import *
+from . import util, api, dupan_link, share, ru
 from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
@@ -23,7 +23,11 @@ async def pan_main(*params):
     # 获取下载直链
     keyword = util.get_msg_keyword(config.comm.keyword, msg, True)
     if keyword:
-        return await bot.send(ctx, await get_share(ctx, keyword, *keyword.split(config.comm.split)))
+        try:
+            return await bot.send(ctx, await get_share(ctx, keyword, *keyword.split(config.comm.split)))
+        except TypeError as e:
+            print(e)
+            await bot.send(ctx, '如果是秒传链接请尝试使用 %s' % config.comm.link2bdlink)
 
     # 获取秒传链接和直链
     keyword = util.get_msg_keyword(config.comm.get_all, msg, True)
@@ -46,7 +50,8 @@ async def pan_main(*params):
     # 获取帮助信息
     keyword = util.get_msg_keyword(config.comm.help, msg, True)
     if isinstance(keyword, str):
-        return await bot.send(ctx, config.str.help)
+        for x in config.str.help:
+            await bot.send(ctx, x)
 
 
 # 获取分享信息
@@ -62,6 +67,7 @@ async def get_share(ctx, keyword, pan_url: str,
     sp = util.send_process(ctx, 0, 3)
 
     if file_r and keyword:
+        is_local = None
         msg = ''
         for info in file_r:
             is_ok = ru.rapidupload(
@@ -78,18 +84,22 @@ async def get_share(ctx, keyword, pan_url: str,
             # 大于50M 需要分享后处理
             if int(info.size) > 52428800:
                 await sp.send('正在转存.')
-                s_url = share.set_share([is_ok['fs_id']])
+                s_url, shareid = share.set_share(is_ok['fs_id'])
+                if config.rules.auto_cancel_share:
+                    share.auto_cancel_share(shareid, is_ok['path'])  # 自动取消分享
                 if s_url:
                     await sp.send()
                     msg += await get_share(ctx, '', s_url, pwd='erin')
                     continue
                 else:
                     await sp.send('尝试创建本地下载地址..')
-                    l_url = api.get_local_download_link(is_ok['path'])
-                    if not l_url:
-                        msg += f'{info.name} 获取失败'
+                    urls = api.get_local_download_link(is_ok['path'])
+                    if not urls:
+                        msg += f'\n——————————\n文件 {info.name} 获取失败\n——————————\n'
                         continue
-                    url = api.get_real_url_by_dlink(l_url, ua=api.get_pan_ua())
+                    # url = api.get_real_url_by_dlink(urls[0], urls=urls, ua=api.get_pan_ua())
+                    url = urls[0]
+                    is_local = True
 
             else:
                 url = '\n'.join(api.get_web_file_url([is_ok['fs_id']]))
@@ -97,10 +107,12 @@ async def get_share(ctx, keyword, pan_url: str,
             if not url:
                 await _bot.send(ctx, f'{info.name} 获取下载地址失败啦\n')
                 continue
+            msg += '——————————\n'
             msg += f'文件名: {info.name}\n'
             msg += f'大小: {util.size_format(int(info.size))}\n'
             msg += f'下载地址: {url}\n'
-        return msg
+            msg += '——————————\n'
+        return msg + '请设置这个UA下载 %s' % api.get_pan_ua() if is_local else msg
 
     surl, s_pwd = share.get_surl(pan_url)
     if not surl:
@@ -109,6 +121,9 @@ async def get_share(ctx, keyword, pan_url: str,
     if not pwd and s_pwd:
         pwd = s_pwd
 
+    if pwd:
+        pwd = re.search(r'[a-zA-Z0-9]+', pwd).group()
+
     surl = surl[1:]
     # await _bot.send(ctx, f'{sp.send(1, 4)} 网盘分享链接获取成功 [1{surl}]')
     randsk = share.verify(surl, pwd)
@@ -116,6 +131,8 @@ async def get_share(ctx, keyword, pan_url: str,
         return f'啊这 提取码错误或者是文件失效\n{tip}'
     await sp.send('正在获取分享信息')
     yun_data = share.get_yun_data(surl, randsk)
+    if not yun_data:
+        return '分享过期或者被取消'
     file_list = share.get_file_list(yun_data.shareid, yun_data.uk, randsk, dir_str=dir_str)
 
     if not file_list.errno == 0:
@@ -128,7 +145,8 @@ async def get_share(ctx, keyword, pan_url: str,
 
     if is_get_url:
         for file_i in file_info:
-            await _bot.send(ctx, '文件名: %s\n大小: %s\n地址: %s' % (file_i['name'], file_i['size'], file_i['url']))
+            await _bot.send(ctx, '文件名: %s\n大小: %s\n地址: %s' % (
+                file_i['name'], util.size_format(file_i['size']), file_i['url']))
 
     if is_get_ru:
         for file_i in file_info:
@@ -151,14 +169,14 @@ async def get_ru(ctx, url_str, yun_data, randsk):
         await sp.send('转存成功,正在修复')
         info = []
         for file_path in files:
-            url = api.get_local_download_link(file_path)
-            if not url:
+            urls = api.get_local_download_link(file_path)
+            if not urls:
                 await _bot.send(ctx, f'{file_path} 修复失败')
                 continue
-            real_url = api.get_real_url_by_dlink(url, ua=api.get_pan_ua())
+            real_url = api.get_real_url_by_dlink(urls[0])
             if not real_url:
-                await _bot.send(ctx, f'{file_path} 本地下载地址获取失败,过段时间在试吧')
-                continue
+                # await _bot.send(ctx, f'{file_path} 本地下载地址获取失败,过段时间在试吧')
+                real_url = urls[0]
             ru_info = ru.get_rapidupload_info(real_url, ua=api.get_pan_ua())
             if not ru_info:
                 await _bot.send(ctx, f'{file_path} 修复失败,获取内部下载失败')
