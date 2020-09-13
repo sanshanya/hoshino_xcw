@@ -83,7 +83,6 @@ MODULES_ON = {
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色,需要设置go-cqhttp的心跳间隔,推荐3
     #'shebot',##集合了许多插件,请勿和shebot及QA同时开启
-    #'ranking',#自助群头衔
     #'nmsl',#抽象抽象抽抽抽像像像
     #'clanbattle_report',#远程api生成会战报告
     'baidupan',#百度盘解析

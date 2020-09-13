@@ -1,5 +1,0 @@
-***适用于HoshinoBot V2
-
-**在hoshino/config/_bot_.py里面添加的MODULES_ON里添加'ranking'
-**将ranking文件夹复制到hoshino/modules即可
-
