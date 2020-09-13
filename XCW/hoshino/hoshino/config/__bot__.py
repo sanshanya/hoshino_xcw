@@ -79,7 +79,6 @@ MODULES_ON = {
     'picapi',#自定义拉取图片
     'aircon',#群空调
     #'authMS',#群授权,目前存在一定问题,自行通过报错解决
-    #'schedule',#国服日程表
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色,需要设置go-cqhttp的心跳间隔,推荐3
