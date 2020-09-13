@@ -97,4 +97,5 @@ MODULES_ON = {
     'eclanblack',#兰德索尔黑名单
     'memberguess',#猜群友头像
     #'acggov',#与setu_acggov相似,5.0版本进行融合
+    'anticoncurrency',# 反并发插件
 }
