@@ -12,7 +12,7 @@ public_address = hoshino.config.IP#修改为服务器公网ip
 meManagePwd = 'xcw'#删除文件密码
 loginUserName = 'xcw'#登录账户
 loginPassword = 'xcw'#登录密码
-bot_name = hoshino.config.RES_DIR#机器人名字
+bot_name = hoshino.config.NICKNAME#机器人名字
 group_name = '镜华的表情包'#公会名
 
 sv = Service('meme_web', manage_priv=priv.SUPERUSER, enable_on_default=True, visible=False)
