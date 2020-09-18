@@ -1,7 +1,7 @@
 # epixiv
 p站搜图功能
 
-eqa文件夹复制到nonebot的模块目录就可
+epixiv文件夹复制到nonebot的模块目录就可
 
 然后配置启用的模块添加 'epixiv'
 

@@ -14,26 +14,34 @@ from time import time
 from urllib.parse import quote_plus
 
 import aiohttp
-from service import Service as sc,Priv
 from nonebot import get_bot
-from hoshino import Service, priv as Priv
+from nonebot.helpers import render_expression
+from hoshino import Service, priv
 #from hoshino.service import Service, Privilege as Priv
-sv = Service('tencent_ai',manage_priv=Priv.ADMIN, enable_on_default=True)
+sv = Service('人工智障', enable_on_default=False)
 
 try:
     import ujson as json
 except ImportError:
     import json
 
-
 bot = get_bot()
 cq_code_pattern = re.compile(r'\[CQ:\w+,.+\]')
 salt = None
 
+# 定义无法获取回复时的「表达（Expression）」
+EXPR_DONT_UNDERSTAND = (
+    '我现在还不太明白你在说什么呢，但没关系，以后的我会变得更强呢！',
+    '我有点看不懂你的意思呀，可以跟我聊些简单的话题嘛',
+    '其实我不太明白你的意思……',
+    '抱歉哦，我现在的能力还不能够明白你在说什么，但我会加油的～',
+    '唔……等会再告诉你'
+)
+
 ################
 # 请修改
-app_id = '2149796224'
-app_key = 'ChX1AV1EyhnPLPdy'
+app_id = '2154605859'
+app_key = 'DWmXnuZXkI9rnvKN'
 ################
 
 def getReqSign(params: dict) -> str:
@@ -68,35 +76,34 @@ def load_config():
     except:
         return {}
 config_path = os.path.dirname(__file__)+'/config.json'
-help_path = os.path.dirname(__file__)+'/help.txt'
-config_path = os.path.dirname(__file__)+'/config.json'
 g_config = load_config()
 g_open_groups = set(g_config.get('open_groups',[]))
-sa = sc('AI',config_path,help_path,default_enable=True)
+
 @sv.on_message()
-async def switch(bot,ctx):
+async def switch(bot, ctx):
     global g_config
     global g_open_groups
     msg = ctx['raw_message']
-    switch.gid = ctx['group_id']
-    if sa.get_user_priv(ctx) < Priv.SUPERUSER:
+    switch.gpid = ctx['group_id']
+    u_priv = priv.get_user_priv(ctx)
+    if u_priv < priv.ADMIN:
         return
-    if msg == '本群AI开启':
-        g_open_groups.add(switch.gid)
+    if msg == '提高AI概率':
+        g_open_groups.add(switch.gpid)
         g_config['open_groups'] = list(g_open_groups)
         save_config(g_config)
-        await bot.send(ctx,'本群AI开启',at_sender=True)
+        await bot.send(ctx,'本群AI概率已提高',at_sender=True)
 
-    elif msg == '本群AI降低':
-        g_open_groups.discard(switch.gid)
+    elif msg == '降低AI概率':
+        g_open_groups.discard(switch.gpid)
         g_config['open_groups'] = list(g_open_groups)
         save_config
-        await bot.send(ctx,'本群AI降低',at_sender=True)
+        await bot.send(ctx,'本群AI概率已降低',at_sender=True)
         
 @sv.on_message('group')
 async def ai_reply(bot, context):
-    if switch.gid not in g_open_groups and switch.gid!= 0:
-            if not random.randint(1,100) <= 1:#拙劣的概率开关
+    if switch.gpid not in g_open_groups and switch.gpid!= 0:
+            if not random.randint(1,100) <= 0.5:#拙劣的概率开关
                 return
 
     msg = str(context['message'])
@@ -136,5 +143,9 @@ async def ai_reply(bot, context):
     if param['ret'] != 0:
         raise ValueError(param['msg'])
     reply = param['data']['answer']
-    await bot.send(context, reply,at_sender=False)
-    #return {'reply': reply, 'at_sender': False}
+    if reply:
+        await bot.send(context, reply,at_sender=False) 
+    else:
+        # 如果调用失败，或者它返回的内容我们目前处理不了，发送无法获取回复时的「表达」
+        # 这里的 render_expression() 函数会将一个「表达」渲染成一个字符串消息
+        await bot.send(render_expression(EXPR_DONT_UNDERSTAND))

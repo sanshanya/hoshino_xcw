@@ -8,7 +8,7 @@ setting = util.get_config().setting
 
 
 def short(url: str):
-    if not setting.short_url_enable:
+    if not setting.short_url_enable or not url:
         return url
 
     data = {

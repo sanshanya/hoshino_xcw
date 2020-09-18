@@ -99,4 +99,5 @@ MODULES_ON = {
     #'acggov',#与setu_acggov相似,5.0版本进行融合
     'anticoncurrency',# 反并发插件
     'portune',#运势插件
+    'pokemanpcr',#戳一戳卡片小游戏
 }

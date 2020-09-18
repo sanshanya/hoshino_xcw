@@ -25,7 +25,7 @@ temp = {}
 last_check = {}
 
 
-@sv.on_prefix(['选', '选择'])
+@sv.on_prefix(['选', '选择', '选歌'])
 async def choose_song(bot, ev):
     key = f'{ev.group_id}-{ev.user_id}'
     if key not in temp:
@@ -62,7 +62,7 @@ async def choose_song(bot, ev):
         #     await bot.send(ev, '只能选择列表中有的歌曲哦', at_sender=True)
 
 
-@sv.on_prefix(('点歌', '搜歌曲'))
+@sv.on_prefix(('点歌', '搜歌曲', '我想听'))
 async def to_apply_for_title(bot, ev):
     if str(ev.user_id) in last_check:
         intervals = datetime.datetime.now() - last_check[str(ev.user_id)]
@@ -77,7 +77,7 @@ async def to_apply_for_title(bot, ev):
         await bot.send(ev, '你想听什么呀?', at_sender=True)
     else:
         music_name = ''.join(music_name)
-        song_list = search_netease_cloud_music(music_name)
+        song_list = await search_music(music_name)
         if song_list:
             sv.logger.info('成功获取到歌曲列表')
             key = f'{ev.group_id}-{ev.user_id}'
@@ -119,7 +119,7 @@ async def search_netease_cloud_music(bot, ev):
         await bot.send(ev, '你想听什么呀?', at_sender=True)
     else:
         music_name = ''.join(music_name)
-        song_list = search163(music_name, result_num=5)
+        song_list = await search163(music_name, result_num=5)
         if song_list:
             sv.logger.info('成功获取到歌曲列表')
             key = f'{ev.group_id}-{ev.user_id}'
@@ -155,7 +155,7 @@ async def search_qq_music(bot, ev):
         await bot.send(ev, '你想听什么呀?', at_sender=True)
     else:
         music_name = ''.join(music_name)
-        song_list = searchqq(music_name, result_num=5)
+        song_list = await searchqq(music_name, result_num=5)
         if song_list:
             sv.logger.info('成功获取到歌曲列表')
             key = f'{ev.group_id}-{ev.user_id}'
@@ -176,12 +176,12 @@ async def search_qq_music(bot, ev):
             await bot.send(ev, '什么也没有找到的说OxO')
 
 
-def search_netease_cloud_music(music_name: str) -> typing.Union[list, dict]:
+async def search_music(music_name: str) -> typing.Union[list, dict]:
     result = []
-    song_list = search163(music_name)
+    song_list = await search163(music_name)
     if song_list:
         result += song_list
-    song_list = searchqq(music_name)
+    song_list = await searchqq(music_name)
     if song_list:
         result += song_list
     return result

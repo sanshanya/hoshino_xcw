@@ -32,7 +32,7 @@ except Exception as e:
 
 
 @sv.on_message('group')  # 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
-# @_bot.on_message("group") # nonebot使用这
+# @_bot.on_message  # nonebot使用这
 async def epixiv_main(*params):
     bot, ctx = (_bot, params[0]) if len(params) == 1 else params
 
@@ -88,9 +88,10 @@ async def search(ctx, keyword: str):
         return ''
     ps.running('搜索中...')
     await _bot.send(ctx, '正在搜索 请稍等')
-    search_db = db.get(keyword + is_r18, {})
+    db_key = keyword + is_r18
+    search_db = db.get(db_key, {})
     search_db.setdefault('create_time', time.time())
-    search_db.setdefault('keyword', keyword + is_r18)
+    search_db.setdefault('keyword', db_key)
     search_db.setdefault('illusts', [])
     search_db.setdefault(page_flag, 1)
     search_db = util.dict_to_object(search_db)
@@ -98,13 +99,13 @@ async def search(ctx, keyword: str):
     illusts = search_db.illusts
     if search_db.create_time + rules.refresh_day * 24 * 60 * 60 < time.time() or not illusts:
         print('pixiv refresh cache..')
-        illusts = await epixiv.search(keyword, search_sort_num=rules.search_sort_num)
+        illusts = await epixiv.search(keyword, search_sort_num=rules.search_sort_num, is_r18=bool(is_r18))
         if not illusts:
             ps.done()
             await _bot.send(ctx, '嗨呀 都没搜索到, 要不你换个搜')
             return keyword
         search_db.illusts = illusts
-        db[keyword] = search_db
+        db[db_key] = search_db
     else:
         print('use cache len: %s' % len(illusts))
 
@@ -114,14 +115,14 @@ async def search(ctx, keyword: str):
     if next_page:
         start = search_db[page_flag] * workers
         search_db[page_flag] += 1
-        db[keyword] = search_db
+        db[db_key] = search_db
 
     illusts = illusts[start:start + workers]
 
     if next_page and not illusts:
         illusts = illusts[:workers]
         search_db[page_flag] = 1
-        db[keyword] = search_db
+        db[db_key] = search_db
 
     data = epixiv.download_illusts_img(illusts)
     ps.running('处理消息中...')
@@ -188,7 +189,8 @@ async def recommend(ctx, keyword: str):
     is_group = ctx.detail_type == 'group'
     page_flag = str(ctx.group_id if is_group else uid)
     ps = permission.user(uid, timeout=5 * 60)
-
+    # can_r18 = is_group and rules.group_r18
+    can_r18 = not is_group and rules.private_r18
     if ps.check() and uid not in admins:
         await _bot.send(ctx, '正在处理啦 等一等哈  %s' % ps.msg())
         return ''
@@ -204,7 +206,7 @@ async def recommend(ctx, keyword: str):
     ps.running('搜索数据中...')
     if rc_db.create_time + rules.refresh_day * 24 * 60 * 60 < time.time() or not illusts:
         print('pixiv refresh recommend cache..')
-        illusts = epixiv.recommend(illust_id)
+        illusts = epixiv.recommend(illust_id, can_r18=can_r18)
         if not illusts:
             ps.done()
             await _bot.send(ctx, '阿勒 , 没有什么推荐呢')
@@ -224,6 +226,9 @@ async def ptag(ctx, keyword: str):
     ac = epixiv.auto_complete(keyword)
     if ac:
         tag_info = epixiv.get_tag_img(ac[0]['text'])
+        if not tag_info:
+            await _bot.send(ctx, '没有搜索到标签信息呢')
+            return
         ac_str = '\n'.join(map(lambda x: '%s  %s' % (x['translation'], x['text']), ac))
         tag_info['local_img'] = MessageSegment.image(tag_info['local_img'])
         tag_info['ac'] = ac_str

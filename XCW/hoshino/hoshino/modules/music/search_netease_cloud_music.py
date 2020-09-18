@@ -2,11 +2,7 @@
 Reference link:
 https://github.com/bluetomlee/NetEase-MusicBox/blob/master/src/api.py
 """
-import json
-
-import httpx
-
-from hoshino import logger
+from hoshino import logger, aiorequests
 
 
 class NetEase:
@@ -22,26 +18,24 @@ class NetEase:
             'User-Agent': 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_9_2) '
             + 'AppleWebKit/537.36 (KHTML, like Gecko) Chrome/33.0.1750.152 '
             + 'Safari/537.36',
-            # 'X-Real-IP': '此处替换为一个国内IP',
-            # 'X-Forwarded-For': '与上方IP相同',
+            'X-Real-IP': '39.156.69.79',
+            'X-Forwarded-For': '39.156.69.79',
         }
         self.cookies = {
             'appver': '1.5.2'
         }
 
-    def httpRequest(self, action, query=None):
-        connection = httpx.post(
+    async def httpRequest(self, action, query=None):
+        resp = await aiorequests.post(
             action,
             data=query,
             headers=self.header,
             timeout=3
         )
+        data = await resp.json()
+        return data
 
-        connection.encoding = "UTF-8"
-        connection = json.loads(connection.text)
-        return connection
-
-    def search(self, s, stype=1, offset=0, total='true'):
+    async def search(self, s, stype=1, offset=0, total='true'):
         action = 'http://music.163.com/api/search/get/web'
         data = {
             's': s,
@@ -50,13 +44,13 @@ class NetEase:
             'total': total,
             'limit': 60
         }
-        return self.httpRequest(action, data)
+        return await self.httpRequest(action, data)
 
 
-def search(keyword: str, result_num: int = 3):
+async def search(keyword: str, result_num: int = 3):
     n = NetEase()
     song_list = []
-    data = n.search(keyword)
+    data = await n.search(keyword)
     if data and data['code'] == 200:
         try:
             for item in data['result']['songs'][:result_num]:

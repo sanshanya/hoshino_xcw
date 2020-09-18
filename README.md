@@ -75,6 +75,7 @@
 | epixiv | 涩图插件,看涩图 | 按readme配置,需要pixiv账号 | erinilis系列                                               |
 | emergeface | 娱乐插件,换脸 | 默认添加方法,需要apikey | erinilis系列                                               |
 | eclanblack | 不实用插件,兰德索尔黑名单 | 默认添加方法 | erinilis系列                                               |
+| pokemanpcr | 戳机器人集卡小游戏 | 默认添加方法 | pekemon? |
 
 **加粗部分的插件需要修改路径才能正常使用**
 

@@ -1,12 +1,22 @@
-# music 点歌插件
+# Music
 
-这是一个适用于Hoshino v2的点歌插件
+<img align="right" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1328271432,2672554590&fm=26&gp=0.jpg" alt="logo" width="96px" />
+
+这是一个适用于Hoshino v2的点歌插件,支持搜索并分享QQ音乐和网易云音乐。
+
+<img src="https://img.shields.io/badge/HoshinoBot-v2.0-brightgreen"/> <img src="https://img.shields.io/badge/cqhttp--mirai-v0.2.3-brightgreen" /> <img src="https://img.shields.io/badge/go--cqhttp-v0.9.24-brightgreen" /> <img src="https://img.shields.io/badge/built_by---LAN---blue"/>
+
 
 ## 说明
 
 音乐分享的支持来自Mirai，请选择合适的插件获得最好的使用体验，如`go-cqhttp`或`cqhttp-mirai`。
 
 如遇使用问题欢迎提交Issue。
+
+*2020/9/14*
+
+- 请求修改为异步。
+- 删除httpx依赖，至此本插件无需任何额外依赖即可运行。
 
 *2020/9/9*
 
@@ -26,12 +36,6 @@
 - 修复了查询失败时的处理机制，使用新版`go-cqhttp`时分享QQ音乐能够显示歌手。
 
 ## 安装
-
-输入以下命令安装所需依赖:
-
-```shell
-python3.8 -m pip install httpx
-```
 
 下载或克隆本项目，将`music`文件夹放入`modules`文件夹中，并在`config/__bot__.py`的模块列表里加入`music`。
 

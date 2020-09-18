@@ -1,18 +1,17 @@
-from hoshino import Service, priv
-from hoshino.typing import CQEvent
+from hoshino import Service, priv, aiorequests
+from hoshino.typing import MessageSegment, CQEvent
 from hoshino.modules.priconne.news.spider import BaseSpider
-from hoshino import aiorequests
-from nonebot import MessageSegment
 
 from dataclasses import dataclass
 from typing import List, Union
-import hoshino, json, os, aiohttp
+import hoshino, json, os
 
 sv = Service('bili-search-spider', bundle='pcr订阅', help_='''
 添加B站爬虫 <关键词> | 添加爬取关键词。每次添加一个，可添加多次
 查看B站爬虫 | 查看当前爬取关键词列表
 删除B站爬虫 <关键词> | 删除指定爬取关键词
 '''.strip())
+
 
 @dataclass
 class Item:
@@ -94,15 +93,6 @@ def save_config(config):
         return False
 
 
-async def download(url, path):
-    timeout = aiohttp.ClientTimeout(total=60)
-    async with aiohttp.ClientSession(timeout=timeout) as session:
-        async with session.get(url) as resp:
-            content = await resp.read()
-            with open(path, 'wb') as f:
-                f.write(content)
-
-
 async def spider_work(spider:BaseSpider, bot, gid, sv:Service, TAG):
     if not spider.item_cache[gid]:
         await spider.get_update(gid)
@@ -115,9 +105,7 @@ async def spider_work(spider:BaseSpider, bot, gid, sv:Service, TAG):
     sv.logger.info(f'群{gid}的{TAG}检索到{len(updates)}个新视频！')
     msg_list = spider.format_items(updates)
     for i in range(len(updates)):
-        pic_path = './hoshino/modules/bilisearchspider/{}.jpg'.format(updates[i].idx.split('/')[-1])
-        await download('http:'+updates[i].pic, pic_path)
-        pic = MessageSegment.image(f'file:///{os.path.abspath(pic_path)}')
+        pic = MessageSegment.image('http:'+updates[i].pic)
         msg = f'{msg_list[0]}{pic}{msg_list[i+1]}'
         await bot.send_group_msg(group_id=int(gid), message=msg)
 
@@ -179,7 +167,3 @@ async def bili_search_spider():
     for gid in config.keys():
         BiliSearchSpider.set_url(gid, config[gid])
         await spider_work(BiliSearchSpider, bot, gid, sv, 'B站搜索爬虫')
-    for root, dirs, files in os.walk('./hoshino/modules/bilisearchspider'):
-        for name in files:
-            if name.endswith('.jpg'):
-                os.remove(os.path.join(root, name))

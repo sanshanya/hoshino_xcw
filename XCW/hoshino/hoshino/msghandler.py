@@ -1,10 +1,10 @@
 from hoshino import CanceledException, message_preprocessor, trigger
 from hoshino.typing import CQEvent
-from hoshino.util4sh import cherugo_also
+#from hoshino.util4sh import cherugo_also
 
 
 @message_preprocessor
-@cherugo_also #切噜语触发,如果不用就注释本行
+#@cherugo_also #切噜语触发,如果不用就注释本行
 async def handle_message(bot, event: CQEvent, _):
 
     if event.detail_type != 'group':

@@ -91,7 +91,8 @@ class epixiv(ByPassSniApi):
     def illust_is_r18(illust):
         if illust.x_restrict == 1:
             return True
-        return 'R-18' in tags_list(illust) or 'R18' in tags_list(illust)
+        r18 = ['R-18', 'R18', 'R-18G', 'R18G']
+        return any(map(lambda x: x in r18, tags_list(illust)))
 
     async def search(self, keyword,
                      # 搜索多少页
@@ -223,7 +224,7 @@ class epixiv(ByPassSniApi):
 
     def get_meta_pages(self, illust_id):
         if not illust_id:
-            return None
+            return None, []
         info = self.illust_detail(illust_id)
         if info.error:
             print(info.error.user_message)
@@ -235,12 +236,23 @@ class epixiv(ByPassSniApi):
             img_info.original]
         return illust, images
 
-    def recommend(self, illust_id, is_r18=False):
+    def recommend(self, illust_id, is_r18=False, can_r18=False):
         info = self.illust_related(illust_id)
         if info.error:
-            print(info.error.user_message)
-            return []
+            try:
+                self.login(config.pixiv.username, config.pixiv.password)
+            except Exception as e:
+                print('登录p站失败了 请检查配置.')
+                return []
+            info = self.illust_related(illust_id)
+            if info.error:
+                print(info.error.user_message)
+                return []
+
         illusts = sorted(info.illusts, key=lambda item: item.total_view, reverse=True)
+
+        if can_r18:
+            return __proxy_illusts_img__(illusts)
 
         if not is_r18:
             illusts = filter(lambda item: not self.illust_is_r18(item), illusts)

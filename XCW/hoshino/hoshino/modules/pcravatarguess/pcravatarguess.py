@@ -1,6 +1,6 @@
 from nonebot import MessageSegment
 
-from hoshino import Service
+from hoshino import Service, util
 from hoshino.typing import CQEvent
 from hoshino.modules.priconne import chara
 from hoshino.modules.priconne import _pcr_data
@@ -126,40 +126,34 @@ async def description_guess_group_ranking(bot, ev: CQEvent):
 
 @sv.on_fullmatch('猜头像')
 async def avatar_guess(bot, ev: CQEvent):
-    try:
-        if winner_judger.get_on_off_status(ev.group_id):
-            await bot.send(ev, "此轮游戏还没结束，请勿重复使用指令")
-            return
-        winner_judger.turn_on(ev.group_id)
-        chara_id_list = list(_pcr_data.CHARA_NAME.keys())
-        list_len = len(chara_id_list) - 1
-        while True:
-            index = random.randint(0, list_len)
-            if chara_id_list[index] not in BLACKLIST_ID: break
-        winner_judger.set_correct_chara_id(ev.group_id, chara_id_list[index])
-        dir_path = os.path.join(os.path.expanduser(hoshino.config.RES_DIR), 'img', 'priconne', 'unit')
-        if not os.path.exists(dir_path):
-            os.makedirs(dir_path)
-        c = chara.fromid(chara_id_list[index])
-        img = c.icon.open()
-        left = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
-        upper = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
-        cropped = img.crop((left, upper, left+PIC_SIDE_LENGTH, upper+PIC_SIDE_LENGTH))
-        file_path = os.path.join(dir_path, 'cropped_avatar.png')
-        cropped.save(file_path)
-        image = MessageSegment.image(f'file:///{os.path.abspath(file_path)}')
-        msg = f'猜猜这个图片是哪位角色头像的一部分?({ONE_TURN_TIME}s后公布答案){image}'
-        await bot.send(ev, msg)
-        await asyncio.sleep(ONE_TURN_TIME)
-        if winner_judger.get_winner(ev.group_id) != '':
-            winner_judger.turn_off(ev.group_id)
-            return
-        msg =  f'正确答案是: {c.name}{c.icon.cqcode}\n很遗憾，没有人答对~'
+    if winner_judger.get_on_off_status(ev.group_id):
+        await bot.send(ev, "此轮游戏还没结束，请勿重复使用指令")
+        return
+    winner_judger.turn_on(ev.group_id)
+    chara_id_list = list(_pcr_data.CHARA_NAME.keys())
+    list_len = len(chara_id_list) - 1
+    while True:
+        index = random.randint(0, list_len)
+        if chara_id_list[index] not in BLACKLIST_ID: break
+    winner_judger.set_correct_chara_id(ev.group_id, chara_id_list[index])
+    dir_path = os.path.join(os.path.expanduser(hoshino.config.RES_DIR), 'img', 'priconne', 'unit')
+    if not os.path.exists(dir_path):
+        os.makedirs(dir_path)
+    c = chara.fromid(chara_id_list[index])
+    img = c.icon.open()
+    left = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
+    upper = math.floor(random.random()*(129-PIC_SIDE_LENGTH))
+    cropped = img.crop((left, upper, left+PIC_SIDE_LENGTH, upper+PIC_SIDE_LENGTH))
+    cropped = MessageSegment.image(util.pic2b64(cropped))
+    msg = f'猜猜这个图片是哪位角色头像的一部分?({ONE_TURN_TIME}s后公布答案){cropped}'
+    await bot.send(ev, msg)
+    await asyncio.sleep(ONE_TURN_TIME)
+    if winner_judger.get_winner(ev.group_id) != '':
         winner_judger.turn_off(ev.group_id)
-        await bot.send(ev, msg)
-    except Exception as e:
-        winner_judger.turn_off(ev.group_id)
-        await bot.send(ev, '错误:\n' + str(e))
+        return
+    msg =  f'正确答案是: {c.name}{c.icon.cqcode}\n很遗憾，没有人答对~'
+    winner_judger.turn_off(ev.group_id)
+    await bot.send(ev, msg)
         
         
 @sv.on_message()
