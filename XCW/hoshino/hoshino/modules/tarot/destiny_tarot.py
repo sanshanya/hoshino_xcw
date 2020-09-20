@@ -7,7 +7,7 @@ from random import randint
 bot = get_bot()
 
 #初始化自定义信息
-fn = "C:/XCW/hoshino/hoshino/modules/tarot/data/"
+fn = "./hoshino/modules/tarot/data/"
 with open(fn + 'settings.json') as f:
 	s = json.load(f)
 me = s['机器人自称']

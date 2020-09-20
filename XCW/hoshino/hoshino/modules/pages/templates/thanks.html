@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>xcwbot</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- CSS Files
+    ================================================== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='pcr/css/bootstrap-4-2-1.css') }}" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-grid-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-reboot-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/animate.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-carousel.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-theme.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-transitions.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/jquery-countdown.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/style2.css') }}" rel="stylesheet"  >
+
+		<!-- color scheme -->
+		<link id="colors" href="{{ url_for('static', filename='pcr/css/scheme-03.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/coloring.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- RS5.0 Stylesheet -->
+    <link href="{{ url_for('static', filename='pcr/css/settings.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/layers.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/navigation.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/rev-settings.css') }}" rel="stylesheet" type="text/css">
+	
+	<!-- zipfont -->
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3-embed.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5-embed.css') }}" rel="stylesheet" type="text/css">
+
+	<!--<audio src="http://d1.027cgb.com/631148/Music/%E6%B0%B7%E3%81%A8%E9%9B%AA%E3%81%AE%E4%B8%96%E7%95%8C.mp3"  autoplay="autoplay" loop="loop" hidden="true" > </audio>	-->
+
+
+	<script type="text/javascript" src="chrome-extension://dbjbempljhcmhlfpfacalomonjpalpko/scripts/inspector.js"></script>
+	<!--<audio src="http://d1.027cgb.com/631148/Music/%E5%BF%83%E6%83%B3%E3%81%84%20%EF%BD%9E%E3%82%B3%E3%82%B3%E3%83%AD%E3%82%AA%E3%83%A2%E3%82%A4(Short%20Ver-).mp3"  autoplay="autoplay" loop="loop" hidden="true" > </audio>-->
+
+
+
+
+</head>
+
+
+ 
+<body style="display: block; zoom: 1;">
+    <div id="wrapper" style="background-size: cover;">
+        <!-- header begin -->
+       <header class="header-s1 transparent">
+            <div class="container" style="background-size: cover;">
+                <div class="row" style="background-size: cover;">
+                    <div class="col-md-12" style="background-size: cover;">
+
+                        <div class="header-row" style="background-size: cover;">
+                            <div class="header-col left" style="float: left; clear: both; display: inline; left: -25px; background-size: contain;">
+                                <!-- logo begin -->
+                               
+                                <!-- logo close -->
+                            </div>
+                            <div class="header-col mid" style="background-size: cover;">
+                                <!-- mainmenu begin -->
+                                <ul id="mainmenu" class="no-separator">
+										<li><a href="/xcwmain">主页</a></li>										
+										<li><a href="/xcwhelp">帮助文档</a>
+											<ul>
+												<li><a href="/xcwmanual">会战手册</a></li>
+												<li><a href="/xcw404"><s>常见问题</s></a></li>
+												<li><a href="/xcw404"><s>更新日志</s></a></li>
+												<li><a href="https://github.com/sanshanya">如何搭建<span>New!</span></a></li>
+											</ul>
+										</li>
+										<li><a href="/xcwabout">关于</a>
+										</li>
+										<li><a href="/xcwthanks">鸣谢</a></li>
+									</ul>                                
+								<div class="col-right" style="background-size: cover;">
+                                    <a class="btn-custom" href="https://afdian.net/@sanshanya"><i class="fa fa-heart"></i>赞助</a>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="background-size: cover;"></div>
+                        <div class="clearfix" style="background-size: cover;"></div>
+                        </div>
+                        <!-- small button begin -->
+                        <span id="menu-btn"></span>
+                        <!-- small button close -->
+
+                    </div>
+                </div>
+            </div>
+        </header>
+		<div class="no-bottom no-top" id="content" style="background-size: cover;">
+
+				<!-- revolution slider begin -->
+				<!-- section begin -->
+				<section class="full-height no-top no-bottom text-light" data-bgimage="url(http://d1.027cgb.com/631148/%E5%9B%BE%E7%89%87/83468695_p0.jpg) 50% 0 no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;http://d1.027cgb.com/631148/%E5%9B%BE%E7%89%87/83468695_p0.jpg&quot;) 50% 0px / cover no-repeat;">
+
+					<div class="overlay-bg t80" style="background-color: rgba(0, 0, 0, 0.1); background-size: cover;">
+						<div class="center-y relative" data-scroll-speed="4" style="background-size: cover; transform: translateY(0px);">
+							<div class="container" style="background-size: cover;">
+								<div class="row align-items-center" style="background-size: cover;">
+									<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+
+									<h2>xcwbot</h2><br>
+
+								</div>
+							</div>
+						</div>
+					</div>
+			</section></div>
+
+			
+			<!-- section close -->
+
+			<section style="padding: 90px 0px 0px; background-size: cover;">
+				<div class="container" style="background-size: cover;">
+					<div class="row" style="background-size: cover;">
+						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+							<h3 class="id-color">排名不分先后</h3>
+							<h2>鸣谢名单</h2>
+							<p>点击展开</p>
+							<div class="spacer-20" style="background-size: cover;"></div>
+						</div>
+
+						<!-- feature box begin -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">1</span>
+								<div class="text" style="background-size: cover;">
+									<div class="accordion-section-title fontw3" data-tab="#accordion-1" style="background-size: cover;">
+                                        <h3>yobot</h3>
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-1" style="background-size: cover;">
+                                        Adpex<br>
+										Aspirin<br>
+										Lancercmd<br>
+										yoshino<br>
+										thgsohack<br>
+										萝莉控<br>
+										西城飘雪<br>
+										雨滴<br>
+										艾琳有茜<br>
+										魔法之书<br>
+										明见<br>
+										地河君<br>
+										真琴<br>
+										有白嫖叫我<br>
+										前川みく<br>
+										Sana<br>
+										Maxesisn<br>
+										......<br>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<!-- feature box close -->
+
+						<!-- feature box begin -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">2</span>
+								<div class="text" style="background-size: cover;">
+									<div class="accordion-section-title fontw3" data-tab="#accordion-2" style="background-size: cover;">
+                                        <h3>hoshino</h3>
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-2" style="background-size: cover;">
+                                        Adpex<br>
+										Aspirin<br>
+										Lancercmd<br>
+										Ice咖啡<br>
+										yoshino<br>
+										thgsohack<br>
+										萝莉控<br>
+										西城飘雪<br>
+										雨滴<br>
+										月之殇<br>
+										ヒカリ<br>
+										艾琳有茜<br>
+										魔法之书<br>
+										明见<br>
+										地河君<br>
+										真琴<br>
+										有白嫖叫我<br>
+										前川みく<br>
+										Sana<br>
+										Maxesisn<br>
+										星<br>
+										陈雪雪<br>
+										栗悟飯とカメ<br>
+										......<br>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<!-- feature box close -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">3</span>
+								<div class="text" style="background-size: cover;">
+									<div class="accordion-section-title fontw3" data-tab="#accordion-3" style="background-size: cover;">
+                                        <h3>mirai</h3>
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-3" style="background-size: cover;">
+                                        <p>
+										Mrs4s<br>
+										yyuueexxiinngg<br>
+										LXY1226<br>
+										</p>
+                                    </div>
+								</div>
+							</div>
+						</div>
+						<!-- feature box begin -->
+						
+						<!-- feature box close -->
+					</div>
+				</div>
+			</section>
+			<section data-bgcolor="#fff" style="background-color: rgb(255, 255, 255); background-size: cover;">
+				<div class="container" style="background-size: cover;">
+					<div class="row" style="background-size: cover;">
+						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+							
+							<h2>友情站点</h2>
+							<p><a class="whitelink" href="https://pcrbot.com/">pcrbot</a></p>
+							<p><a class="whitelink" href="https://yobot.win/">yobot</a></p>
+							<p><a class="whitelink" href="http://http//hoshino.monster/">hoshino</a></p>
+							<p><a class="whitelink" href="https://redive.estertion.win/">干炸里脊资源站</a></p>
+							<p><a class="whitelink" href="https://pcrdfans.com/">公主连结Re: Dive Fan Club - 硬核的竞技场数据分析站</a></p>
+							<p><a class="whitelink" href="https://bbs.yobot.top/">公主连结论坛</a></p>
+							<p><a class="whitelink" href="https://michikawachin.art/">Estonteco维护组个人博客</a></p>
+							<div class="spacer-20" style="background-size: cover;"></div>
+						</div>
+
+						
+					</div>
+				</div>
+			</section>
+			
+			<section class="full-height no-top no-bottom text-light" data-bgimage="url(http://d1.027cgb.com/631148/%E5%9B%BE%E7%89%87/1.png) 50% 50% no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;http://d1.027cgb.com/631148/%E5%9B%BE%E7%89%87/1.png&quot;) 30% 0px / cover no-repeat;">
+				<div class="overlay-bg" style="background-size: cover;">
+					<div class="container center-y" style="background-size: cover;">
+						<div class="row" style="background-size: cover;">
+
+							<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+
+								<h2>诚挚感谢</h2><br>
+
+
+								<!-- 待填入-->
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+
+			
+
+
+
+		</div>
+		<!-- content close -->
+
+		<!-- footer begin -->
+		
+		<!-- footer close -->
+
+
+
+		<div id="preloader" style="background-size: cover; display: none;">
+			<div class="spinner" style="background-size: cover;">
+				<div class="bounce1" style="background-size: cover;"></div>
+				<div class="bounce2" style="background-size: cover;"></div>
+				<div class="bounce3" style="background-size: cover;"></div>
+			</div>
+		</div>
+	
+
+  
+	
+  
+<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-min.js"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-magnific-popup-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-isotope-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countTo.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countdown.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/enquire-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/easing.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/designesia.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/bootstrap-min.js') }}s"></script>
+		<script src="{{ url_for('static', filename='pcr/js/app.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/wow-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/validation.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/typed.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/owl-carousel.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/layui.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-stellar-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-plugin.js') }}"></script>
+        
+        <script>
+            jQuery(document).ready(function() {
+                // revolution slider
+                jQuery("#revolution-slider").revolution({
+                    sliderType: "standard",
+                    sliderLayout: "fullwidth",
+                    delay: 5000,
+                    navigation: {
+                        arrows: {
+                            enable: true
+                        }
+                    },
+                    parallax: {
+                        type: "mouse",
+                        origo: "slidercenter",
+                        speed: 2000,
+                        levels: [2, 3, 4, 5, 6, 7, 12, 16, 10, 50],
+                    },
+                    spinner: "off",
+                    gridwidth: 1140,
+                    gridheight: 600,
+                    disableProgressBar: "on"
+                });
+            });
+        </script>

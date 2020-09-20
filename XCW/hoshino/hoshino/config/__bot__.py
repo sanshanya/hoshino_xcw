@@ -16,10 +16,14 @@ PYS ={2212276520}            #高级权限用户的QQ号
 
 #接下来是hoshino_xcw的专用配置，如果使用hoshino_xcw整合包请一定要修改
 
-NICKNAME = r'镜华|小仓唯|露娜|at,qq=2380695163'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot
-IP = '333.33.33.3'                                      #修改为你的服务器ip
-public_address = '333.33.33.3:9222'                     #修改为你的服务器ip+端口
-IMAGE_PATH = "C:/XCW/miraiGO/data/images"                 #MiraiGO用这条
+NICKNAME = r'镜华|小仓唯|露娜|at,qq=2380695163'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot,推荐修改
+IP = '333.33.33.3'                                      #修改为你的服务器ip,推荐修改
+public_address = '333.33.33.3:9222'                     #修改为你的服务器ip+端口,推荐修改
+###################################
+'''上方内容请务必结合注释修改'''
+'''下面的内容请按需求修改'''
+###################################
+IMAGE_PATH = "../miraiGO/data/images"                 #MiraiGO用这条,保持默认即可
 
 #hoshino_xcw的专用配置结束
 
@@ -31,7 +35,7 @@ COMMAND_SEP = set()     # 命令分隔符（hoshino不需要该特性，保持�
 # 当QQ客户端与bot端不在同一台计算机时，可用http协议
 RES_PROTOCOL = 'file'
 # 资源库文件夹，需可读可写，windows下注意反斜杠转义
-RES_DIR = "C:/XCW/res/"
+RES_DIR = "../res/"
 # 使用http协议时需填写，原则上该url应指向RES_DIR目录
 RES_URL = 'http://127.0.0.1:5000/static/'
 
