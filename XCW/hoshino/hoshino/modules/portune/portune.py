@@ -21,7 +21,7 @@ sv_help = '''
 #帮助文本
 sv = Service('portune', help_=sv_help, bundle='pcr娱乐')
 
-lmt = DailyNumberLimiter(5)
+lmt = DailyNumberLimiter(1)
 #设置每日抽签的次数，默认为1
 Data_Path = hoshino.config.RES_DIR
 #也可以直接填写为res文件夹所在位置，例：absPath = "C:/res/"
