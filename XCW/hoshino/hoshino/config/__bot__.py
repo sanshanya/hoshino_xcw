@@ -104,4 +104,5 @@ MODULES_ON = {
     'anticoncurrency',# 反并发插件
     'portune',#运势插件
     'pokemanpcr',#戳一戳卡片小游戏
+    'pages',#bot网页端
 }
