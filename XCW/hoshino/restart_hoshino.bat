@@ -1,7 +1,7 @@
 @echo off
 echo "hoshino Restart"
-taskkill /im py.exe
+taskkill /im python.exe
 echo "hoshino Stop"
-start py run.py
+start python run.py
 echo "hoshino Start"
 exit

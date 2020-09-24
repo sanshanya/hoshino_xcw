@@ -1,6 +1,7 @@
 import time
 from itertools import groupby
 import nonebot
+import asyncio
 from nonebot import *
 from nonebot.log import logger
 from . import query
@@ -167,7 +168,7 @@ async def check_rank_state():
                     db_list[index] = new_info.data
                     break
             db[group_id] = db_list
-        time.sleep(1)
+        await asyncio.sleep(1)
 
 
 if config.rules.enable_clan_cron:
