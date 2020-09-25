@@ -85,7 +85,7 @@ async def send_setus(bot,ctx,setu_path,setus,with_url=False,is_to_delete=False,m
     reply = ''
     for setu in setus:
         pic = f'[CQ:image,file={folder}/{setu.pid}]'
-        reply += f'{setu.title}\n画师：{setu.author}\npid:{setu.pid}{pic}'
+        reply += f'{pic}'
     ret = await bot.send(ctx,reply,at_sender=False)
     if with_url:
         urls = ''

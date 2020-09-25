@@ -1,8 +1,8 @@
 import time
 from nonebot import *
 from . import util, pixiv, permission, download, short_url
-
-from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
+import hoshino
+from hoshino import Service, config  # 如果使用hoshino的分群管理取消注释这行
 
 #
 sv = Service('epixiv')  # 如果使用hoshino的分群管理取消注释这行
@@ -25,7 +25,7 @@ epixiv = pixiv.epixiv(
 )
 
 try:
-    epixiv.login(config.pixiv.username, config.pixiv.password)
+    epixiv.login(hoshino.config.pixiv_id, hoshino.config.pixiv_password)
     pass
 except Exception as e:
     print('登录p站失败了 请检查配置.')

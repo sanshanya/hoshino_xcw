@@ -6,8 +6,7 @@ import requests
 from io import BytesIO
 from PIL import Image
 from collections import OrderedDict
-
-from hoshino import Service
+from hoshino import Service, config
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64
 
@@ -15,7 +14,7 @@ sv = Service('picfinder', help_='''
 [识图+图片] 查询图片来源
 '''.strip())
 
-api_key="23eadc0c3e4898ddb9abb8813a3be795468869f0"#填写你自己的api_key
+api_key=config.shitu_api#填写你自己的api_key
 minsim='70!'#相似度下限，低于下限不显示结果
 thumbSize = (250,250)
 

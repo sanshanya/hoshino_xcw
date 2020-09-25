@@ -90,7 +90,7 @@ async def get_setu() -> (int, str):
     suffix = url.split('.')[-1]
     file_name = f'{illust}.{suffix}'
     if await download_image(url, file_name) == 0:
-        return 0, f'id:{illust}\ntitle:{title}\nauthor:{author}\n[CQ:image,file=acggov/{file_name}]'
+        return 0, f'[CQ:image,file=acggov/{file_name}]'
     else:
         return 1, '图片下载失败'
 

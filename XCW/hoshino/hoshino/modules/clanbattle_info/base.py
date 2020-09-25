@@ -23,7 +23,6 @@ __all__ = [
     'get_new_challenges',
     'save_group_data',
     'query_data',
-    'query_boss_data',
     'add_bind',
     'remove_bind',
     'get_bind_msg',
@@ -66,10 +65,7 @@ clanbattle_info = {}
 update_time = ''
 
 #刷新各boss出刀数据
-async def update_challenge_list(group_id: str):
-    group_id = str(group_id)
-    if not group_id in group_data:
-        return
+async def update_challenge_list(group_id: str) -> int:
     #获取第一个需要更新的boss
     boss = 0
     if group_id in all_challenge_list and len(all_challenge_list[group_id]) > 0:
@@ -96,7 +92,10 @@ async def update_challenge_list(group_id: str):
         while True:
             #寻找该boss本地最后一条出刀数据在新获取数据中的位置(index)
             #没有新出刀记录index = 0, 本地记录为空index=-1
-            temp_challenges = await query_boss_data(group_id, boss, page)
+            ret, temp_challenges = await query_boss_data(group_id, boss, page)
+            if ret != 0:
+                group_config[group_id]['info'] = temp_challenges
+                return 1
             challenges += temp_challenges
             for i in range(start, len(challenges)):
                 if challenges[i] == last_challenge:
@@ -122,15 +121,6 @@ async def update_challenge_list(group_id: str):
         #这里处理恰好5个boss最后一刀都是尾刀的情况,防止死循环
         if boss_count > 5:
             break
-
-    #直接读取5个boss的完整出刀表,最懒人的方式,已废弃
-    '''
-    boss_challenge_list[group_id] = [[] for i in range(5)]
-    for boss in range(0, 5):
-        challenges = await query_boss_data(group_id, boss)
-        for item in reversed(challenges):   #api提供出刀顺序是倒序的 要做逆序处理
-            boss_challenge_list[group_id][boss].append(item)
-    '''
     
     #如果boss表有更新 重新生成总表
     if changed:
@@ -145,21 +135,23 @@ async def update_challenge_list(group_id: str):
             if challenge['kill'] == 1: #击杀
                 boss += 1
                 boss %= 5
+    return 0
                     
 #线程安全的更新出刀数据
 update_lock = {}
 async def safe_update_challenge_list(group_id: str):
+    ret = 0
     if group_id not in group_config:
-        return
-    #最多等待60秒,超时就不管了
+        return ret
     if group_id not in update_lock:
         update_lock[group_id] = asyncio.Lock()
     await update_lock[group_id].acquire()
     try:
-        await update_challenge_list(group_id)
+        ret = await update_challenge_list(group_id)
     except Exception as _:
         traceback.print_exc()
     update_lock[group_id].release()
+    return ret
 
 #载入群设置
 def load_group_config(group_id: str) -> int:
@@ -254,11 +246,9 @@ async def update_clanbattle_info_boss(group_id: str):
 #刷新日总表
 #有用的信息: battle_info 会战信息 day_list 会战日期列表
 # day_report_collect 数据在公会战开始前几天会有一段时间空白期, 返回空数据, 需要判断处理
+# boss_info需要持续更新
 async def update_clanbattle_info_day(group_id: str):
     #检查是否需要更新
-    if 'day_update_datetime' in clanbattle_info[group_id]:
-        if datetime.datetime.now() < clanbattle_info[group_id]['day_update_datetime']:
-            return 0
     data = await query_data(group_id, "day_report_collect")
     if not data or len(data) == 0:
         group_config[group_id]['info'] = 'day_report_collect接口访问异常'
@@ -273,13 +263,15 @@ async def update_clanbattle_info_day(group_id: str):
     else:
         clanbattle_info[group_id]['battle_info'] = {}
     #boss状态 {name: "狂乱魔熊", total_life: 12000000, current_life: 2885013, lap_num: 1}
-    #clanbattle_info[group_id]['boss_info'] = data['boss_info']
+    if 'boss_info' in data:
+        clanbattle_info[group_id]['boss_info'] = data['boss_info']
+    else:
+        clanbattle_info[group_id]['boss_info'] = {}
     #公会信息 {name: "内鬼连结", last_ranking: -1, last_total_ranking: "B"}
     #clanbattle_info[group_id]['clan_info'] = data['clan_info']
     if 'day_list' in data:  #day_list在公会战开始后数小时刷新 直接更新全部日期 降序排列
         #日期列表 ["2020-08-29", "2020-08-28", "2020-08-27", "2020-08-26", "2020-08-25", "2020-08-24"]
         clanbattle_info[group_id]['day_list'] = data['day_list']
-        clanbattle_info[group_id]['day_update_datetime'] = get_pcr_tomorrow_datetime()
     else:
         clanbattle_info[group_id]['day_list'] = []
     return 0
@@ -345,20 +337,19 @@ async def query_boss_data(group_id, boss = 0, page = 0):
         boss_id = clanbattle_info[group_id]['boss_list'][boss]['id']
     except:
         traceback.print_exc()
-        return []
+        return 1, 'query_boss_data: 无法获取boss_id'
     page += 1 #api的page从1开始
 
     data = await query_data(group_id, "boss_report", boss_id, page)
     if not data or len(data) == 0:
-        return challenges
+        return 1, 'query_boss_data: api访问失败'
     if not 'data' in data:
-        return challenges
+        return 1, 'query_boss_data: api数据异常'
     data = data['data']
     for item in data:
         item['boss'] = boss #源数据没有boss序号 额外加入
         challenges.append(item)
-
-    return challenges
+    return 0, challenges
 
 #预初始化群组数据
 #一个群组在任何操作前必须调用该函数生成基本设置
@@ -370,7 +361,7 @@ def preinit_group(group_id: str):
     if group_id not in group_data:
         group_data[group_id] = {}
     if group_id not in clanbattle_info:
-        clanbattle_info[group_id] = {}
+        clanbattle_info[group_id] = {'failed_cnt': 0}
     if group_id not in all_challenge_list:
         all_challenge_list[group_id] = {}
     if group_id not in boss_challenge_list:
@@ -381,7 +372,7 @@ def preinit_group(group_id: str):
         group_config[group_id]['info'] = ''
 
 #初始化群数据: 上次boss状态 上次boss和index 载入全部boss出刀记录
-async def init_group(group_id: str) -> int:
+async def init_group(group_id: str, internal: bool = False) -> int:
     group_id = str(group_id)
     if group_id not in group_config:
         preinit_group(group_id)
@@ -393,15 +384,12 @@ async def init_group(group_id: str) -> int:
     #载入群状态记录
     if load_group_data(group_id) != 0:
         return 1
-    #更新会战信息
-    if await update_clanbattle_info_boss(group_id) != 0:
-        halt_until_tomorrow(group_id)
-        return 1
-    if await update_clanbattle_info_day(group_id) != 0:
-        halt_until_tomorrow(group_id)
-        return 1
-    #更新出刀表
-    await safe_update_challenge_list(group_id)
+    if await update_clanbattle_info_boss(group_id) != 0 or await update_clanbattle_info_day(group_id) != 0 or await safe_update_challenge_list(group_id) != 0:
+        if internal:
+            clanbattle_info[group_id]['failed_cnt'] = 1
+        else:
+            halt_until_tomorrow(group_id)
+            return 1
     group_config[group_id]['state'] = 'run'
     return 0
 
@@ -438,30 +426,33 @@ async def update_clanbattle_data(group_id: str) -> int:
         if is_on_halt(group_id): #在挂起期内
             return 1
         else:
-            ret = await init_group(group_id)
+            ret = await init_group(group_id, True)
             if ret != 0:
                 return 1
     elif group_config[group_id]['state'] == 'failed':
         return 1
     elif group_config[group_id]['state'] == 'uninited': #未初始化
-        if await init_group(group_id) != 0:
+        if await init_group(group_id, True) != 0:
             return 1
     elif group_config[group_id]['state'] == 'run': #正常
         pass
     else: #未知状态
         return 1
 
+    #初始化错误计数
+    if 'failed_cnt' not in clanbattle_info[group_id]:
+        clanbattle_info[group_id]['failed_cnt'] = 0
+
     #在run状态下出错, 需要上层发送群消息报告异常
     if await update_clanbattle_info_boss(group_id) != 0 or await update_clanbattle_info_day(group_id) != 0:
-        if 'failed_cnt' not in clanbattle_info[group_id]:
-            clanbattle_info[group_id]['failed_cnt'] = 0
-        else:
-            clanbattle_info[group_id]['failed_cnt'] += 1
+        clanbattle_info[group_id]['failed_cnt'] += 1
         if clanbattle_info[group_id]['failed_cnt'] > 12: #连续炸一个小时就挂起
             halt_until_tomorrow(group_id)
             return 2
         else:
             return 1
+    else:
+        clanbattle_info[group_id]['failed_cnt'] = 0
 
     #如果day_list为空,表明现在是会战开始前的几天
     #因为会战开始当天前几个小时很可能一直都是空的,所以不能Halt,只能直接返回.
@@ -478,7 +469,15 @@ async def update_clanbattle_data(group_id: str) -> int:
         save_group_data(group_id)
     
     #更新出刀表
-    await safe_update_challenge_list(group_id)
+    if await safe_update_challenge_list(group_id) != 0:
+        clanbattle_info[group_id]['failed_cnt'] += 1
+        if clanbattle_info[group_id]['failed_cnt'] > 12: #连续炸一个小时就挂起
+            halt_until_tomorrow(group_id)
+            return 2
+        else:
+            return 1
+    else:
+        clanbattle_info[group_id]['failed_cnt'] = 0
     
     #检查现在是否在会战中
     day_str = clanbattle_info[group_id]['day_list'][0] #日期列表是降序的,第一位为最后一天

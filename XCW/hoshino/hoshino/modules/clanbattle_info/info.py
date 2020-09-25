@@ -7,24 +7,29 @@ import json
 from .base import *
 
 def format_number(number: int) -> str:
+    if number == 0:
+        return '0'
     num_str = ''
     if number > 100000000: #亿
         yi = number // 100000000
         number %= 100000000
-        num_str += f'{yi}亿'
+        if yi != 0:
+            num_str += f'{yi}亿'
     if number > 10000:
         wan = number // 10000
         number %= 10000
-        num_str += f'{wan}万'
-    num_str += f'{number}'
+        if wan != 0:
+            num_str += f'{wan}万'
+    if number != 0:
+        num_str += f'{number}'
     return num_str
 
 #格式化出刀记录
 def format_challenge_report(challenge_list: list):
-    msg = "新增出刀记录:\n"
+    msg = "新增出刀记录:"
     for item in challenge_list:
         dt = datetime.datetime.fromtimestamp(item['datetime'])
-        msg += f"{dt.strftime('%Y/%m/%d %H:%M:%S')} "
+        msg += f"\n{dt.strftime('%Y/%m/%d %H:%M:%S')} "
         msg += f"{item['lap_num']}周目 "
         msg += f"{item['boss']+1}王\n"
         msg += f"{item['name']} "
@@ -34,7 +39,6 @@ def format_challenge_report(challenge_list: list):
             msg += "尾刀"
         if item['reimburse'] == 1:
             msg += "补偿刀"
-        msg += "\n"
     return msg
 
 #总表
@@ -52,13 +56,13 @@ async def get_collect_report(group_id: str) -> (int, str):
 
     msg = f"公会:{data['clan']['name']}\n"
     msg += f"排名:{data['clan']['last_ranking']}\n"
-    msg += "出刀情况:\n"
+    msg += "出刀情况:"
     for member in data['data']:
-        msg += f"昵称:{member['username']} "
+        msg += f"\n昵称:{member['username']} "
         msg += f"出刀:{member['number']} "
         msg += f"伤害:{format_number(member['damage'])} " 
         msg += f"占比:{member['rate']} "
-        msg += f"得分:{format_number(member['score'])}\n"
+        msg += f"得分:{format_number(member['score'])}"
     return msg
 
 #日表
@@ -87,12 +91,12 @@ async def get_day_report(group_id: str, day: int = 0) -> (int, str):
     if len(data) == 0:  #请求数据失败
         return '数据格式异常'
 
-    msg += f"{day_param}出刀情况:\n"
+    msg += f"{day_param}出刀情况:"
     for member in data:
-        msg += f"{member['name']} "
+        msg += f"\n{member['name']} "
         msg += f"出刀:{member['number']} "
         msg += f"伤害:{format_number(member['damage'])} "
-        msg += f"得分:{format_number(member['score'])}\n"
+        msg += f"得分:{format_number(member['score'])}"
     return msg
     
 #boss表
@@ -109,10 +113,10 @@ async def get_boss_report(group_id: str, boss: int = 0) -> (int, str):
         boss_name = clanbattle_info[group_id]['boss_list'][boss]['boss_name']
     except:
         boss_name = f'{boss + 1}王'
-    msg += f"{boss_name}的出刀记录:\n"
+    msg += f"{boss_name}的出刀记录:"
     for item in challenges:
         dt = datetime.datetime.fromtimestamp(item['datetime'])
-        msg += f"时间:{dt.strftime('%Y/%m/%d %H:%M:%S')} "
+        msg += f"\n时间:{dt.strftime('%Y/%m/%d %H:%M:%S')} "
         msg += f"昵称:{item['name']} "
         msg += f"伤害:"
         damage = item['damage']
@@ -124,7 +128,6 @@ async def get_boss_report(group_id: str, boss: int = 0) -> (int, str):
             msg += "尾刀"
         if item['reimburse'] == 1:
             msg += "补偿刀"
-        msg += "\n"
     return msg
 
 #日出刀
@@ -144,11 +147,11 @@ async def get_day_challenge_report(group_id: str, day: int = 0) -> (int, str):
     today = today.replace(hour=5, minute=0, second=0, microsecond=0) #当天5点
     tomorrow = today + datetime.timedelta(days=1)
 
-    msg = f"{today.strftime('%Y/%m/%d')}的出刀记录:\n"
+    msg = f"{today.strftime('%Y/%m/%d')}的出刀记录:"
     for item in all_challenge_list[group_id]:
         dt = datetime.datetime.fromtimestamp(item['datetime'])
         if dt >= today and dt < tomorrow:
-            msg += f"时间:{dt.strftime('%Y/%m/%d %H:%M:%S')} "
+            msg += f"\n时间:{dt.strftime('%Y/%m/%d %H:%M:%S')} "
             msg += f"昵称:{item['name']} "
             msg += f"伤害:"
             damage = item['damage']
@@ -160,5 +163,20 @@ async def get_day_challenge_report(group_id: str, day: int = 0) -> (int, str):
                 msg += "尾刀"
             if item['reimburse'] == 1:
                 msg += "补偿刀"
-            msg += "\n"
+    return msg
+
+#boss状态
+def get_boss_state_report(group_id: str) -> (int, str):
+    group_id = str(group_id)
+    msg = ""
+    boss_info = {}
+    try:
+        boss_info = clanbattle_info[group_id]['boss_info']
+    except:
+        return '无数据'
+
+    msg = "boss状态:"
+    msg += f"\n{boss_info['lap_num']}周目 {boss_info['name']}"
+    msg += f"\n{format_number(boss_info['current_life'])} / {format_number(boss_info['total_life'])} "
+    msg += f"({boss_info['current_life']/boss_info['total_life']*100:.2f}%)"
     return msg

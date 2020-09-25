@@ -4,9 +4,7 @@ from PIL import Image
 from io import BytesIO
 import requests
 import os
-
-
-
+from hoshino import config
 
 class Setu:
     def __init__(self,pid,title,url,r18,tags,author):
@@ -18,7 +16,7 @@ class Setu:
         self.author = author
 
 def get_setu(r18,keyword,num,size1200):
-    apikey='615963495f321732032cd0'
+    apikey=config.lolicon_api
     apiPath=r'https://api.lolicon.app/setu'
     params = {'apikey':apikey,'r18':r18,'keyword':keyword,'num':num,'size1200':size1200}
     try:

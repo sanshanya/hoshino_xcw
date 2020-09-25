@@ -2,17 +2,15 @@ import os
 import nonebot
 from quart import request,session,redirect,Blueprint,url_for,render_template,jsonify,session
 from nonebot.exceptions import CQHttpError
-from hoshino import R, Service, priv, config
 from pathlib import Path
-import hoshino
+from hoshino import R, Service, priv, config
 from hoshino.util import DailyNumberLimiter
-from hoshino import R, Service
 
 public_address = hoshino.config.IP#修改为服务器公网ip
 meManagePwd = 'xcw'#删除文件密码
 loginUserName = 'xcw'#登录账户
 loginPassword = 'xcw'#登录密码
-bot_name = hoshino.config.NICKNAME#机器人名字
+bot_name = 'xcw'#机器人名字
 group_name = '镜华的表情包'#公会名
 
 sv = Service('meme_web', manage_priv=priv.SUPERUSER, enable_on_default=True, visible=False)

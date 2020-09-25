@@ -12,10 +12,7 @@ from .base import *
 from .info import *
 from .yobot import *
 
-import nonebot
-from nonebot.plugin import PluginManager
-
-HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
+HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,boss状态,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
 
 process_lock = {}
 
@@ -87,6 +84,8 @@ async def cbi(bot, ev: CQEvent):
         await bot.send(ev, '已继续')
         await group_process(bot, group_id)
         return
+    elif args[0] == 'boss状态':
+        msg = get_boss_state_report(group_id)
     #需要权限的部分
     elif args[0] == '初始化':
         if is_admin:
@@ -207,7 +206,7 @@ async def group_process(bot, group_id: str):
     process_lock[group_id].release()
         
 
-@sv.scheduled_job('interval',minutes=5, start_date='2020-01-01 00:01:00')
+@sv.scheduled_job('interval',minutes=5, jitter=30)
 async def job():
     bot = hoshino.get_bot()
     updated = await check_update()
@@ -227,16 +226,9 @@ async def job():
     for task in asyncio.as_completed(tasks):
         await task
 
-#启动后预初始化群数据
-bot = hoshino.get_bot()
-@bot.on_startup
-async def init():
+def init():
     glist = get_group_list()
     for group_id in glist:
         preinit_group(group_id)
 
-
-@sv.on_prefix('test')
-async def test(bot, ev: CQEvent):
-    group_id = str(ev.group_id)
-    await group_process(bot, group_id)
+init()

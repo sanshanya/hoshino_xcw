@@ -1,4 +1,5 @@
 import hoshino
+import asyncio
 from hoshino import Service, aiorequests, priv
 from hoshino.util import FreqLimiter, DailyNumberLimiter
 from .request import *
@@ -31,14 +32,15 @@ async def send_setu(bot, ev):
         num = 1
     num = int(num)
     uid = ev['user_id']
-    result, msg = check_lmt(uid, num)
+    result, msgs = check_lmt(uid, num)
     if result != 0:
-        await bot.send(ev, msg)
+        await bot.send(ev, msgs)
         return
-    await bot.send(ev, '正在下载图片...')
     for _ in range(num):
-        _, msg = await get_setu()
-        await bot.send(ev, msg)
+        _, pic = await get_setu()
+        msg = await bot.send(ev, pic)
+        await asyncio.sleep(SHOW_TIME)
+        await bot.delete_msg(message_id=msg['message_id'])
 
 @sv.on_prefix('本日涩图排行榜')
 async def send_ranking(bot, ev):
@@ -66,12 +68,13 @@ async def send_ranking_setu(bot, ev):
         end = start + 1
     if len(args) > 1 and args[1].isdigit():
         end = int(args[1])
-    result, msg = check_lmt(uid, end - start)
+    result, msgs = check_lmt(uid, end - start)
     if result != 0:
-        await bot.send(ev, msg)
+        await bot.send(ev, msgs)
         return
-    await bot.send(ev, '正在下载图片...')
     for i in range(start, end):
-        _, msg = await get_ranking_setu(i)
-        await bot.send(ev, msg)
+        _, pic = await get_setu()
+        msg = await bot.send(ev, pic)
+        await asyncio.sleep(SHOW_TIME)
+        await bot.delete_msg(message_id=msg['message_id'])
 
