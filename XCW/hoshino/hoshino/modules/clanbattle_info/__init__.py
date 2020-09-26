@@ -180,6 +180,7 @@ async def cbi(bot, ev: CQEvent):
     await bot.send(ev, msg)
 
 #状态更新 出刀推送 自动报刀
+#必须使用线程池调用这个过程,以避免被报刀量较大的群卡住刷新数据过程
 async def group_process(bot, group_id: str):
     if group_id not in process_lock:
         process_lock[group_id] = asyncio.Lock()
@@ -205,8 +206,8 @@ async def group_process(bot, group_id: str):
         traceback.print_exc()
     process_lock[group_id].release()
         
-
-@sv.scheduled_job('interval',minutes=5, jitter=30)
+#每个整5分钟的+30s~+3m30s范围执行任务
+@sv.scheduled_job('cron',minute='2,7,12,17,22,27,32,37,42,47,52,57', jitter=90)
 async def job():
     bot = hoshino.get_bot()
     updated = await check_update()
