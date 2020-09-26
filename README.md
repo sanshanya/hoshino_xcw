@@ -49,7 +49,6 @@
 | flac                 | 搜无损音乐,,hoshino原生功能                  | hoshino自带                                                  | 未做任何修改                                               |
 | shitu                | 识图功能                                     | 默认添加方法,需要apikey才能正常使用                          | 可进行一些自定义的修改,具体参照源码                        |
 | shifan               | 搜番功能                                     | 默认添加方法                                                 | 可进行一些自定义的修改,具体参照源码                        |
-| ClanBattleReport | 会战报告生成                                 | 默认添加方法,需要修改ip                                      | 生成离职和会战报告,未来会有更多样式                        |
 | portune          | 生成运势小卡片                               | 默认添加方法,需要对应的res文件                                | PCR角色给你的小卡片                                 |
 | **setu_acggov**           | 涩图功能+日排行                              | 默认添加方法,且在*config*内添加*acggov.py*,需要apikey才能启用 | 太pro,纯度太高                                             |
 | bot_manager_web      | 网页端的"*lssv*"                             | 默认添加方法,且在*config*内添加*bot_manager_web.py*,且按说明进行配置 | 非常实用的功能                                             |
@@ -82,8 +81,9 @@
 | epixiv | 涩图插件,看涩图 | 按readme配置,需要pixiv账号 | erinilis系列                                               |
 | emergeface | 娱乐插件,换脸 | 默认添加方法,需要apikey | erinilis系列                                               |
 | eclanblack | 不实用插件,兰德索尔黑名单 | 默认添加方法 | erinilis系列                                               |
-| pokemanpcr | 戳机器人集卡小游戏 | 默认添加方法 | pekemon? |
+| pokemanpcr | 戳机器人集卡小游戏 | 默认添加方法 | pekopeko~ |
 | **pages** | 一款优秀的网页端 | 默认添加方法,需要修改yobot的关键词触发 | 帮助/手册/主页 |
+| clanbattle_info | 自动报刀插件 | 按说明配置 | 适合单群使用 |
 
 
 
