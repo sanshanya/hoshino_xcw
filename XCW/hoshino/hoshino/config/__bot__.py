@@ -83,7 +83,7 @@ MODULES_ON = {
     'flac',#搜无损音乐  
     #'shitu',#识图功能需要apikey
     'shifan',#识别番剧
-    'clanbattle_report',#会战报告生成，需要修改路径
+    'battle_report',#会战报告生成，需要修改路径
     #'setu_acggov',#搜图，需要apikey，mirai需要按说明适配
     'bot_manager_web',#新版webmanage
     #'voiceguess',#猜语音
