@@ -6,7 +6,7 @@ from pathlib import Path
 from hoshino import R, Service, priv, config
 from hoshino.util import DailyNumberLimiter
 
-public_address = hoshino.config.IP#修改为服务器公网ip
+public_address = config.IP#修改为服务器公网ip
 meManagePwd = 'xcw'#删除文件密码
 loginUserName = 'xcw'#登录账户
 loginPassword = 'xcw'#登录密码
