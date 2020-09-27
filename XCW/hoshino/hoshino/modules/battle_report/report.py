@@ -2,6 +2,7 @@ from io import BytesIO
 import os
 import aiohttp
 import datetime
+import calendar
 import re
 import base64
 import json
@@ -9,8 +10,9 @@ from hoshino import Service, priv
 from hoshino.util import FreqLimiter
 from hoshino.typing import CQEvent
 import matplotlib.pyplot as plt
-import matplotlib.font_manager as fm
+import matplotlib.font_manager as font_manager
 from PIL import Image,ImageFont,ImageDraw
+import math
 
 lmt = FreqLimiter(60)   #冷却时间60秒
 bg_resign = 'resign.jpg'
@@ -20,21 +22,27 @@ constellation_name = ['？？？', '水瓶', '双鱼', '白羊', '金牛', '双�
 cycle_data = {
     'cn': {
         'cycle_mode': 'days',
-        'cycle_days': 28, 
+        'cycle_days': 28,
         'base_date': datetime.date(2020, 7, 28),  #从巨蟹座开始计算
-        'base_month': 5
+        'base_month': 5,
+        'battle_days': 6,
+        'reserve_days': 0
     },
     'jp': {
         'cycle_mode': 'nature',
         'cycle_days': 0,
         'base_date': None,
-        'base_month': 0
+        'base_month': 0,
+        'battle_days': 5,
+        'reserve_days': 1   #月末保留非工会战天数
     },
     'tw': {
         'cycle_mode': 'nature',
         'cycle_days': 0,
         'base_date': None,
-        'base_month': 7
+        'base_month': 7,
+        'battle_days': 6,
+        'reserve_days': 1
     }
 }
 url_valid = re.compile(
@@ -95,6 +103,26 @@ def str_len(name):
             i = i + 1
     return i
 
+#获取工会战开始天数 第一天=0
+#日服台服开始前返回值为负 国服为正(大于工会战持续天数)
+def get_days_from_battle_start(server='cn'):
+    if not server in cycle_data.keys():
+        return -1
+    cdata = cycle_data[server]
+    today = datetime.date.today()
+    #today = datetime.date(2020, 8, 31)
+    month_days = calendar.monthrange(today.year,today.month)[1]
+    if cdata['cycle_mode'] == 'nature': #自然月 日台服
+        return today.day - (month_days - cdata['battle_days'] - cdata['reserve_days'] + 1)
+    else:
+        return (today - cdata['base_date']).days % cdata['cycle_days']
+
+#获取工会战总天数
+def get_battle_days(server='cn'):
+    if not server in cycle_data.keys():
+        return 6
+    return cycle_data[server]['battle_days']
+
 #获取工会战实际月份
 def get_clanbattle_month(server='cn'):
     if not server in cycle_data.keys():
@@ -104,7 +132,7 @@ def get_clanbattle_month(server='cn'):
     year = today.year
     month = 0
     if cdata['cycle_mode'] == 'nature': #自然月 日台服
-        if today.day < 25: #上个月
+        if get_days_from_battle_start(server) < 0: #本月还没有开始 使用上个月
             month = today.month - 1
         else: #本月工会战已开始
             month = today.month
@@ -125,7 +153,7 @@ def get_constellation(server='cn'):
     today = datetime.date.today()
     month = 0
     if cdata['cycle_mode'] == 'nature': #自然月 日台服
-        if today.day < 25: #上个月
+        if get_days_from_battle_start(server) < 0: #本月还没有开始 使用上个月
             month = today.month - 1
         else: #本月工会战已开始
             month = today.month
@@ -201,7 +229,7 @@ async def send_report(bot, event, background):
     for item in data['challenges']:
         if item['qqid'] == uid:
             challenge_list.append(item)
-
+    
     total_challenge = 0 #总出刀数
     total_damage = 0    #总伤害
     lost_challenge = 0  #掉刀
@@ -211,29 +239,40 @@ async def send_report(bot, event, background):
     truetimes_to_boss = [0 for i in range(5)]   #各boss出刀数 不包括尾刀
     avg_boss_damage = [0 for i in range(5)] #boss均伤
     attendance_rate = 0 #出勤率
+    battle_days = get_battle_days(game_server) #会战天数
+    #计算当前为工会战第几天 取值范围1~battle_days
+    current_days = get_days_from_battle_start(game_server) 
+    if current_days < 0 or current_days >= battle_days:
+        current_days = battle_days
+    else: #0 ~ battle_days-1
+        current_days += 1
 
     for challenge in challenge_list:
         total_damage += challenge['damage']
         times_to_boss[challenge['boss_num']-1] += 1
-        damage_to_boss[challenge['boss_num']-1] += challenge['damage']
         if not challenge['is_continue']:
+            damage_to_boss[challenge['boss_num']-1] += challenge['damage']  #尾刀伤害不计入单boss总伤害，防止avg异常
             truetimes_to_boss[challenge['boss_num']-1] += 1
             total_challenge += 1
             if challenge['damage'] == 0:    #掉刀
                 lost_challenge += 1
-    avg_day_damage = int(total_damage/6)
-
+    if current_days * 3 < total_challenge: #如果会战排期改变 修正天数数据
+        current_days =  math.ceil(float(total_challenge) / 3)
+    avg_day_damage = int(total_damage/current_days)
+    forget_challenge = current_days * 3 - total_challenge
+    if forget_challenge < 0:    #修正会战天数临时增加出现的负数漏刀
+        forget_challenge = 0
+    attendance_rate = round(total_challenge / (current_days * 3) * 100)
 
     for i in range(0,5):
         if truetimes_to_boss[i] > 0:    #排除没有出刀或只打尾刀的boss
             avg_boss_damage[i] = damage_to_boss[i] // truetimes_to_boss[i]    #尾刀不计入均伤和出刀图表
-
-    forget_challenge = 18 - total_challenge
-    attendance_rate = round(total_challenge/18*100)
     
     #设置中文字体
-    plt.rcParams['font.sans-serif']=['SimHei'] #用来正常显示中文标签
+    font_manager.fontManager.addfont(font_path)
+    plt.rcParams['font.family']=['SimHei'] #用来正常显示中文标签
     plt.rcParams['axes.unicode_minus']=False #用来正常显示负号
+
     x = [f'{x}王' for x in range(1,6)]
     y = truetimes_to_boss
     plt.figure(figsize=(4.3,2.8))
@@ -351,7 +390,7 @@ async def create_resign_report(bot, event: CQEvent):
 async def create_clanbattle_report(bot, event: CQEvent):
     await send_report(bot, event, bg_report)
 
-@sv.on_prefix('设置工会api')
+@sv.on_prefix(('设置工会api', '设置公会api'))
 async def set_clanbattle_api(bot, event: CQEvent):
     if not priv.check_priv(event,priv.ADMIN):
         await bot.send(event, '该操作需要管理员权限', at_sender=True)
@@ -363,7 +402,7 @@ async def set_clanbattle_api(bot, event: CQEvent):
     save_group_api(event.group_id, api_url)
     await bot.send(event, f'本群工会API已设置为 {api_url}', at_sender=True)
 
-@sv.on_fullmatch('查看工会api')
+@sv.on_fullmatch(('查看工会api', '查看公会api'))
 async def get_clanbattle_api(bot, event: CQEvent):
     if not priv.check_priv(event,priv.ADMIN):
         await bot.send(event, '该操作需要管理员权限', at_sender=True)
@@ -371,7 +410,7 @@ async def get_clanbattle_api(bot, event: CQEvent):
     api_url = load_group_api(event.group_id)
     await bot.send(event, f'本群工会API为 {api_url}', at_sender=True)
 
-@sv.on_fullmatch('清除工会api')
+@sv.on_fullmatch(('清除工会api', '清除公会api'))
 async def delete_clanbattle_api(bot, event: CQEvent):
     if not priv.check_priv(event,priv.ADMIN):
         await bot.send(event, '该操作需要管理员权限', at_sender=True)

@@ -123,4 +123,6 @@ MODULES_ON = {
     'pages',#bot网页端
     'clanbattle_rank',#会战排名查询插件
     #'clanbattle_info'#自动报刀插件,开启前请按说明配置,难度较高
+    'nbnhhsh',#将抽象短语转化为好好说话
+    'nowtime',#发送"报时"有惊喜
 }
