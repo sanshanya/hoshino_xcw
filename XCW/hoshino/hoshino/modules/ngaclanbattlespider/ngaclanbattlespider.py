@@ -101,7 +101,7 @@ def has_clan_battle_keyword(string):
     has_keyword1 = re.search('[一二三四五12345]王', string)
     if has_keyword1 is not None:
         return True
-    has_keyword2 = re.search('[ABCDabcd][12345]', string)
+    has_keyword2 = re.search('[ABCDabcd][123456]', string)
     if has_keyword2 is not None:
         return True
     has_keyword3 = re.search('[一二三四1234][阶段]', string)

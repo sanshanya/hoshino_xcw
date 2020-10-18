@@ -72,7 +72,10 @@ timestamp = 0
 def gen_web_sign():
     url = 'https://pan.baidu.com/api/gettemplatevariable?app_id=250528&channel=chunlei&clienttype=0&fields=[%22sign1%22,%22sign2%22,%22sign3%22,%22timestamp%22]&web=1'
     text = requests.get(url, headers=api.get_randsk_headers(), timeout=30).text
-    info = json.loads(text[3:])
+    try:
+        info = json.loads(text)
+    except json.JSONDecodeError:
+        info = json.loads(text[3:])
 
     if not info['errno'] == 0:
         return False, 0

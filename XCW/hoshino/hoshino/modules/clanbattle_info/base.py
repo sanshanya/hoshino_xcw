@@ -6,6 +6,7 @@ import asyncio
 import threading
 import traceback
 import math
+import nonebot
 
 __all__ = [
     #数据
@@ -29,6 +30,10 @@ __all__ = [
     'get_pcr_days_from',
     'get_state_msg',
     'check_update',
+    'send_group_msg',
+    'get_daystr_from_daylist',
+    'get_clanbattle_report_instance',
+    'generate_data_for_clanbattle_report',
     ]
 
 magic_name = '13c941a144c18a98eb54b493ff0bd279' #魔法昵称,用于将全部未知昵称指定给某个qq, 如有重名建议打死
@@ -68,12 +73,15 @@ update_time = ''
 async def update_challenge_list(group_id: str) -> int:
     #获取第一个需要更新的boss
     boss = 0
+    full_update = False
     if group_id in all_challenge_list and len(all_challenge_list[group_id]) > 0:
         challenge = all_challenge_list[group_id][-1]
         boss = challenge['boss']
         if challenge['kill'] == 1:
             boss += 1
             boss %= 5
+    else:
+        full_update = True
 
     #第一次运行数据为空,需要创建
     if group_id not in boss_challenge_list:
@@ -91,9 +99,9 @@ async def update_challenge_list(group_id: str) -> int:
         start = 0
         while True:
             #寻找该boss本地最后一条出刀数据在新获取数据中的位置(index)
-            #当前循环没有找到就继续循环拉去下一页,直到找到或者读取完完整列表.
+            #当前循环没有找到就继续循环拉取下一页,直到找到或者读取完全部记录.
             #没有新出刀记录index = 0, 本地记录为空index=-1
-            #这个动作不能在整5分进行,否则bigfun数据刷新会导致列表不一致.
+            #这个动作不能在整5分进行,否则bigfun数据刷新会导致出刀数据不连续.
             ret, temp_challenges = await query_boss_data(group_id, boss, page)
             if ret != 0:
                 group_config[group_id]['info'] = temp_challenges
@@ -113,13 +121,13 @@ async def update_challenge_list(group_id: str) -> int:
         for item in reversed(challenges[0:index]): #将(0~index-1)的新纪录加入列表
             changed = True
             boss_challenge_list[group_id][boss].append(item)
+        boss += 1
+        boss %= 5
+        boss_count += 1
         #如果该boss最后一条出刀为尾刀,则表示可能会存在下一个boss的新出刀记录,继续更新下一个boss,否则就此结束数据更新.
         if len(challenges) == 0 or challenges[0]['kill'] != 1:
-            break
-        else:
-            boss += 1
-            boss %= 5
-            boss_count += 1
+            if not full_update:
+                break
         #这里处理恰好5个boss最后一刀都是尾刀的情况,防止死循环
         if boss_count > 5:
             break
@@ -270,9 +278,12 @@ async def update_clanbattle_info_day(group_id: str):
     else:
         clanbattle_info[group_id]['boss_info'] = {}
     #公会信息 {name: "内鬼连结", last_ranking: -1, last_total_ranking: "B"}
-    #clanbattle_info[group_id]['clan_info'] = data['clan_info']
+    if 'clan_info' in data:
+        clanbattle_info[group_id]['clan_info'] = data['clan_info']
+    else:
+        clanbattle_info[group_id]['clan_info'] = {}
+    #日期列表 ["2020-08-29", "2020-08-28", "2020-08-27", "2020-08-26", "2020-08-25", "2020-08-24"]
     if 'day_list' in data:  #day_list在公会战开始后数小时刷新 直接更新全部日期 降序排列
-        #日期列表 ["2020-08-29", "2020-08-28", "2020-08-27", "2020-08-26", "2020-08-25", "2020-08-24"]
         clanbattle_info[group_id]['day_list'] = data['day_list']
     else:
         clanbattle_info[group_id]['day_list'] = []
@@ -357,13 +368,12 @@ async def query_boss_data(group_id, boss = 0, page = 0):
 #一个群组在任何操作前必须调用该函数生成基本设置
 def preinit_group(group_id: str):
     group_id = str(group_id)
-    #初始化线程锁
     if group_id not in group_config:
         group_config[group_id] = {}
     if group_id not in group_data:
         group_data[group_id] = {}
     if group_id not in clanbattle_info:
-        clanbattle_info[group_id] = {'failed_cnt': 0}
+        clanbattle_info[group_id] = {}
     if group_id not in all_challenge_list:
         all_challenge_list[group_id] = {}
     if group_id not in boss_challenge_list:
@@ -386,11 +396,11 @@ async def init_group(group_id: str, internal: bool = False) -> int:
     #载入群状态记录
     if load_group_data(group_id) != 0:
         return 1
-
+    #清除出刀数据 以便于数据异常恢复
     clanbattle_info[group_id] = {}
     boss_challenge_list[group_id] = [[] for i in range(5)]
     all_challenge_list[group_id] = []
-
+    #依次从接口获取数据, 某个过程失败就不再继续后续进程
     if await update_clanbattle_info_boss(group_id) != 0 or await update_clanbattle_info_day(group_id) != 0 or await safe_update_challenge_list(group_id) != 0:
         if internal:
             clanbattle_info[group_id]['failed_cnt'] = 1
@@ -487,17 +497,14 @@ async def update_clanbattle_data(group_id: str) -> int:
         clanbattle_info[group_id]['failed_cnt'] = 0
     
     #检查现在是否在会战中
-    day_str = clanbattle_info[group_id]['day_list'][0] #日期列表是降序的,第一位为最后一天
-    #day_str = '2020-09-12'
-    dt = datetime.datetime(*map(int, day_str.split('-')))
-    dt = dt.replace(hour=5, minute=30, second=0, microsecond=0)
-    if get_pcr_days_from(dt) > 1:
+    if not get_daystr_from_daylist(group_id):
         group_config[group_id]['info'] = '公会战已结束' #能获取到日期列表但当天不在列表内 一定是公会战已结束 公会战开始前日期列表是空的
         halt_until_tomorrow(group_id)
 
     group_data[group_id]['battle_info'] = clanbattle_info[group_id]['battle_info']   #会战信息 用于判断新公会站开始
     save_group_data(group_id)
     return 0
+
         
 #获取未推送的新出刀记录
 def get_new_challenges(group_id: str) -> list:
@@ -554,6 +561,28 @@ def get_pcr_days_from(dt):
     pcr_today = pcr_today.replace(hour=5, minute=0, second=0, microsecond=0)
     return math.ceil((pcr_today - dt) / datetime.timedelta(days=1))
 
+#从day_list获取会战第day天的日期字符串, day=0时取当天日期
+def get_daystr_from_daylist(group_id: str, day: int = 0) -> str:
+    day_list = []
+    if day > 0:
+        day = 0 - day #1 ~ 6 -> -1 ~ -6
+        try:
+            return clanbattle_info[group_id]['day_list'][day]
+        except:
+            pass
+    elif day == 0:
+        try:
+            day_list = clanbattle_info[group_id]['day_list']
+        except:
+            return None
+        for i in range(len(day_list)):
+            day_str = day_list[i] #日期列表是降序的,第一位为最后一天
+            dt = datetime.datetime(*map(int, day_str.split('-')))
+            dt = dt.replace(hour=5, minute=30, second=0, microsecond=0)
+            if get_pcr_days_from(dt) == 0:
+                return day_str
+    return None
+
 def get_state_msg(group_id: str):
     msg = '当前状态:'
     if group_config[group_id]['state'] == 'run':
@@ -600,15 +629,69 @@ async def check_update():
     data = None
     try:
         async with aiohttp.ClientSession() as session:
-            async with session.get('https://api.github.com/repos/zyujs/clanbattle_info') as resp:
+            async with session.get('https://api.github.com/repos/zyujs/clanbattle_info/commits') as resp:
                 data = await resp.json(content_type='application/json')
     except:
         return False
-    if 'pushed_at' in data:
+    try:
+        last_commit_time = data[0]['commit']['committer']['date']
         if update_time == '': #启动后第一次不报
-            update_time = data['pushed_at']
-            return False
-        elif update_time != data['pushed_at']:
-            update_time = data['pushed_at']
+            update_time = last_commit_time
+        elif update_time != last_commit_time:
+            update_time = last_commit_time
             return True
+    except:
+        return False
     return False
+
+async def send_group_msg(bot, group_id: str, msg):
+    try:
+        await bot.send_group_msg(group_id=int(group_id), message = msg)
+    except:
+        traceback.print_exc()
+
+
+def get_clanbattle_report_instance():
+    plugins = nonebot.get_loaded_plugins()
+    for plugin in plugins:
+        m = str(plugin.module)
+        m = m.replace('\\\\', '/')
+        m = m.replace('\\', '/')
+        if 'modules/clanbattle_report/report.py' in m:
+            return plugin.module
+    return None
+
+def generate_data_for_clanbattle_report(group_id: str, nickname: str):
+    result = {
+        'code': 1,
+        'msg': '无数据',
+        'nickname': nickname,
+        'clanname': '',
+        'game_server': 'cn',
+        'challenge_list': [],
+        'background': 0,
+    }
+    try:
+        result['clanname'] = clanbattle_info[group_id]['clan_info']['name']
+    except:
+        pass
+    
+    if group_id not in all_challenge_list:
+        return
+
+    for item in all_challenge_list[group_id]:
+        if item['name'] == nickname:
+            challenge = {
+                'damage': item['damage'],
+                'type': 0, #类型 0 普通 1 尾刀 2 补偿刀
+                'boss': item['boss'],
+                'cycle': item['lap_num'],
+            }
+            if item['kill'] != 0:
+                challenge['type'] = 1
+            elif item['reimburse'] != 0:
+                challenge['type'] = 2
+            result['challenge_list'].append(challenge)
+    if len(result['challenge_list']) > 0:
+        result['code'] = 0
+    return result

@@ -67,7 +67,8 @@ def parse_pcsgo(link: str):
     f = map(lambda x: x.strip(), f)
     f = filter(lambda x: len(x) > 0, f)
     f = map(lambda x: re.search(
-        r'-length=([\d]{1,20}) -md5=([\dA-z]{32}) -slicemd5=([\dA-z]{32}) (?:-crc32=\d{1,20} )?"(.+)"', x).groups(), f)
+        r'-length=([\d]{1,20}) -md5=([\dA-z]{32}) -slicemd5=([\dA-z]{32}) (?:-crc32=\d{1,20} )?"/?(.+)"', x).groups(),
+            f)
     f = map(lambda x: dulink.make(name=x[3], size=x[0], md5=x[1].lower(), md5s=x[2].lower()), f)
     return list(f)
 

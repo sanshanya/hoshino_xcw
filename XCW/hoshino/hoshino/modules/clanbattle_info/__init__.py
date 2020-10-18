@@ -8,13 +8,16 @@ import traceback
 import re
 from hoshino import Service, priv 
 from hoshino.typing import CQEvent
+from hoshino.util import FreqLimiter
 from .base import *
 from .info import *
 from .yobot import *
 
-HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,boss状态,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
+HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,boss状态,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
 
+lmt = FreqLimiter(60)   #冷却时间60秒
 process_lock = {}
+job_timestamp = datetime.datetime.now()
 
 sv = Service('clanbattle_info', bundle='pcr查询', help_= HELP_MSG)
 
@@ -57,16 +60,12 @@ async def cbi(bot, ev: CQEvent):
     elif args[0] == '日总表':
         day = 0
         if len(args) >= 2 and args[1].isdigit():
-            day = int(args[1]) - 1
-        if day < 0:
-            day = 0
+            day = int(args[1])
         msg = await get_day_report(group_id, day)
     elif args[0] == '日出刀表':
         day = 0
         if len(args) >= 2 and args[1].isdigit():
-            day = int(args[1]) - 1
-        if day < 0:
-            day = 0
+            day = int(args[1])
         msg = await get_day_challenge_report(group_id, day)
     elif args[0] == 'boss出刀表':
         boss = 0
@@ -84,6 +83,28 @@ async def cbi(bot, ev: CQEvent):
         await bot.send(ev, '已继续')
         await group_process(bot, group_id)
         return
+    elif args[0] == '生成会战报告' or args[0] == '生成离职报告':
+        name = ''
+        if len(args) < 2: #最小参数 绑定 昵称
+            msg = '需要附带游戏昵称'
+        elif not lmt.check(user_id):
+            msg = f'报告生成器冷却中,剩余时间{round(lmt.left_time(user_id))}秒'
+        elif len(args) >= 2:
+            lmt.start_cd(user_id)
+            name = args[1]
+            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
+            if len(names) > 0:
+                name = names[0]
+            cbr = get_clanbattle_report_instance()
+            if not cbr:
+                msg = '需要安装clanbattle_report插件'
+            elif not hasattr(cbr, 'generate_report'):
+                msg = '需要更新clanbattle_report插件'
+            else:
+                data = generate_data_for_clanbattle_report(group_id, name)
+                if args[0] == '生成离职报告':
+                    data['background'] = 1
+                msg = cbr.generate_report(data)
     elif args[0] == 'boss状态':
         msg = get_boss_state_report(group_id)
     #需要权限的部分
@@ -191,14 +212,14 @@ async def group_process(bot, group_id: str):
         ret = await update_clanbattle_data(group_id)
         if ret == 2:
             msg = f"[clanbattle_info]\n数据更新出现异常:{group_config[group_id]['info']}\n数据推送服务已挂起, 请排除故障后使用'cbi 初始化'命令重新启动数据更新服务."
-            await bot.send_group_msg(group_id=int(group_id), message = msg)
+            await send_group_msg(bot, group_id, msg)
         elif ret == 0:
             #出刀推送
             if group_config[group_id]['push_challenge']:
                 result = get_new_challenges(group_id)
                 if len(result) > 0:
                     msg = format_challenge_report(result)
-                    await bot.send_group_msg(group_id=int(group_id), message = msg)
+                    await send_group_msg(bot, group_id, msg)
             #自动报刀
             if is_auto_report_enable(group_id):
                 await report_process(bot, group_id)
@@ -209,6 +230,13 @@ async def group_process(bot, group_id: str):
 #每个整5分钟的+30s~+3m30s范围执行任务
 @sv.scheduled_job('cron',minute='2,7,12,17,22,27,32,37,42,47,52,57', jitter=90)
 async def job():
+    global job_timestamp
+    #防止由于apscheduler的bug而被连续调用2次
+    now = datetime.datetime.now()
+    if now - job_timestamp < datetime.timedelta(minutes=1):
+        return
+    job_timestamp = now
+
     bot = hoshino.get_bot()
     updated = await check_update()
 
@@ -222,7 +250,7 @@ async def job():
     for group_id in glist:
         if int(group_id) in available_group:
             if updated:
-                await bot.send_group_msg(group_id=int(group_id), message = 'clanbattle_info插件检测到新的提交记录,请及时更新.')
+                await send_group_msg(bot, group_id, 'clanbattle_info插件检测到新的提交记录,请及时更新.')
             tasks.append(asyncio.ensure_future(group_process(bot, str(group_id))))
     for task in asyncio.as_completed(tasks):
         await task

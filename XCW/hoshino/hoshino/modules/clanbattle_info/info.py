@@ -67,20 +67,11 @@ async def get_collect_report(group_id: str) -> (int, str):
 
 #日表
 async def get_day_report(group_id: str, day: int = 0) -> (int, str):
-    group_id = str(group_id)
     msg = ''
-    day_param = ''
-    day_list = []
-    try:
-        day_list = clanbattle_info[group_id]['day_list']
-    except:
+    day_str = get_daystr_from_daylist(group_id, day)
+    if not day_str:
         return '无数据'
-    if day >= len(day_list):
-        return '无该日数据'
-    day = -1 - day
-    day_param = day_list[day]
-
-    data = await query_data(group_id, "day_report", day_param)
+    data = await query_data(group_id, "day_report", day_str)
     if 'code' not in data: #网络错误
         return '网络异常'
     if data['code'] != 0: #cookie错误
@@ -88,10 +79,8 @@ async def get_day_report(group_id: str, day: int = 0) -> (int, str):
     if 'data' not in data: #数据异常
         return '数据异常'
     data = data['data']
-    if len(data) == 0:  #请求数据失败
-        return '数据格式异常'
 
-    msg += f"{day_param}出刀情况:"
+    msg += f"{day_str}的出刀情况:"
     for member in data:
         msg += f"\n{member['name']} "
         msg += f"出刀:{member['number']} "
@@ -132,17 +121,9 @@ async def get_boss_report(group_id: str, boss: int = 0) -> (int, str):
 
 #日出刀
 async def get_day_challenge_report(group_id: str, day: int = 0) -> (int, str):
-    group_id = str(group_id)
-    day_str = ''
-    day_list = []
-    try:
-        day_list = clanbattle_info[group_id]['day_list']
-    except:
+    day_str = get_daystr_from_daylist(group_id, day)
+    if not day_str:
         return '无数据'
-    if day >= len(day_list):
-        return '无该日数据'
-    day = -1 - day
-    day_str = day_list[day]
     today = datetime.datetime(*map(int, day_str.split('-')))
     today = today.replace(hour=5, minute=0, second=0, microsecond=0) #当天5点
     tomorrow = today + datetime.timedelta(days=1)

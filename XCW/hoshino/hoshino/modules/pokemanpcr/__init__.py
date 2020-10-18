@@ -84,7 +84,7 @@ class ExchangeRequestMaster:
     def has_exchange_request_to_confirm(self, gid, uid):
         now_time = datetime.now()
         delta_time = now_time - self.get_last_exchange_request_time(gid, uid)
-        return delta_time.seconds <= self.max_valid_time
+        return delta_time.total_seconds() <= self.max_valid_time
 
     def get_exchange_request(self, gid, uid) -> ExchangeRequest:
         return self.last_exchange_request[(gid, uid)]

@@ -1,8 +1,8 @@
 import time
 from nonebot import *
 from . import util, pixiv, permission, download, short_url
-import hoshino
-from hoshino import Service, config  # 如果使用hoshino的分群管理取消注释这行
+
+from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
 sv = Service('epixiv')  # 如果使用hoshino的分群管理取消注释这行

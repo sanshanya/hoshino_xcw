@@ -16,11 +16,11 @@ COL_NUM = 8                 # 查看仓库时每行显示的卡片个数
 
 
 sv = Service('poke-man-pcr', bundle='pcr娱乐', help_='''
-戳一戳机器人 她可能会送你公主连结卡片哦
-[查看仓库] [@某人](这是可选参数) 查看某人的卡片仓库和收集度排名，不加参数默认查看自己的仓库
-[献祭] [卡片1昵称] [卡片2昵称] 献祭两张卡片以获得一张新的卡片
-[交换] [卡片1昵称] [@某人] [卡片2昵称] 向某人发起卡片交换请求，用自己的卡片1交换他的卡片2
-[确认交换] 收到换卡请求后一定时间内输入这个指令可完成换卡
+戳一戳机器人, 她可能会送你公主连结卡片哦~
+查看仓库 [@某人](这是可选参数): 查看某人的卡片仓库和收集度排名，不加参数默认查看自己的仓库
+献祭 [卡片1昵称] [卡片2昵称]: 献祭两张卡片以获得一张新的卡片
+交换 [卡片1昵称] [@某人] [卡片2昵称]: 向某人发起卡片交换请求，用自己的卡片1交换他的卡片2
+确认交换: 收到换卡请求后一定时间内输入这个指令可完成换卡
 '''.strip())
 daily_limiter = DailyNumberLimiter(POKE_DAILY_LIMIT)
 exchange_request_master = ExchangeRequestMaster(REQUEST_VALID_TIME)
@@ -134,10 +134,14 @@ async def mix_card(bot, ev: CQEvent):
         await bot.finish(ev, f'错误: 无法识别{get_card_name_with_rarity(args[1])}, 若为稀有卡请在前面加上"稀有"二字')
     card1_num = db.get_card_num(ev.group_id, ev.user_id, card1_id)
     card2_num = db.get_card_num(ev.group_id, ev.user_id, card2_id)
-    if card1_num == 0:
-        await bot.finish(ev, f'{get_card_name_with_rarity(args[0])}卡数量不足, 无法献祭')
-    if card2_num == 0:
-        await bot.finish(ev, f'{get_card_name_with_rarity(args[1])}卡数量不足, 无法献祭')
+    if card1_id == card2_id:
+        if card1_num < 2:
+            await bot.finish(ev, f'{get_card_name_with_rarity(args[0])}卡数量不足, 无法献祭')
+    else:
+        if card1_num == 0:
+            await bot.finish(ev, f'{get_card_name_with_rarity(args[0])}卡数量不足, 无法献祭')
+        if card2_num == 0:
+            await bot.finish(ev, f'{get_card_name_with_rarity(args[1])}卡数量不足, 无法献祭')
     # 开始献祭
     total_rarity = get_card_rarity(card1_id) + get_card_rarity(card2_id)
     if total_rarity == 0:
