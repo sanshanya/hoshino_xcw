@@ -39,3 +39,4 @@ pycryptodome
 pycryptodomex
 httpx
 pixivpy
+opencv-python
