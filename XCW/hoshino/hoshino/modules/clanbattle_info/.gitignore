@@ -1,0 +1,8 @@
+__pycache__/
+*.py[cod]
+.vscode/
+
+config/*.json
+!config/template.json
+
+data/*.json

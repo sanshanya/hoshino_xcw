@@ -3,6 +3,7 @@ import aiohttp
 import asyncio
 import datetime
 import json
+import traceback
 
 from .base import *
 
@@ -146,6 +147,26 @@ async def get_day_challenge_report(group_id: str, day: int = 0) -> (int, str):
                 msg += "补偿刀"
     return msg
 
+#个人出刀
+async def get_member_challenge_report(group_id: str, name: str) -> (int, str):
+    msg = f"{name}的出刀记录:"
+    for item in all_challenge_list[group_id]:
+        if item['name'] == name:
+            dt = datetime.datetime.fromtimestamp(item['datetime'])
+            msg += f"\n时间:{dt.strftime('%Y/%m/%d %H:%M:%S')} "
+            msg += f"昵称:{item['name']} "
+            msg += f"伤害:"
+            damage = item['damage']
+            if damage > 10000:
+                msg += f"{damage // 10000}万"
+            msg += f"{damage % 10000} "
+            msg += f"得分:{format_number(item['score'])} "
+            if item['kill'] == 1:
+                msg += "尾刀"
+            if item['reimburse'] == 1:
+                msg += "补偿刀"
+    return msg
+
 #boss状态
 def get_boss_state_report(group_id: str) -> (int, str):
     group_id = str(group_id)
@@ -153,11 +174,10 @@ def get_boss_state_report(group_id: str) -> (int, str):
     boss_info = {}
     try:
         boss_info = clanbattle_info[group_id]['boss_info']
+        msg = "boss状态:"
+        msg += f"\n{boss_info['lap_num']}周目 {boss_info['name']}"
+        msg += f"\n{format_number(boss_info['current_life'])} / {format_number(boss_info['total_life'])} "
+        msg += f"({boss_info['current_life']/boss_info['total_life']*100:.2f}%)"
     except:
-        return '无数据'
-
-    msg = "boss状态:"
-    msg += f"\n{boss_info['lap_num']}周目 {boss_info['name']}"
-    msg += f"\n{format_number(boss_info['current_life'])} / {format_number(boss_info['total_life'])} "
-    msg += f"({boss_info['current_life']/boss_info['total_life']*100:.2f}%)"
+        msg = "无数据"
     return msg

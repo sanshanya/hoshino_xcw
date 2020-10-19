@@ -34,6 +34,9 @@ __all__ = [
     'get_daystr_from_daylist',
     'get_clanbattle_report_instance',
     'generate_data_for_clanbattle_report',
+    'check_reservation',
+    'add_reservation',
+    'remove_reservation',
     ]
 
 magic_name = '13c941a144c18a98eb54b493ff0bd279' #魔法昵称,用于将全部未知昵称指定给某个qq, 如有重名建议打死
@@ -314,6 +317,8 @@ def load_group_data(group_id: str) -> int:
         group_data[group_id]['report_pause'] = False
     if 'battle_info' not in group_data[group_id]:
         group_data[group_id]['battle_info'] = {}
+    if 'reservation' not in group_data[group_id]:
+        group_data[group_id]['reservation'] = {str(i): [] for i in range(5)}
     return 0
 
 #保存群数据
@@ -521,6 +526,60 @@ def get_new_challenges(group_id: str) -> list:
     group_data[group_id]['index'] = len(all_challenge_list[group_id])
     save_group_data(group_id)
     return new_challenges
+
+def check_reservation(group_id: str):
+    rlist = []
+    try:
+        if group_id not in group_data:
+            return rlist
+        if 'name' not in clanbattle_info[group_id]['boss_info']:
+            return rlist
+        #boss状态 {name: "狂乱魔熊", total_life: 12000000, current_life: 2885013, lap_num: 1}
+        clanbattle_info[group_id]['boss_info']
+        #boss列表 [{id: "501", boss_name: "双足飞龙"}, {id: "502", boss_name: "野性狮鹫"}, {id: "503", boss_name: "雷电"},…]
+        clanbattle_info[group_id]['boss_list'] 
+        boss = -1
+        for i in range(len(clanbattle_info[group_id]['boss_list'])):
+            if clanbattle_info[group_id]['boss_list'][i]['boss_name'] == clanbattle_info[group_id]['boss_info']['name']:
+                boss = i
+                break
+        if boss == -1:
+            return rlist
+        boss = str(boss)
+        if len(group_data[group_id]['reservation'][boss]) == 0:
+            return rlist
+        rlist =  list(group_data[group_id]['reservation'][boss])
+        group_data[group_id]['reservation'][boss] = []
+        save_group_data(group_id)
+        return rlist
+    except:
+        traceback.print_exc()
+        return rlist
+
+def add_reservation(group_id: str, boss: int, qqid: int):
+    if group_id not in group_data:
+        return '群组数据错误'
+    if boss < 0 or boss > 4:
+        return 'boss序号错误'
+    boss = str(boss)
+    rset = set(group_data[group_id]['reservation'][boss])
+    rset.add(qqid)
+    group_data[group_id]['reservation'][boss] = list(rset)
+    save_group_data(group_id)
+    return '预约成功'
+
+def remove_reservation(group_id: str, boss: int, qqid: int):
+    if group_id not in group_data:
+        return '群组数据错误'
+    if boss < 0 or boss > 4:
+        return 'boss序号错误'
+    boss = str(boss)
+    rset = set(group_data[group_id]['reservation'][boss])
+    rset.remove(qqid)
+    group_data[group_id]['reservation'][boss] = list(rset)
+    save_group_data(group_id)
+    return '取消成功'
+
 
 def remove_bind(group_id: str, name: str):
     if 'members' not in group_data[group_id]:   #游戏名-qq对应表

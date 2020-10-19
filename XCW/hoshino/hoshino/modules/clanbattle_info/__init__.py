@@ -6,6 +6,7 @@ import json
 import hoshino
 import traceback
 import re
+import random
 from hoshino import Service, priv 
 from hoshino.typing import CQEvent
 from hoshino.util import FreqLimiter
@@ -13,11 +14,10 @@ from .base import *
 from .info import *
 from .yobot import *
 
-HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,boss状态,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
+HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,个人出刀表,boss状态,预约,取消预约,查看预约,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
 
 lmt = FreqLimiter(60)   #冷却时间60秒
 process_lock = {}
-job_timestamp = datetime.datetime.now()
 
 sv = Service('clanbattle_info', bundle='pcr查询', help_= HELP_MSG)
 
@@ -74,6 +74,15 @@ async def cbi(bot, ev: CQEvent):
         if boss > 0:
             boss -= 1
         msg = await get_boss_report(group_id, boss)
+    elif args[0] == '个人出刀表':
+        if len(args) < 2: #最小参数 绑定 昵称
+            msg = '需要附带游戏昵称'
+        else:
+            name = args[1]
+            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
+            if len(names) > 0:
+                name = names[0]
+            msg = await get_member_challenge_report(group_id, name)
     elif args[0] == '查看绑定':
             msg = get_bind_msg(group_id)
     elif args[0] == '状态':
@@ -107,7 +116,33 @@ async def cbi(bot, ev: CQEvent):
                 msg = cbr.generate_report(data)
     elif args[0] == 'boss状态':
         msg = get_boss_state_report(group_id)
-    #需要权限的部分
+    elif args[0] == '预约':
+        if len(args) < 2 or not args[1].isdigit():
+            msg = '请指定boss'
+        elif target_id == 0:
+            msg = add_reservation(group_id, int(args[1]) - 1, user_id)
+        else:
+            msg = add_reservation(group_id, int(args[1]) - 1, target_id)
+    elif args[0] == '取消预约':
+        if len(args) < 2 or not args[1].isdigit():
+            msg = '请指定boss'
+        elif target_id == 0:
+            msg = remove_reservation(group_id, int(args[1]) - 1, user_id)
+        else:
+            msg = remove_reservation(group_id, int(args[1]) - 1, target_id)
+    elif args[0] == '查看预约' or  args[0] == '查询预约':
+        msg = '预约情况:'
+        try:
+            for i in range(5):
+                msg += f'\n{i+1}王: '
+                rlist = group_data[group_id]['reservation'][str(i)]
+                for qqid in rlist:
+                    m = await bot.get_group_member_info(self_id=ev.self_id, group_id=ev.group_id, user_id=qqid)
+                    qqname = m["card"] or m["nickname"] or str(qqid)
+                    msg += f'{qqname} '
+        except:
+            msg = '数据错误'
+#需要权限的部分
     elif args[0] == '初始化':
         if is_admin:
             if await init_group(group_id) != 0:
@@ -220,6 +255,13 @@ async def group_process(bot, group_id: str):
                 if len(result) > 0:
                     msg = format_challenge_report(result)
                     await send_group_msg(bot, group_id, msg)
+            #预约检查
+            rlist = check_reservation(group_id)
+            if len(rlist) > 0:
+                msg = get_boss_state_report(group_id) + '\n'
+                for qqid in rlist:
+                    msg += f'[CQ:at,qq={qqid}] '
+                await send_group_msg(bot, group_id, msg)
             #自动报刀
             if is_auto_report_enable(group_id):
                 await report_process(bot, group_id)
@@ -227,24 +269,14 @@ async def group_process(bot, group_id: str):
         traceback.print_exc()
     process_lock[group_id].release()
         
-#每个整5分钟的+30s~+3m30s范围执行任务
-@sv.scheduled_job('cron',minute='2,7,12,17,22,27,32,37,42,47,52,57', jitter=90)
+start_time = f'2020-01-01 00:{random.randint(1,3):02d}:{random.randint(0,59):02d}'
+@sv.scheduled_job('interval',minutes=5, start_date=start_time)
 async def job():
-    global job_timestamp
-    #防止由于apscheduler的bug而被连续调用2次
-    now = datetime.datetime.now()
-    if now - job_timestamp < datetime.timedelta(minutes=1):
-        return
-    job_timestamp = now
-
+    #改用interval+随机start_time方式,避开jitter的bug
     bot = hoshino.get_bot()
     updated = await check_update()
 
-    available_group = {}
-    bot_group_list = await bot.get_group_list()
-    for item in bot_group_list:
-        available_group[int(item['group_id'])] = True
-
+    available_group = await sv.get_enable_groups()
     glist = get_group_list()
     tasks = []
     for group_id in glist:

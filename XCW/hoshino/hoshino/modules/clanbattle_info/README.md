@@ -29,7 +29,7 @@
 
 请将项目根目录的 `config` 文件夹中 `template.json` 模板文件复制一份并重命名为 `群号.json`, 然后根据说明修改其中内容.
 
-- `cookie` 使用游戏账号登录 bigfun.cn 生成的文本格式cookie, 需使用浏览器开发者工具获取
+- `cookie` 使用游戏账号登录 [公主连结团队战工具](https://www.bigfun.cn/tools/pcrteam/) 生成的文本格式cookie, 需使用浏览器开发者工具获取
 - `push_challenge` 出刀信息推送开关
 - `report_mode` 自动出刀模式,取值可以为 `yobot_standalone` : 独立yobot模式, `yobot_embedded` : 嵌入式yobot模式, `disable` : 关闭自动报刀
 - `yobot_api` 如果使用 `yobot_standalone` 模式,需填入公会yobotAPI网址
@@ -67,7 +67,11 @@
 - `cbi 日总表 [n]` : 查询公会日表, n表示会战第n天, 不带n参数默认为本日.
 - `cbi 日出刀表 [n]` : 查询公会日表, n表示会战第n天, 不带n参数默认为本日.
 - `cbi boss出刀表 [n]` : 查询boss出刀表, n为boss编号, 取值为1-5.
+- `cbi 个人出刀表 昵称` : 查询指定成员的个人出刀记录, 如果游戏昵称有空格, 请将昵称放置在[]中.
 - `cbi boss状态` : 查询boss状态
+- `cbi 预约 n [@某人]` : 预约boss, n为boss编号, 取值为1-5.
+- `cbi 取消预约 n [@某人]` : 取消预约boss
+- `cbi 查看预约` : 查看boss预约情况
 - `cbi 状态` : 查看插件当前状态
 - `cbi 检查成员` : 检查公会成员是否全部有对应QQ号码.
 - `cbi 绑定 游戏昵称 [bot/@某人]` : 将指定游戏昵称绑定本qq号码或者指定qq号码, 适用于游戏昵称和群名片不匹配的情况, 加入bot表示将该昵称绑定为bot自己的qq号码. 如果游戏昵称有空格, 请将昵称放置在[]中.

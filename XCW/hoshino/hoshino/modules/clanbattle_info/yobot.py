@@ -212,7 +212,8 @@ async def generate_name2qq(group_id: str, yobot_members = None):
             ret, data = await query_yobot_data(group_config[group_id]['yobot_api'])
             if ret != 0:
                 return 1, data
-            yobot_members = data['members']
+            if 'members' in data:
+                yobot_members = data['members']
         elif group_config[group_id]['report_mode'] == 'yobot_embedded':
             clanbattle = get_embedded_yobot_ClanBattle_instance()
             if not clanbattle:
@@ -287,8 +288,10 @@ async def check_yobot(group_id: str) -> (int, list or str):
         ret, data = await query_yobot_data(group_config[group_id]['yobot_api'])
         if ret != 0:
             return 1, data
-        yobot_members = data['members']
-        yobot_challenges = data['challenges']
+        if 'members' in data:
+            yobot_members = data['members']
+        if 'challenges' in data:
+            yobot_challenges = data['challenges']
     elif group_config[group_id]['report_mode'] == 'yobot_embedded':
         clanbattle = get_embedded_yobot_ClanBattle_instance()
         if not clanbattle:
