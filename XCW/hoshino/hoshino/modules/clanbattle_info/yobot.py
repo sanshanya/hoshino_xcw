@@ -20,14 +20,16 @@ __all__ = [
 ### standalone 模式
 
 async def query_yobot_data(api_url: str) -> (int, dict or str):
-    data = {}
-    try:
-        async with aiohttp.ClientSession() as session:
-            async with session.get(api_url) as resp:
-                data = await resp.json()
-                return 0, data
-    except:
-        traceback.print_exc()
+    data = None
+    for _ in range(5):
+        try:
+            async with aiohttp.ClientSession() as session:
+                async with session.get(api_url) as resp:
+                    data = await resp.json()
+                    break
+        except:
+            traceback.print_exc()
+    if not data:
         return 1, 'YobotAPI访问异常'
     if 'members' not in data or 'challenges' not in data:
         return 1, 'YobotAPI数据异常'

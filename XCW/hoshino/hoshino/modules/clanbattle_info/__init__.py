@@ -75,14 +75,11 @@ async def cbi(bot, ev: CQEvent):
             boss -= 1
         msg = await get_boss_report(group_id, boss)
     elif args[0] == '个人出刀表':
-        if len(args) < 2: #最小参数 绑定 昵称
+        match = re.search( r'个人出刀表(.+)', ev.message.extract_plain_text())
+        if not match or len(match.groups()) < 1:
             msg = '需要附带游戏昵称'
         else:
-            name = args[1]
-            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
-            if len(names) > 0:
-                name = names[0]
-            msg = await get_member_challenge_report(group_id, name)
+            msg = await get_member_challenge_report(group_id, match.group(1).strip())
     elif args[0] == '查看绑定':
             msg = get_bind_msg(group_id)
     elif args[0] == '状态':
@@ -93,25 +90,21 @@ async def cbi(bot, ev: CQEvent):
         await group_process(bot, group_id)
         return
     elif args[0] == '生成会战报告' or args[0] == '生成离职报告':
-        name = ''
-        if len(args) < 2: #最小参数 绑定 昵称
+        match = re.search( r'生成(会战|离职)报告(.+)', ev.message.extract_plain_text())
+        if not match or len(match.groups()) < 2:
             msg = '需要附带游戏昵称'
         elif not lmt.check(user_id):
             msg = f'报告生成器冷却中,剩余时间{round(lmt.left_time(user_id))}秒'
-        elif len(args) >= 2:
+        else:
             lmt.start_cd(user_id)
-            name = args[1]
-            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
-            if len(names) > 0:
-                name = names[0]
             cbr = get_clanbattle_report_instance()
             if not cbr:
                 msg = '需要安装clanbattle_report插件'
             elif not hasattr(cbr, 'generate_report'):
                 msg = '需要更新clanbattle_report插件'
             else:
-                data = generate_data_for_clanbattle_report(group_id, name)
-                if args[0] == '生成离职报告':
+                data = generate_data_for_clanbattle_report(group_id, match.group(2).strip())
+                if match.group(1) == '离职':
                     data['background'] = 1
                 msg = cbr.generate_report(data)
     elif args[0] == 'boss状态':
@@ -152,44 +145,40 @@ async def cbi(bot, ev: CQEvent):
         else:
             msg = '权限不足'
     elif args[0] == '绑定':
-        name = '?'
-        if len(args) >= 2:
-            name = args[1]
-            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
-            if len(names) > 0:
-                name = names[0]
-        if len(args) < 2: #最小参数 绑定 昵称
-            msg = '参数错误'
-        elif target_id == 0: #绑定自己 或者bot
-            if len(args) >= 3 and args[-1] == 'bot': #绑定 昵称 bot
+        match = re.search( r'绑定(.+)', ev.message.extract_plain_text())
+        if not match or len(match.groups()) < 1:
+            msg = '需要附带游戏昵称'
+        else:
+            name = match.group(1).strip()
+            if target_id == 0: #绑定自己 或者bot
+                add_bind(group_id, name, user_id)
+                msg = f'已绑定 [{name}]:{user_id}'
+            else: #绑定别人
                 if is_admin:
-                    add_bind(group_id, name, ev.self_id)
-                    msg = f'已绑定 {name}:{ev.self_id}'
+                    add_bind(group_id, name, target_id)
+                    msg = f'已绑定 [{name}]:{target_id}'
                 else:
                     msg = '权限不足'
-            else: #绑定 昵称
-                add_bind(group_id, name, user_id)
-                msg = f'已绑定 {name}:{user_id}'
-        else: #绑定别人
-            if is_admin:
-                add_bind(group_id, name, target_id)
-                msg = f'已绑定 {name}:{target_id}'
-            else:
-                msg = '权限不足'
+    elif args[0] == '绑定bot':
+        match = re.search( r'绑定bot(.+)', ev.message.extract_plain_text())
+        if not match or len(match.groups()) < 1:
+            msg = '需要附带游戏昵称'
+        elif is_admin:
+            name = match.group(1).strip()
+            add_bind(group_id, name, ev.self_id)
+            msg = f'已绑定 [{name}]:{ev.self_id}'
+        else:
+            msg = '权限不足'
     elif args[0] == '解除绑定':
-        name = '?'
-        if len(args) >= 2:
-            name = args[1]
-            names = re.findall(r"\[(.+?)\]",ev.message.extract_plain_text())
-            if len(names) > 0:
-                name = names[0]
-        if len(args) < 2:
-            msg = '参数错误'
+        match = re.search( r'绑定(.+)', ev.message.extract_plain_text())
+        if not match or len(match.groups()) < 1:
+            msg = '需要附带游戏昵称'
         elif not is_admin:
             msg = '权限不足'
         else:
+            name = match.group(1).strip()
             remove_bind(group_id, name)
-            msg = f'已解除绑定 {name}'
+            msg = f'已解除绑定 [{name}]'
     elif args[0] == '绑定未知成员':
         if not is_admin:
             msg = '权限不足'

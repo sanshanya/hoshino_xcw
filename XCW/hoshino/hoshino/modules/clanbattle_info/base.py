@@ -606,9 +606,9 @@ def get_bind_msg(group_id: str):
         return msg
     for name in group_data[group_id]['members']:
         if name != magic_name:
-            msg += f'{name} {group_data[group_id]["members"][name]}\n'
+            msg += f'[{name}]:{group_data[group_id]["members"][name]}\n'
     if magic_name in group_data[group_id]['members']:
-        msg += f'其余未知成员 {group_data[group_id]["members"][magic_name]}\n'
+        msg += f'其余未知成员:{group_data[group_id]["members"][magic_name]}\n'
     return msg
 
 #计算指定时间到现在pcr时间有几天
