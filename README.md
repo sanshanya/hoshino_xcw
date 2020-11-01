@@ -80,24 +80,26 @@
 | pokemanpcr | 戳机器人集卡小游戏 | 默认添加方法 | pekopeko~ |
 | **pages** | 一款优秀的网页端 | 默认添加方法,需要修改yobot的关键词触发 | 帮助/手册/主页 |
 | clanbattle_info | 自动报刀插件 | 按说明配置 | 适合单群使用 |
+| nbnhhsh | nbnhhsh | 默认添加方法                                                 | 能不能好好说话 |
+| nowtime | 报时 | 默认添加方法                                                 | 现在都几点了                                               |
+| pcrsealkiller | 海豹杀手 | 默认添加方法                                                 | 抽卡截图还秀群里来了                                       |
+| setu_mix | 上方两种涩图插件的融合 | 默认添加方法                                                 | 以后默认使用这个插件                                       |
+| hoshino_training | 用于hoshino原装功能的调教 | 慎重启用,前往https://github.com/zyujs/hoshino_training查看说明 |                                                            |
+| Genshin | pcrbot(×)原神bot(√) | 默认添加方法                                                 |                                                            |
 
 
 
 ......
 
-## miraiOK
-
-待补充....
-
 ## miraiGO
 
 简单易用,强烈推荐
 
-
+项目地址:https://github.com/Mrs4s/go-cqhttp
 
 ## res
 
-hoshino需要的res文件
+hoshino需要的res文件,在release里的xcw.rar内
 
 ## 装依赖
 
