@@ -77,14 +77,12 @@ MODULES_ON = {
     # 'twitter',#推特订阅，需要配置本目录下的twitter.py
     'yobot',#yobot会战功能
     'hourcallyao',#买药提醒
-    #'shebot_old',#色图功能，需要apikey——mirai需要按说明适配,本版本shebot可以直接私聊,请勿和下方版本同时开启,下方有集成优化版
     'reload',#重启，暂时不知是否能生效
     'tarot',#塔罗牌
     'flac',#搜无损音乐  
     #'shitu',#识图功能需要apikey
     'shifan',#识别番剧
     'battle_report',#会战报告生成，需要修改路径
-    #'setu_acggov',#搜图，需要apikey，mirai需要按说明适配
     'bot_manager_web',#新版webmanage
     #'voiceguess',#猜语音
     #'eclanrank',
@@ -122,8 +120,11 @@ MODULES_ON = {
     'pokemanpcr',#戳一戳卡片小游戏
     'pages',#bot网页端
     'clanbattle_rank',#会战排名查询插件
-    #'clanbattle_info'#自动报刀插件,开启前请按说明配置,难度较高
+    #'clanbattle_info',#自动报刀插件,开启前请按说明配置,难度较高
     'nbnhhsh',#将抽象短语转化为好好说话
     'nowtime',#发送"报时"有惊喜
     'pcrsealkiller',#海豹杀手
+    'setu_mix',#俩涩图插件合二为一
+    #'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
+    'Genshin',#原神系列
 }
