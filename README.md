@@ -84,7 +84,7 @@
 | nowtime | 报时 | 默认添加方法                                                 | 现在都几点了                                               |
 | pcrsealkiller | 海豹杀手 | 默认添加方法                                                 | 抽卡截图还秀群里来了                                       |
 | setu_mix | 上方两种涩图插件的融合 | 默认添加方法                                                 | 以后默认使用这个插件                                       |
-| hoshino_training | 用于hoshino原装功能的调教 | 慎重启用,前往https://github.com/zyujs/hoshino_training查看说明 |                                                            |
+| hoshino_training | 用于hoshino原装功能的调教 | 慎重启用,查看详情前往https://github.com/zyujs/hoshino_training |                                                            |
 | Genshin | pcrbot(×)原神bot(√) | 默认添加方法                                                 |                                                            |
 
 
