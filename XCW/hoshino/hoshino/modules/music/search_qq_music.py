@@ -22,24 +22,21 @@ async def search(keyword, result_num: int = 3):
         )
         res_data = await resp.json()
     except Exception as e:
-        logger.error(f'Request QQ Music Timeout {e}')
+        logger.warning(f'Request QQ Music Timeout {e}')
         return None
-    for item in res_data['data']['song']['list'][:result_num]:
-        song_list.append(
-            {
-                'name': item['songname'],
-                'id': item['songid'],
-                'artists': ' '.join(
-                    artist['name'] for artist in item['singer']
-                ),
-                'type': 'qq'
-            }
-        )
-    return song_list
-
-
-if __name__ == "__main__":
-    song_list = search('Muse')
-    if song_list:
-        for song in song_list:
-            print(song)
+    try:
+        for item in res_data['data']['song']['list'][:result_num]:
+            song_list.append(
+                {
+                    'name': item['songname'],
+                    'id': item['songid'],
+                    'artists': ' '.join(
+                        artist['name'] for artist in item['singer']
+                    ),
+                    'type': 'qq'
+                }
+            )
+        return song_list
+    except KeyError as e:
+        logger.warning(f'No Result: {e}')
+        return None

@@ -126,5 +126,5 @@ MODULES_ON = {
     'pcrsealkiller',#海豹杀手
     'setu_mix',#俩涩图插件合二为一
     #'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
-    'Genshin',#原神系列
+    'Genshin_Impact',#原神系列
 }

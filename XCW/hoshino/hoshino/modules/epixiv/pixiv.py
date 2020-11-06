@@ -6,6 +6,7 @@ from urllib import parse
 from concurrent.futures import ThreadPoolExecutor, as_completed
 from pixivpy3 import *
 from . import download, util
+import hoshino
 
 config = util.get_config()
 
@@ -241,7 +242,7 @@ class epixiv(ByPassSniApi):
         info = self.illust_related(illust_id)
         if info.error:
             try:
-                self.login(config.pixiv.username, config.pixiv.password)
+                self.login(hoshino.config.pixiv_id, hoshino.config.pixiv_password)
             except Exception as e:
                 print('登录p站失败了 请检查配置.')
                 return []

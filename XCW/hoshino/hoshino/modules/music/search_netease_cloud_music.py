@@ -66,7 +66,7 @@ async def search(keyword: str, result_num: int = 3):
                 )
             return song_list
         except Exception as e:
-            logger.error(f'获取网易云歌曲失败, 返回数据data={data}, 错误信息error={e}')
+            logger.warning(f'获取网易云歌曲失败, 返回数据data={data}, 错误信息error={e}')
     return song_list
 
 

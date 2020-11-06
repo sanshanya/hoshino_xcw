@@ -2,8 +2,8 @@ cache_dir: ./data/
 
 # p站账号密码
 pixiv:
-  username: ''
-  password: ''
+  username: '3305694808@qq.com'
+  password: '13989168917'
 
 # 触发的命令
 comm:

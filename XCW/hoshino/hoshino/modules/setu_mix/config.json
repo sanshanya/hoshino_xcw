@@ -11,7 +11,7 @@
     },
     "lolicon": {
         "mode": 2,
-        "apikey": "836544635f16c6106d1c69",
+        "apikey": "",
         "r18": true,
         "use_thumb": false,
         "pixiv_direct": false,
@@ -19,7 +19,7 @@
     },
     "acggov": {
         "mode": 2,
-        "apikey": "eyJhbGciOiJIUzI1NiJ9.eyJzdWIiOiJrZWtlbHVvMSIsInV1aWQiOiIwNTA1ZGRmM2EyY2U0ZThjYjlhNWI3NTMwNmI3NjJjMyIsImlhdCI6MTYwMTAzMzcyNSwiYWNjb3VudCI6IntcImVtYWlsXCI6XCJzYW5zaGFuZGV4aWFvd3VAcXEuY29tXCIsXCJnZW5kZXJcIjotMSxcImhhc1Byb25cIjowLFwiaWRcIjoyMzUsXCJwYXNzV29yZFwiOlwiYzkzMDMwYjJlMTA4M2RjMTAxZWRlN2Y4MWI3NDM4MDdcIixcInN0YXR1c1wiOjAsXCJ1c2VyTmFtZVwiOlwia2VrZWx1bzFcIn0iLCJqdGkiOiIyMzUifQ.5M_CIr802OPwdA_Kqn2yzqvluvSNO0gLbrDqjF0zo8w",
+        "apikey": "",
         "ranking_mode": "daily",
         "use_thumb": false,
         "per_page": 25,

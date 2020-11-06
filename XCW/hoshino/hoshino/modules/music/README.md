@@ -2,7 +2,7 @@
 
 <img align="right" src="https://ss0.bdstatic.com/70cFvHSh_Q1YnxGkpoWK1HF6hhy/it/u=1328271432,2672554590&fm=26&gp=0.jpg" alt="logo" width="96px" />
 
-这是一个适用于Hoshino v2的点歌插件,支持搜索并分享QQ音乐和网易云音乐。
+这是一个适用于Hoshino v2的点歌插件,支持搜索并分享多个来源的音乐。
 
 <img src="https://img.shields.io/badge/HoshinoBot-v2.0-brightgreen"/> <img src="https://img.shields.io/badge/cqhttp--mirai-v0.2.3-brightgreen" /> <img src="https://img.shields.io/badge/go--cqhttp-v0.9.24-brightgreen" /> <img src="https://img.shields.io/badge/built_by---LAN---blue"/>
 
@@ -13,6 +13,10 @@
 
 如遇使用问题欢迎提交Issue。
 
+*2020/10/18*
+
+- 添加对咪咕音乐的支持。(需要`go-cqhttp` v0.9.29或以上版本)[@wdvxdr1123](https://github.com/wdvxdr1123)
+
 *2020/9/14*
 
 - 请求修改为异步。
@@ -20,7 +24,7 @@
 
 *2020/9/9*
 
-- 添加请求头模板，境外服务器可以修改`search_netease_cloud_music.py`文件中的注释部分，填写国内IP来使用。
+- 添加请求头模板，境外服务器也可以直接使用。[@ishkong](https://github.com/ishkong)
 
 *2020/9/8*
 
@@ -46,8 +50,9 @@
 输入以下命令使用：
 
 - \[点歌 好日子\] 点一首歌。
-- \[搜网易 好日子\] 从网易云音乐点一首歌。
-- \[搜QQ 好日子\] 从QQ音乐点一首歌。
+- \[搜网易云 好日子\] 从网易云音乐点一首歌。
+- \[搜QQ音乐 好日子\] 从QQ音乐点一首歌。
+- \[搜咪咕音乐 好日子\] 从咪咕音乐点一首歌。
 - \[选择 0\] 从点歌结果中选择一首。
 
 ## 本体

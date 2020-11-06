@@ -25,7 +25,7 @@ epixiv = pixiv.epixiv(
 )
 
 try:
-    epixiv.login(hoshino.config.pixiv_id, hoshino.config.pixiv_password)
+    epixiv.login(config.pixiv.username, config.pixiv.password)
     pass
 except Exception as e:
     print('登录p站失败了 请检查配置.')

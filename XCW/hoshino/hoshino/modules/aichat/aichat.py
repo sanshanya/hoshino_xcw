@@ -40,8 +40,8 @@ EXPR_DONT_UNDERSTAND = (
 
 ################
 # 请修改
-app_id = '2154605859'
-app_key = 'DWmXnuZXkI9rnvKN'
+app_id = ''
+app_key = ''
 ################
 
 def getReqSign(params: dict) -> str:
@@ -58,56 +58,13 @@ def rand_string(n=8):
         random.choice(string.ascii_uppercase + string.digits)
         for _ in range(n))
 
-path = os.path.join(os.path.dirname(__file__),'ai_config.json')
-def save_config(config:dict):
-    try:
-        with open(path,'w',encoding='utf8') as f:
-            json.dump(config,f,ensure_ascii=False,indent=2)
-        return True
-    except Exception as ex:
-        print(ex)
-        return False
 
-def load_config():
-    try:
-        with open(path,'r',encoding='utf8') as f:
-            config = json.load(f)
-            return config
-    except:
-        return {}
-config_path = os.path.dirname(__file__)+'/config.json'
-g_config = load_config()
-g_open_groups = set(g_config.get('open_groups',[]))
-
-@sv.on_message()
-async def switch(bot, ctx):
-    global g_config
-    global g_open_groups
-    msg = ctx['raw_message']
-    switch.gpid = ctx['group_id']
-    u_priv = priv.get_user_priv(ctx)
-    if u_priv < priv.ADMIN:
-        return
-    if msg == '提高AI概率':
-        g_open_groups.add(switch.gpid)
-        g_config['open_groups'] = list(g_open_groups)
-        save_config(g_config)
-        await bot.send(ctx,'本群AI概率已提高',at_sender=True)
-
-    elif msg == '降低AI概率':
-        g_open_groups.discard(switch.gpid)
-        g_config['open_groups'] = list(g_open_groups)
-        save_config
-        await bot.send(ctx,'本群AI概率已降低',at_sender=True)
         
 @sv.on_message('group')
 async def ai_reply(bot, context):
-    if switch.gpid not in g_open_groups and switch.gpid!= 0:
-            if not random.randint(1,100) <= 0.5:#拙劣的概率开关
-                return
-
     msg = str(context['message'])
-    if msg.startswith(f'[CQ:at,qq={context["self_id"]}]'):
+    
+    if not msg.startswith(f'[CQ:at,qq={context["self_id"]}]'):
         return
 
     text = re.sub(cq_code_pattern, '', msg).strip()

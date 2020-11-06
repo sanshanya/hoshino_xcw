@@ -10,8 +10,8 @@ config = {
     "default": {
         "withdraw" : 0,
         "lolicon": True,
-        "lolicon_r18": False,
-        "acggov": False,
+        "lolicon_r18": True,
+        "acggov": True,
     },
     "lolicon": {
         "mode": 1,
