@@ -88,7 +88,7 @@ MODULES_ON = {
     'shifan',#识别番剧
     'battle_report',#会战报告生成，需要修改路径
     'bot_manager_web',#新版webmanage
-    #'voiceguess',#猜语音
+    'voiceguess',#猜语音
     #'eclanrank',
     'aichat',#需要apikey，用前修改概率
     #'QA',#问答功能,下方有集成优化版
@@ -129,5 +129,6 @@ MODULES_ON = {
     'pcrsealkiller',#海豹杀手
     'setu_mix',#俩涩图插件合二为一
     #'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
+    'rss',#适用于Hoshino v2的rss订阅插件,详情https://github.com/zyujs/rss
     'Genshin_Impact',#原神系列
 }

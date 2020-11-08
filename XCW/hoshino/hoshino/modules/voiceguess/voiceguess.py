@@ -82,7 +82,7 @@ async def download_voice_ci(bot, ev: CQEvent, logger):
                     else:
                         logger.info(f'下载{file_name}成功!')
                         count = count + 1
-        await bot.send(ev, f'下载完毕，此次下载"cygames"语音包{count}个，目前共{len(os.listdir(DIR_PATH))}个. 请使用软件将它们批量转换为silk格式.')
+        await bot.send(ev, f'下载完毕，此次下载"cygames"语音包{count}个，目前共{len(os.listdir(DIR_PATH))}个. 如果您使用的是go-cqhttp，请用软件将它们批量转换为silk格式，否则无法发送.')
 
 
 @sv.on_fullmatch(("猜语音排行", "猜语音排行榜", "猜语音群排行"))
@@ -97,7 +97,7 @@ async def description_guess_group_ranking(bot, ev: CQEvent):
     await bot.send(ev, "\n".join(msg))
 
 
-@sv.on_prefix(('cygames', '猜语音'), only_to_me= False)
+@sv.on_prefix('cygames')
 async def cygames_voice_guess(bot, ev: CQEvent):
     if gm.is_playing(ev.group_id):
         await bot.finish(ev, "游戏仍在进行中…")
@@ -105,15 +105,42 @@ async def cygames_voice_guess(bot, ev: CQEvent):
         await download_voice_ci(bot, ev, sv.logger)
         file_list = os.listdir(DIR_PATH)
         chosen_file = random.choice(file_list)
-        file_suffix = chosen_file.rsplit('.', 1)[1]
-        if file_suffix != 'silk' and file_suffix != 'amr':
-            await bot.send(ev, "警告: 发现非silk或amr格式的语音, 建议使用软件转成silk格式, 否则可能无法发送.")
         file_path = os.path.join(DIR_PATH, chosen_file)
         await bot.send(ev, f'猜猜这个“cygames”语音来自哪位角色? ({ONE_TURN_TIME}s后公布答案)')
         await bot.send(ev, MessageSegment.record(f'file:///{os.path.abspath(file_path)}'))
         estertion_id = chosen_file[7:10]
         chara_id = estertion_id2chara_id(int(estertion_id))
         game.answer = chara_id
+        await asyncio.sleep(ONE_TURN_TIME)
+        # 结算
+        if game.winner:
+            return
+        c = chara.fromid(game.answer)
+    await bot.send(ev, f"正确答案是: {c.name} {c.icon.cqcode}\n很遗憾，没有人答对~")
+
+@sv.on_prefix('猜语音')
+async def voice_guess(bot, ev: CQEvent):
+    if gm.is_playing(ev.group_id):
+        await bot.finish(ev, "游戏仍在进行中…")
+    with gm.start_game(ev.group_id) as game:
+        record_path = os.path.join(HOSHINO_RES_PATH, 'record')
+        if not os.path.exists(record_path):
+            await cygames_voice_guess(bot, ev)
+            return
+        file_list = os.listdir(record_path)
+        chosen_chara = random.choice(file_list)
+        chara_path = os.path.join(HOSHINO_RES_PATH, 'record', chosen_chara)
+        chara_list = os.listdir(chara_path)
+        chosen_file = random.choice(chara_list)
+        file_path = os.path.join(chara_path, chosen_file)
+        await bot.send(ev, f'猜猜这段语音来自哪位角色? ({ONE_TURN_TIME}s后公布答案)')
+        await bot.send(ev, MessageSegment.record(f'file:///{os.path.abspath(file_path)}'))
+        #兼容"小仓唯骂我"插件的语音资源
+        if chosen_chara == 'mawo':
+            game.answer = 1036
+        else:
+            game.answer = int(chosen_chara)
+        #print(chara.fromid(game.answer).name)
         await asyncio.sleep(ONE_TURN_TIME)
         # 结算
         if game.winner:

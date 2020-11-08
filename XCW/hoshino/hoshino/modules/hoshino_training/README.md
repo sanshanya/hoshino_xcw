@@ -33,7 +33,7 @@ Hoshino调教助手
 
 - `functions/chara.py` 角色&卡池自动更新
 
-  本模块将在每次hoshino启动时以及每天下午2-3点间某个随机时间自动更新角色数据和卡池数据, 无需任何操作. 请注意本模块会和 [pcrbot/gacha](https://github.com/pcrbot/gacha) 卡池自动更新项目冲突, 如果已安装 `gacha` 项目, 请删除本模块(`functions/chara.py`)避免冲突.
+  本模块将在每次hoshino启动后以及每4个小时自动更新一次角色数据和卡池数据, 无需任何操作. 请注意本模块会和 [pcrbot/gacha](https://github.com/pcrbot/gacha) 卡池自动更新项目冲突, 如果已安装 `gacha` 项目, 请删除本模块(`functions/chara.py`)避免冲突.
 
   卡池数据来源: <https://api.redive.lolikon.icu/gacha/default_gacha.json>
 

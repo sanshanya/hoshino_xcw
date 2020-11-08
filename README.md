@@ -86,6 +86,7 @@
 | setu_mix | 上方两种涩图插件的融合 | 默认添加方法                                                 | 以后默认使用这个插件                                       |
 | hoshino_training | 用于hoshino原装功能的调教 | 慎重启用,查看详情前往https://github.com/zyujs/hoshino_training |                                                            |
 | Genshin_Impact | pcrbot(×)原神bot(√) | 默认添加方法                                                 |                                                            |
+| rss | 适用于Hoshino v2的rss订阅插件 | 默认添加方法,详情https://github.com/zyujs/rss | |
 
 
 

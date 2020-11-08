@@ -45,5 +45,6 @@ async def anti_holo(bot: HoshinoBot, ev: CQEvent):
     await bot.delete_msg(self_id=ev.self_id, message_id=ev.message_id)
 
 SB_HOLO = module_get('hoshino.modules.groupmaster.anti_holo', 'SB_HOLO')
-keyword_replace(SB_HOLO, anti_holo)
-keyword_remove(WHITE_LIST)
+if SB_HOLO:
+    keyword_replace(SB_HOLO, anti_holo)
+    keyword_remove(WHITE_LIST)
