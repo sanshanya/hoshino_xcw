@@ -12,7 +12,7 @@ import string
 from hashlib import md5
 from time import time
 from urllib.parse import quote_plus
-
+import hoshino
 import aiohttp
 from nonebot import get_bot
 from nonebot.helpers import render_expression
@@ -40,8 +40,8 @@ EXPR_DONT_UNDERSTAND = (
 
 ################
 # 请修改
-app_id = ''
-app_key = ''
+app_id = hoshino.config.tenxun_api_ID
+app_key = hoshino.config.tenxun_api_KEY
 ################
 
 def getReqSign(params: dict) -> str:

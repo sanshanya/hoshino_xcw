@@ -34,7 +34,7 @@ p {
 	color: var(--font-color);
 }
 
-font{
+font {
 	color: var(--font-color);
 }
 
@@ -54,7 +54,7 @@ font{
 }
 
 a {
-	text-decoration:none;
+	text-decoration: none;
 }
 
 .el-row {
@@ -88,7 +88,7 @@ el-button {
 }
 
 .clanname {
-	background: url("../images/banner.png") no-repeat;
+	background: url("https://yocool.botlink.xyz/image/banner.png") no-repeat;
 	text-align: center;
 	width: 320px;
 	height: 60px;
@@ -102,12 +102,12 @@ el-button {
 }
 
 .clanbg {
-	background: url("../images/clanbg.png") no-repeat center;
+	background: url("https://yocool.botlink.xyz/image/clanbg.png") no-repeat center;
 	text-align: center;
 	width: 100%;
 	height: 300px;
 	transform: scale(0.75);
-	margin: 0 auto;
+	margin: 0 auto -16%;
 	display: block;
 }
 
@@ -117,7 +117,7 @@ el-button {
 	.logo {
 		width: 135px;
 		height: 45px;
-		background: url("../images/logo.png") no-repeat center;
+		background: url("https://yocool.botlink.xyz/image/logo.png") no-repeat center;
 		background-size: 100%;
 		position: fixed;
 		z-index: 100;
@@ -271,7 +271,7 @@ el-button {
 	-ms-box-sizing: border-box;
 	-o-box-sizing: border-box;
 	box-sizing: border-box;
-	margin: 40px auto;
+	margin: 40px auto 0;
 }
 
 .Service-content {
@@ -398,7 +398,7 @@ el-button {
 @media only screen and (max-width: 1080px) {
 	.Service-item {
 		display: block;
-		width: 150px;
+		width: 200px;
 		/* padding: 30px 16px; */
 		text-align: center;
 		float: left;
@@ -418,11 +418,11 @@ el-button {
 }
 
 /* 预约页面 */
-	
+
 .finishedRow td span {
-		color: #fff!important;
-	}
-	
+	color: #fff !important;
+}
+
 /* colorful */
 
 .el-button {
@@ -582,9 +582,10 @@ el-button {
 	left: 10px;
 }
 
-.el-menu--horizontal .el-menu-item:not(.is-disabled):focus, .el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
-    outline: 0;
-    color: #FFFFFF;
+.el-menu--horizontal .el-menu-item:not(.is-disabled):focus,
+.el-menu--horizontal .el-menu-item:not(.is-disabled):hover {
+	outline: 0;
+	color: #FFFFFF;
 }
 
 /* Toolbar */
@@ -740,35 +741,36 @@ progress {
 	color: #fff;
 }
 
-.finishedRow  .el-table th {
-    background-color: var(--secondary-color-1);
-}
-
-.el-table th, .el-table tr{
+.finishedRow .el-table th {
 	background-color: var(--secondary-color-1);
 }
 
-.el-table tr{
+.el-table th,
+.el-table tr {
+	background-color: var(--secondary-color-1);
+}
+
+.el-table tr {
 	background-color: var(--background-color);
 }
 
 
 .el-table--enable-row-hover .el-table__body tr:hover>td {
-    background-color: var(--background-color);
+	background-color: var(--background-color);
 }
 
 .el-table--striped .el-table__body tr.el-table__row--striped td {
-    background: var(--background-color);
+	background: var(--background-color);
 }
 
-.el-table--enable-row-transition .el-table__body td{
+.el-table--enable-row-transition .el-table__body td {
 	-webkit-transition: background-color .25s ease;
 	transition: background-color .25s ease;
 	background-color: var(--background-color);
 }
 
 .el-table thead.is-group th {
-    background: var(--secondary-color-1);
+	background: var(--secondary-color-1);
 }
 
 .el-table--border td {
@@ -780,12 +782,12 @@ progress {
 }
 
 .el-table th.is-leaf {
-    border-bottom: none;
+	border-bottom: none;
 }
 
 .el-table thead {
-    color: #FFF;
-    font-weight: 500;
+	color: #FFF;
+	font-weight: 500;
 }
 
 td {
@@ -793,53 +795,117 @@ td {
 }
 
 .el-table .sort-caret.ascending {
-    border-bottom-color: #ffffff;
-    top: 5px;
+	border-bottom-color: #ffffff;
+	top: 5px;
 }
 
 .el-table .sort-caret.descending {
-    border-top-color: #ffffff;
-    bottom: 7px;
+	border-top-color: #ffffff;
+	bottom: 7px;
 }
 
 .el-checkbox__inner:hover {
-    border-color: var(--secondary-color-2);
+	border-color: var(--secondary-color-2);
 }
 
 .el-table__expand-icon {
-    position: relative;
-    cursor: pointer;
-    color: var(--font-color);
-    -webkit-transition: -webkit-transform .2s ease-in-out;
-    transition: -webkit-transform .2s ease-in-out;
-    transition: transform .2s ease-in-out;
-    transition: transform .2s ease-in-out,-webkit-transform .2s ease-in-out;
-    height: 20px;
+	position: relative;
+	cursor: pointer;
+	color: var(--font-color);
+	-webkit-transition: -webkit-transform .2s ease-in-out;
+	transition: -webkit-transform .2s ease-in-out;
+	transition: transform .2s ease-in-out;
+	transition: transform .2s ease-in-out, -webkit-transform .2s ease-in-out;
+	height: 20px;
 }
 
-.el-table--border, .el-table--group {
-    border: none;
+.el-table--border,
+.el-table--group {
+	border: none;
 }
 
 .el-table::before {
-    content: '';
-    position: absolute;
-    background-color: transparent;
-    z-index: 1;
+	content: '';
+	position: absolute;
+	background-color: transparent;
+	z-index: 1;
 }
 
-.el-table--border::after, .el-table--group::after, .el-table::before {
-    content: '';
-    position: absolute;
-    background-color: transparent;
-    z-index: 1;
+.el-table--border::after,
+.el-table--group::after,
+.el-table::before {
+	content: '';
+	position: absolute;
+	background-color: transparent;
+	z-index: 1;
 }
 
 .el-table__header {
-    table-layout: auto;
-    border-collapse: separate;
+	table-layout: auto;
+	border-collapse: separate;
 }
 
 .el-table {
-    background-color: var(--background-color);
+	background-color: var(--background-color);
+}
+
+.el-notification__title {
+	color: var(--font-color);
+}
+
+@media only screen and (min-width: 1000px) {
+.el-tabs__item {
+	width: 40%;
+}
+}
+
+#loading_character {
+	position: absolute;
+	top: 60%;
+	left: 50%;
+	transform: translate(-50%, -50%);
+	z-index: 9999;
+	transition: all 1100ms;
+	transition-timing-function: ease-in-out;
+}
+
+#loading_character .text_loading {
+	position: absolute;
+	bottom: 21px;
+	left: 37px;
+	transition: opacity 400ms;
+}
+
+#loading_character .text_loading.hide {
+	transition-delay: 0ms;
+}
+
+#loading_character .text_loading span {
+	position: absolute;
+	display: block;
+	left: 24px;
+	top: -1px;
+}
+
+#loading_character .text_loading .icon_loading {
+	width: 16px;
+	height: 16px;
+	left: 0;
+	top: 0;
+	transform-origin: 50%;
+	animation: iconRotate 500ms ease-in-out infinite;
+}
+
+@keyframes iconRotate {
+	0% {
+		transform: rotate(0deg);
+	}
+
+	80% {
+		transform: rotate(360deg);
+	}
+
+	100% {
+		transform: rotate(360deg);
+	}
 }

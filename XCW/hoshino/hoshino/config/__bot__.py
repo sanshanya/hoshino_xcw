@@ -32,11 +32,15 @@ lolicon_api,相关插件shebot/shebot_old,申请地址https://api.lolicon.app/#/
 acggov_api,相关插件acggov,setuacggov,申请地址https://www.acg-gov.com/
 shitu_api,相关插件shitu,申请地址http://saucenao.com/
 jjc_api,相关插件arena,申请地址https://www.pcrdfans.com/bot
+tenxun_api,相关插件aichat,申请地址https://ai.qq.com/,已经为你默认准备了一个,但建议自行申请进行个性定制
 '''
 lolicon_api = ''                                        
 acggov_api = '' 
 shitu_api = ''                                     
-jjc_api = ""                                         
+jjc_api = ""
+tenxun_api_ID = '2154581933'
+tenxun_api_KEY = 'gtv1yCMqKSKSoeuD'
+baidu_api = ''                                         
 ###################################
 '''-----------pixiv账号----------'''
 pixiv_id = ''                           #pixiv账号,无需会员
@@ -86,7 +90,7 @@ MODULES_ON = {
     'bot_manager_web',#新版webmanage
     #'voiceguess',#猜语音
     #'eclanrank',
-    #'tencent_ai_reply',#需要apikey，用前修改概率
+    'aichat',#需要apikey，用前修改概率
     #'QA',#问答功能,下方有集成优化版
     'hiumsentences',#网抑云语录
     'generator',#营销文生成等五个小功能
@@ -98,7 +102,6 @@ MODULES_ON = {
     'timeline',#轴上传
     'picapi',#自定义拉取图片
     'aircon',#群空调
-    #'authMS',#群授权,目前存在一定问题,自行通过报错解决
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色,需要设置go-cqhttp的心跳间隔,推荐3

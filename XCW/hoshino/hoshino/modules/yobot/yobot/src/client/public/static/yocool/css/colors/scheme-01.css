@@ -1,8 +1,8 @@
 :root {
-  --primary-color-1: #ffa84e;/* 主色调1 按钮 */
-  --primary-color-2: #ffd34e;/* 主色调2 底栏 */
-  --secondary-color-1: #ffba54;/* 副色调1 顶栏 */
-  --secondary-color-2: #FF9800;/* 副色调2 选中 */
+  --primary-color-1: #ffa84e;/* 主色调1 */
+  --primary-color-2: #ffd34e;/* 主色调2 */
+  --secondary-color-1: #ffba54;/* 副色调1 */
+  --secondary-color-2: #FF9800;/* 副色调2 */
   --background-color: #fbebd3;/* 背景颜色 */
   --font-color: #FF9800;/* 文字颜色 */
 }
@@ -13,7 +13,7 @@
 	width: 200px;
 	height: 200px;
 	overflow: hidden;
-	background: url("../../images/sprite01.png");
+	background: url("https://yocool.botlink.xyz/image/sprite01.png");
 	background-size: 100%;
 }
 

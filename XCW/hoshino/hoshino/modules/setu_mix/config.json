@@ -6,14 +6,14 @@
     "default": {
         "withdraw": 30,
         "lolicon": true,
-        "lolicon_r18": true,
-        "acggov": true
+        "lolicon_r18": false,
+        "acggov": false
     },
     "lolicon": {
         "mode": 2,
         "apikey": "",
         "r18": true,
-        "use_thumb": false,
+        "use_thumb": true,
         "pixiv_direct": false,
         "pixiv_proxy": ""
     },
@@ -21,7 +21,7 @@
         "mode": 2,
         "apikey": "",
         "ranking_mode": "daily",
-        "use_thumb": false,
+        "use_thumb": true,
         "per_page": 25,
         "pixiv_direct": false,
         "pixiv_proxy": "",

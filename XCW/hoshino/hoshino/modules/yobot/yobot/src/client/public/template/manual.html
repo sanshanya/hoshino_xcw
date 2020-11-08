@@ -1,274 +1,81 @@
 <!DOCTYPE html>
-<!-- saved from url=(0031)https://pcr.botlink.xyz/manual/ -->
-<html lang="zh-CN">
-<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-		
-		<title>公会战使用手册</title>
-		<meta content="width=device-width, initial-scale=1.0" name="viewport">
-		
-		
 
-		
+<head>
+    <title>使用手册</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" Content="公会战功能使用手册">
+    <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/github-markdown-css/3.0.1/github-markdown.min.css">
+    <style>
+        .markdown-body {
+            box-sizing: border-box;
+            min-width: 200px;
+            max-width: 980px;
+            margin: 0 auto;
+            padding: 45px;
+        }
 
-		<!--[if lt IE 9]>
-    <script src="js/html5shiv.js"></script>
-    <![endif]-->
+        @media (max-width: 767px) {
+            .markdown-body {
+                padding: 15px;
+            }
+        }
 
-		<!-- CSS Files
-    ================================================== -->
-		<link rel="stylesheet" href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/bootstrap-4-2-1.css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/bootstrap-grid-min.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/bootstrap-reboot-min.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/animate.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/owl-carousel.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/owl-theme.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/owl-transitions.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/magnific-popup.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/jquery-countdown.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/style2.css" rel="stylesheet"  >
+        .footnote {
+            color: red;
+        }
+    </style>
+</head>
 
-		<!-- color scheme -->
-		<link id="colors" href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/scheme-03.css" rel="stylesheet" type="text/css">
-		<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/coloring.css" rel="stylesheet" type="text/css">
+<body class="markdown-body">
+    <h1>公会战功能使用手册</h1>
 
-    <!-- RS5.0 Stylesheet -->
-    <link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/settings.css" rel="stylesheet" type="text/css">
-	<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/layers.css" rel="stylesheet" type="text/css">
-    <link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/navigation.css" rel="stylesheet" type="text/css">
-    <link href="http://d1.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/rev-settings.css" rel="stylesheet" type="text/css">
-	
-	<!-- zipfont -->
-	<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/TXQYW3-embed.css" rel="stylesheet" type="text/css">
-	<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/TXQYW3.css" rel="stylesheet" type="text/css">
-	<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/TXQYW5.css" rel="stylesheet" type="text/css">
-	<link href="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/css/TXQYW5-embed.css" rel="stylesheet" type="text/css">
+    <p>使用 Bot 管理公会战，需要所有成员遵守使用规则<br />Bot 只是辅助作用，与成员多沟通才能提高分数</p>
 
+    <p>具体指令请以查看<a href="../help/">帮助页面</a></p>
 
+    <h2>开始前</h2>
 
-	<script type="text/javascript" src="chrome-extension://dbjbempljhcmhlfpfacalomonjpalpko/scripts/inspector.js"></script><input type="hidden" id="_w_brink"></head>
+    <ol>
+        <li>机器人管理员进入后台设置，确认设置中的 boss 生命值符合当期公会战</li>
+        <li>在群聊中发送<code>创建日服公会</code>（日、韩、台、国）</li>
+        <li>所有公会战成员在群聊中发送<code>加入公会</code>，或者由群管理员发送<code>加入全部成员</code></li>
+        <li>成员向 bot 私聊发送<code>登录</code>或<code>重置密码</code>，进入后台确认，同时修改登录密码</li>
+        <li>成员进入公会战面板，并将网页地址保存到桌面快捷方式（手机、电脑均可），以便使用网页报刀和查看数据</li>
+        <li>管理员在公会设置中，新建一个空白档案用来存放公会战数据</li>
+    </ol>
 
-	<body style="display: block; zoom: 1;">
-		<div id="wrapper" style="background-size: cover;">
-			<!-- header begin -->
-			<header class="header-s1 transparent">
-            <div class="container" style="background-size: cover;">
-                <div class="row" style="background-size: cover;">
-                    <div class="col-md-12" style="background-size: cover;">
+    <h2>进行中：成员</h2>
 
-                        <div class="header-row" style="background-size: cover;">
-                            <div class="header-col left" style="float: left; clear: both; display: inline; left: -25px; background-size: contain;">
-                                <!-- logo begin -->
-                               
-                                <!-- logo close -->
-                            </div>
-                            <div class="header-col mid" style="background-size: cover;">
-                                <!-- mainmenu begin -->
-                                <ul id="mainmenu" class="no-separator">
-										<li><a href="http://175.24.70.191:9222/xcw/main">主页</a></li>										
-										<li><a href="http://175.24.70.191:9222/xcw/help">帮助文档<span>New!</span></a>
-											<ul>
-												<li><a href="http://175.24.70.191:9222/xcw/manual">会战手册</a></li>
-												<li><a href="http://175.24.70.191:9222/xcw/help"><s>常见问题</s></a></li>
-												<li><a href="http://175.24.70.191:9222/xcw/help"><s>更新日志</s></a></li>
-												<li><a href="http://175.24.70.191:9222/xcw/help"><s>如何搭建</s></a></li>
-											</ul>
-										</li>
-										<li><a href="http://175.24.70.191:9222/xcw/about">关于<span>New!</span></a>
-										</li>
-										<li><a href="http://175.24.70.191:9222/xcw/thanks">鸣谢<span>New!</span></a></li>
-									</ul>
-                                <div class="col-right" style="background-size: cover;">
-                                    <a class="btn-custom" href="http://wpa.qq.com/msgrd?v=3&uin=1057069677&site=qq&menu=yes"><i class="fa fa-heart"></i>联系作者</a>
-                                </div>
-                            </div>
-                            <div class="clearfix" style="background-size: cover;"></div>
-                        </div>
-                        <!-- small button begin -->
-                        <span id="menu-btn"></span>
-                        <!-- small button close -->
+    <ul>
+        <li>成员准备挑战 boss 时，需要在群聊中发送<code>申请出刀</code>，当 bot 允许后开始挑战 boss</li>
+        <li>如果挑战 boss 完毕，需要向 bot 上报挑战结果</li>
+        <li>如果挑战 boss 不成功，需要向 bot 上报挂树情况或 SL 使用情况</li>
+        <li>如果意外掉刀，需要上报一次 0 点伤害的挑战</li>
+        <li>成员可以使用预约功能，在 boss 出现时获得 bot 的 at 提醒</li>
+        <li>（可选择执行）如果希望进行合刀筛刀等多人出刀的操作，可以在群聊中发送<code>锁定：留言</code>，然后等待其他成员共同挑战 boss。等到所有挑战完毕后，按结算顺序向 bot 依次上报</li>
+        <li>（可选择执行）上报伤害和预约 boss 时，通过留言功能帮助排刀人员制定计划</li>
+    </ul>
 
-                    </div>
-                </div>
-            </div>
-        </header>
-			<!-- header close -->
-			<!-- content begin -->
-			<div class="no-bottom no-top" id="content" style="background-size: cover;">
+    <h2>进行中：管理员</h2>
 
-				<!-- revolution slider begin -->
-				<!-- section begin -->
-				<section class="full-height no-top no-bottom text-light" data-bgimage="url(https://pic3.zhimg.com/v2-21f93cce7887650cd08e1a7b4054ecf5_r.jpg?source=1940ef5c) 50% 0 no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;https://pic3.zhimg.com/v2-21f93cce7887650cd08e1a7b4054ecf5_r.jpg?source=1940ef5c&quot;) 50% 0px / cover no-repeat;">
+    <ul>
+        <li>在“查刀”页面中，管理员可以选中当日未完成出刀的成员，一键发送提醒</li>
+        <li>在“查刀”页面中，排刀人员可以一览所有成员的 SL 使用情况</li>
+        <li>在“查刀”页面中，排刀人员可以一览所有成员未完成的尾刀</li>
+    </ul>
 
-					<div class="overlay-bg t80" style="background-color: rgba(0, 0, 0, 0.1); background-size: cover;">
-						<div class="center-y relative" data-scroll-speed="4" style="background-size: cover; transform: translateY(0px);">
-							<div class="container" style="background-size: cover;">
-								<div class="row align-items-center" style="background-size: cover;">
-									<div class="col-md-6" style="background-size: cover;">
+    <h2>特殊情况</h2>
 
-										<h1><strong>公会战使用手册</strong><span class="label">NEW</span></h1>
+    <ul>
+        <li>如果有人挑战了 boss 却没有上报，可以由他人代理上报</li>
+        <li>如果前一个上报数据出错，可以由上报者或管理员发送<code>撤销</code>来撤销</li>
+        <li>如果有人申请了挑战，但没有报伤害也没有报挂树或 SL，其他成员可以在 3 分钟后在群聊中发送<code>解锁</code>来强制解锁</li>
+        <li>如果出刀时间在日期变更附近导致未及时上报，需要将伤害上报到前一天的记录中</li>
+    </ul>
 
+    <h2>查看数据</h2>
 
-										<p class="lead fontw3">
-											使用 Bot 管理公会战，需要所有成员共同遵守使用规则<br>
-											Bot 只是辅助作用，与成员多沟通才能提高分数
-										</p>
+    <p>公会战面板“查刀”页面中能查看记录的所有数据，并进行快速的筛选、过滤。如果需要原始数据，可以从“统计”页面导出。</p>
+</body>
 
-										<div class="spacer-20" style="background-size: cover;"></div>
-
-										<a href="http://175.24.70.191:9222/xcw/manual2" class="btn-custom scroll-to">查看旧版</a>
-
-									</div>
-
-									<div class="col-md-6" style="background-size: cover;">
-										<img src="./公会战手册_files/screen.png" class="img-fluid" alt="">
-									</div>
-
-									<div class="clearfix" style="background-size: cover;"></div>
-
-								</div>
-							</div>
-						</div>
-					</div>
-			</section></div>
-
-			
-			<!-- section close -->
-
-			<section style="padding: 90px 0px 0px; background-size: cover;">
-				<div class="container" style="background-size: cover;">
-					<div class="row" style="background-size: cover;">
-						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
-							<h4 class="id-color">快速上手的</h4>
-							<h2>操作流程</h2>
-							<p>更多详细流程或指令请查看帮助文档或旧版手册</p>
-							<div class="spacer-20" style="background-size: cover;"></div>
-						</div>
-
-						<!-- feature box begin -->
-						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
-							<div class="box-icon-simple left" style="background-size: cover;">
-								<span class="num">1</span>
-								<div class="text" style="background-size: cover;">
-									<h3>初次使用</h3>
-									在群聊中发送<code class="pcrcode">创建国服公会</code><br>
-									公会成员在群聊中发送<code class="pcrcode">加入公会</code>
-								</div>
-							</div>
-						</div>
-						<!-- feature box close -->
-
-						<!-- feature box begin -->
-						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
-							<div class="box-icon-simple left" style="background-size: cover;">
-								<span class="num">2</span>
-								<div class="text" style="background-size: cover;">
-									<h3>会战进行</h3>
-									成员出刀前，在群聊中发送<code class="pcrcode">申请出刀</code><br>
-									出刀完毕后，发送<code class="pcrcode">报刀+伤害数字</code>上报结果
-								</div>
-							</div>
-						</div>
-						<!-- feature box close -->
-
-						<!-- feature box begin -->
-						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
-							<div class="box-icon-simple left" style="background-size: cover;">
-								<span class="num">3</span>
-								<div class="text" style="background-size: cover;">
-									<h3>结束收尾</h3>
-									会战结束后，由会战管理切换一个空白档案，用来存放下次公会战数据
-								</div>
-							</div>
-						</div>
-						<!-- feature box close -->
-					</div>
-				</div>
-			</section>
-
-			<section data-bgcolor="#fff" style="background-color: rgb(255, 255, 255); background-size: cover;">
-				<div class="container" style="background-size: cover;">
-					<div class="row" style="background-size: cover;">
-						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
-							<h4 class="id-color">简单&nbsp;&nbsp;&nbsp;便捷&nbsp;&nbsp;&nbsp;高效</h4>
-							<h2>后台管理</h2>
-							<p>查刀、催刀、统计分析，这里全都有</p>
-							<div class="spacer-20" style="background-size: cover;"></div>
-						</div>
-
-						<div class="col-md-8 offset-md-2" style="background-size: cover;">
-							<img src="./公会战手册_files/teamwarfare.png" class="img-fluid" alt="">
-						</div>
-					</div>
-				</div>
-			</section>
-
-
-			<section class="full-height no-top no-bottom text-light" data-bgimage="url(https://pic2.zhimg.com/v2-9d23dfb6db94fe7ab36441675e12e153_r.jpg?source=1940ef5c) 50% 50% no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;https://pic2.zhimg.com/v2-9d23dfb6db94fe7ab36441675e12e153_r.jpg?source=1940ef5c&quot;) 30% 0px / cover no-repeat;">
-				<div class="overlay-bg" style="background-size: cover;">
-					<div class="container center-y" style="background-size: cover;">
-						<div class="row" style="background-size: cover;">
-
-							<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
-
-								<h2>如何使用</h2><br>
-
-
-								<p class="lead">
-									初次登入后台时，需要私聊向机器人发送<code class="pcrcode-white">登录</code>，获取临时登录链接<br><br>如果无法接收到链接，请发送<code class="pcrcode-white">重置密码</code>，尝试获取临时密码登录
-								</p>
-
-								<div class="spacer-20" style="background-size: cover;"></div>
-
-								<a href="http://175.24.70.191:9222/xcw/login" class="btn-custom scroll-to">进入会战管理系统</a>
-
-							</div>
-
-						</div>
-					</div>
-				</div>
-			</section>
-
-
-
-		</div>
-		<!-- content close -->
-
-		<!-- footer begin -->
-		
-		<!-- footer close -->
-
-
-
-		<div id="preloader" style="background-size: cover; display: none;">
-			<div class="spinner" style="background-size: cover;">
-				<div class="bounce1" style="background-size: cover;"></div>
-				<div class="bounce2" style="background-size: cover;"></div>
-				<div class="bounce3" style="background-size: cover;"></div>
-			</div>
-		</div>
-		
-
-		<!-- Javascript Files
-    ================================================== -->
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-magnific-popup-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-isotope-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-countTo.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-countdown.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/enquire-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/easing.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/designesia.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/bootstrap-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/app.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/wow-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/validation.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/typed.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/owl-carousel.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/layui.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-stellar-min.js"></script>
-		<script src="http://pic.027cgb.com/631148/%E6%98%8E%E8%A7%81%E4%BD%AC/js/jquery-plugin.js"></script>
-
-	
-
-
-</body></html>
+</html>

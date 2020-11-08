@@ -50,7 +50,7 @@
 | bot_manager_web      | 网页端的"*lssv*"                             | 默认添加方法,且在*config*内添加*bot_manager_web.py*,且按说明进行配置 | 非常实用的功能                                             |
 | voiceguess           | 通过语音猜角色                             | 请按照readme配置                                             | 音质较低                                               |
 | eclanrank            | 定时提醒工会的排名                           | 默认添加方法                                                 | 定时播报,显示档线和名次变化幅度,emm....班主任的感觉        |
-| tencent_ai_reply     | 腾讯AI闲聊                                   | 默认添加方法,需要相应apikey                                  | 有点鸡肋                                                   |
+| aichat | 腾讯AI闲聊                                   | 默认添加方法,需要相应apikey                                 | @才能对话                                                  |
 | hiumsentences        | 网易云语录                                   | 默认添加方法                                                 | 到点,上号!                                                 |
 | generator            | 狗屁不通生成器,营销文生成器等数个功能        | 默认添加方法                                                 | 有趣但无聊?                                                |
 | ontree_scheduler     | 挂树优化提醒                                 | 默认添加方法,且需要安装其说明修改yobot                       | 挺好的功能                                                 |
@@ -85,7 +85,7 @@
 | pcrsealkiller | 海豹杀手 | 默认添加方法                                                 | 抽卡截图还秀群里来了                                       |
 | setu_mix | 上方两种涩图插件的融合 | 默认添加方法                                                 | 以后默认使用这个插件                                       |
 | hoshino_training | 用于hoshino原装功能的调教 | 慎重启用,查看详情前往https://github.com/zyujs/hoshino_training |                                                            |
-| Genshin | pcrbot(×)原神bot(√) | 默认添加方法                                                 |                                                            |
+| Genshin_Impact | pcrbot(×)原神bot(√) | 默认添加方法                                                 |                                                            |
 
 
 

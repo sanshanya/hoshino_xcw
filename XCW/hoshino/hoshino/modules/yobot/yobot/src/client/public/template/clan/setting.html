@@ -8,15 +8,15 @@
   <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/index.js"></script>
   <link rel="stylesheet" href="https://cdn.bootcdn.net/ajax/libs/element-ui/2.13.0/theme-chalk/index.css">
   <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-  <script src="{{ url_for('yobot_static', filename='yocool/js/yocool.iii.js') }}"></script>
-  <link rel="stylesheet" href="{{ url_for('yobot_static', filename='yocool/css/style.css') }}">
+  <script src="https://yocool.botlink.xyz/yocool.js"></script>
+  <link rel="stylesheet" href="https://yocool.botlink.xyz/css/style.css">
 </head>
 
 <body>
   <div id="app">
     <div id="topToolbar">
     	<el-page-header @back="location='../'"></el-page-header>
-    	<div class="logo"><a class="url" href="http://175.24.70.191:9222/xcw/main/"></a></div>
+    	
     	<el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal" @select="handleSelect">
     		<el-menu-item index="5">我的</el-menu-item>
     		<el-menu-item index="4">统计</el-menu-item>

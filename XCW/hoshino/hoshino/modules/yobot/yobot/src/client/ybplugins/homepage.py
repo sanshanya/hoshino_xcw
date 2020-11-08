@@ -44,33 +44,9 @@ class Index:
             methods=['GET'])
         async def yobot_help():
             return await send_from_directory(template_folder, "help.html")
-        
-        @app.route(
-            urljoin(self.public_basepath, 'help2/'),
-            methods=['GET'])
-        async def yobot_help2():
-            return await send_from_directory(template_folder, "help2.html")
-            
+
         @app.route(
             urljoin(self.public_basepath, 'manual/'),
             methods=['GET'])
         async def yobot_manual():
             return await send_from_directory(template_folder, "manual.html")
-        
-        @app.route(
-            urljoin(self.public_basepath, 'manual2/'),
-            methods=['GET'])
-        async def yobot_manual2():
-            return await send_from_directory(template_folder, "manual2.html")
-        
-        @app.route(
-            urljoin(self.public_basepath, 'thanks/'),
-            methods=['GET'])
-        async def yobot_thanks():
-            return await send_from_directory(template_folder, "thanks.html")
-            
-        @app.route(
-            urljoin(self.public_basepath, 'main/'),
-            methods=['GET'])
-        async def yobot_main():
-            return await send_from_directory(template_folder, "mian.html")
