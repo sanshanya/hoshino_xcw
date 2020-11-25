@@ -108,7 +108,6 @@ MODULES_ON = {
     #'shebot',##集合了许多插件,请勿和shebot及QA同时开启
     #'nmsl',#抽象抽象抽抽抽像像像
     'baidupan',#百度盘解析
-    'calendar',#查看日程表,实用的全服务器可用的功能
     'meme_web',#memegenerator的web化,勿同时开启
     'pcrmiddaymusic',#公主连结午间音乐
     'image_generate',#取代原image
@@ -131,4 +130,8 @@ MODULES_ON = {
     #'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
     'rss',#适用于Hoshino v2的rss订阅插件,详情https://github.com/zyujs/rss
     'Genshin_Impact',#原神系列
+    #'pcravatarguesskiller',#人机猜头像，通常用于群有两个及以上Bot
+    #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
+    #'pcr_calendar',#全服务器通用日程表
+    #'concatHead',#接头霸王，需要百度api
 }

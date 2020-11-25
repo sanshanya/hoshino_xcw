@@ -44,10 +44,10 @@ async def honor_info(bot, ev, gid, honor_type):
 async def gruop_silence(bot, ev, gid, status):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner' and self_info['role'] != 'admin':
-        await bot.send(ev, '\n不给我管理员还想让我帮忙塞口球？做梦去吧！', at_sender=True)
+        await bot.send(ev, '\n不给我管理员？', at_sender=True)
         return    
     if not priv.check_priv(ev,priv.ADMIN):
-        await bot.send(ev, '只有狗管理才能给大家塞口球哦w', at_sender=True) 
+        await bot.send(ev, '只有管理才能给大家塞口球哦w', at_sender=True) 
     else:   
         try:
             await bot.set_group_whole_ban(
@@ -65,10 +65,10 @@ async def gruop_silence(bot, ev, gid, status):
 async def member_silence(bot, ev, uid, sid, gid, time):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner' and self_info['role'] != 'admin':
-        await bot.send(ev, '\n不给我管理员还想让我帮忙塞口球？做梦去吧！', at_sender=True)
+        await bot.send(ev, '\n不给我管理员？', at_sender=True)
         return
     if not time.isdigit() and '*' not in time:
-        await bot.send(ev, '憨批，时长都能输错？')
+        await bot.send(ev, '时长？？？')
     else:
         if uid == sid or priv.check_priv(ev,priv.ADMIN):
             try:
@@ -91,7 +91,7 @@ async def member_silence(bot, ev, uid, sid, gid, time):
 async def title_get(bot, ev, uid, sid, gid, title):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner':
-        await bot.send(ev, '\n嘻嘻嘻，把群转移给我才能用这个功能哦！\n我才不告诉你可以去qun.qq.com里找回群主权限呢！', at_sender=True)
+        await bot.send(ev, '\n失败了~555', at_sender=True)
         return
     if uid == sid or priv.check_priv(ev,priv.ADMIN):
         try:
@@ -102,7 +102,7 @@ async def title_get(bot, ev, uid, sid, gid, title):
                 duration = -1
                 )
             if not title:
-                await bot.send(ev, f'祝贺[CQ:at,qq={sid}]喜提没有头衔的头衔~')
+                await bot.send(ev, f'祝贺[CQ:at,qq={sid}]得到没有头衔的头衔~')
             else:
                 await bot.send(ev, f'已为[CQ:at,qq={sid}]发放专属头衔“{title}”~')
         except Exception as e:
@@ -114,7 +114,7 @@ async def title_get(bot, ev, uid, sid, gid, title):
 async def member_kick(bot, ev, uid, sid, gid, is_reject):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner' and self_info['role'] != 'admin':
-        await bot.send(ev, '\n傻批，不给我管理员我搁那踢空气呢？？？', at_sender=True)
+        await bot.send(ev, '\n我需要管理权限', at_sender=True)
         return
     if uid == sid or priv.check_priv(ev,priv.ADMIN):
         try:
@@ -123,17 +123,17 @@ async def member_kick(bot, ev, uid, sid, gid, is_reject):
                 user_id = sid,
                 reject_add_request = is_reject
             )
-            await bot.send(ev, f'恭喜幸运用户[CQ:at,qq={sid}]喜提芜湖飞机票一张~')
+            await bot.send(ev, f'恭喜幸运用户[CQ:at,qq={sid}]芜湖~')
         except Exception as e:
             await bot.send(ev, f'诶！！！为什么没踢成功！\n错误代码：{e}', at_sender=True)
     elif uid != sid and not priv.check_priv(ev,priv.ADMIN):
-        await bot.send(ev, '只有狗管理才能送飞机票的说', at_sender=True)
+        await bot.send(ev, '只有管理才能送飞机票的说', at_sender=True)
 
 #群名片修改
 async def card_edit(bot, ev, uid, sid, gid, card_text):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner' and self_info['role'] != 'admin':
-        await bot.send(ev, '\n我日，不给我管理改锤子名片', at_sender=True)
+        await bot.send(ev, '\n我需要管理权限', at_sender=True)
     if uid == sid or priv.check_priv(ev,priv.ADMIN):
         try:
             await bot.set_group_card(
@@ -145,7 +145,7 @@ async def card_edit(bot, ev, uid, sid, gid, card_text):
         except Exception as e:
             await bot.send(ev, f'修改群名片失败勒...\n错误代码：{e}', at_sender=True)
     elif uid != sid and not priv.check_priv(ev,priv.ADMIN):
-        await bot.send(ev, '只有狗管理才能给别人设置名片了啦！', at_sender=True)
+        await bot.send(ev, '只有管理才能给别人设置名片了啦！', at_sender=True)
 
 		
 
@@ -155,7 +155,7 @@ async def group_name(bot, ev, gid, name_text):
         await bot.send(ev, '\n我还没获得管理权限呢...', at_sender=True)
         return    
     if not priv.check_priv(ev,priv.ADMIN):
-        await bot.send(ev, '只有狗管理才能修改群名哦！', at_sender=True) 
+        await bot.send(ev, '只有管理才能修改群名哦！', at_sender=True) 
     else:   
         try:
             await bot.set_group_name(

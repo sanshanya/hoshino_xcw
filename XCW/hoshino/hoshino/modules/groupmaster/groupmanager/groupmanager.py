@@ -121,7 +121,7 @@ async def whois_dragon_king(bot, ev):
     dk = ta_info['current_talkative']['user_id']
     if sid == dk:
         pic = R.img('dk_is_me.jpg').cqcode
-        await bot.send(ev,f'你们这群丢人玩意，龙王怎么又是我\n{pic}')
+        await bot.send(ev,f'啊，我是龙王\n{pic}')
     else:
         action=random.choice(['龙王出来挨透','龙王出来喷水'])
         dk_avater = ta_info['current_talkative']['avatar'] + '640' + f'&t={dk}'
