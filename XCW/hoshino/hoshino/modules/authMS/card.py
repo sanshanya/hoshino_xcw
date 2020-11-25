@@ -1,10 +1,20 @@
-from . import *
+from hoshino.config.__bot__ import SUPERUSERS
+from nonebot import on_command
+from math import ceil
+
+import hoshino
+import re
+
+from . import util
+from .constant import config
+
 
 
 @on_command('生成卡密', only_to_me=True)
 async def creat_key_chat(session):
     if session.event.user_id not in hoshino.config.SUPERUSERS:
         # 非超管, 忽略
+        util.log(f'{session.event.user_id}尝试生成卡密，已拒绝')
         await session.finish('只有主人才能生成卡密哦')
         return
     if session.event.detail_type == 'group':
@@ -31,6 +41,7 @@ async def creat_key_chat(session):
 @on_command('卡密列表', only_to_me=True)
 async def key_list_chat(session):
     if session.event.user_id not in hoshino.config.SUPERUSERS:
+        util.log(f'{session.event.user_id}尝试查看卡密列表，已拒绝')
         await session.finish('只有主人才能查看卡密列表哦')
         return
     if session.event.detail_type == 'group':
@@ -92,15 +103,18 @@ async def reg_group_chat(session):
         gid = session.event.group_id
         key = session.current_arg.strip()
     else:
-        # 讨论组搁这儿充值你🐎呢
         return
-
-    result = util.reg_group(gid, key)
-
+    days = util.query_key(key)
+    result = await util.reg_group(gid, key)
+    print(result)
     if result == False:
         # 充值失败
         msg = '卡密无效, 请检查是否有误或已被使用, 如果无此类问题请联系发卡方'
     else:
+        nickname = await util.get_nickname(user_id=session.event.user_id)
+        log_info = f'{nickname}({session.event.user_id})使用了卡密{key}\n为群{gid}成功充值{days}天'
+        util.log(log_info,'card_use')
+        await util.notify_master(log_info)
         msg = await util.process_group_msg(gid, result, '充值成功\n')
     await session.finish(msg)
 
@@ -117,23 +131,36 @@ async def check_card_chat(session):
             await session.finish('格式输错了啦憨批！请按照“检验卡密 卡密”进行输入！')
         key = m.group(1)
         if duration := util.query_key(key):
+            util.log(f'{session.event.user_id}检查卡密{key},有效期{duration}天')
             await session.finish(f'该卡密有效!\n授权时长:{duration}天')
         else:
+            util.log(f'{session.event.user_id}检查卡密{key},无效')
             await session.finish(f'该卡密无效!')
 
 
 @on_command('查询授权', only_to_me=False)
 async def auth_query_chat(session):
-    if session.event.detail_type == 'private':
-        # 私聊同样处理比较复杂, 且需判断是否是数字
-        if not session.current_arg:
-            await session.finish('私聊查询请发送“查询授权 群号”来进行指定群的授权查询（请注意空格）')
-        gid = session.current_arg.strip()
-        if not gid.isdigit():
-            await session.finish('请输入正确的群号')
-
-    elif session.event.detail_type == 'group':
-        gid = session.event.group_id
+    uid = session.event.user_id
+    if not session.current_arg:
+        # 无参，检查群聊与否
+        if session.event.detail_type == 'private':
+            # 私聊禁止无参数查询授权
+            await session.finish('私聊查询授权请发送“查询授权 群号”来进行指定群的授权查询（请注意空格）')
+            return
+        else:
+            # 群聊，获取gid
+            gid = session.event.group_id
+    else:
+        # 有参数，检查权限
+        if uid not in SUPERUSERS:
+            await session.finish('抱歉，您的权限不足')
+            return
+        else:
+            # 权限为超级管理员
+            gid = session.current_arg.strip() 
+            if not gid.isdigit():
+                await session.finish('请输入正确的群号')
+                return
 
     result = util.check_group(gid)
     if not result:

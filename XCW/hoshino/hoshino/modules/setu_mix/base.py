@@ -29,7 +29,7 @@ def add_salt(data):
 
 def format_setu_msg(image):
     base64_str = f"base64://{base64.b64encode(add_salt(image['data'])).decode()}"
-    msg = f'id:{image["id"]}\ntitle:{image["title"]}\nauthor:{image["author"]}\n[CQ:image,file={base64_str}]'
+    msg = f'title:{image["title"]}\nauthor:{image["author"]}\nid:{image["id"]}\n[CQ:image,file={base64_str}]'
     return msg
 
 async def get_setu(group_id):

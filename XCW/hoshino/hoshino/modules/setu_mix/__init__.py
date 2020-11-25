@@ -83,7 +83,7 @@ async def send_setu(bot, ev):
         msg = 'invalid parameter'
     await bot.send(ev, msg)
 
-@sv.on_rex(r'^不够[涩瑟色]|^[涩瑟色]图|^来一?[点份张].*[涩瑟色]图|^再来[点份张]|^来?(\d*)?[份点张]?[涩色瑟]图')
+@sv.on_rex(r'^不够[涩瑟色]|^[涩瑟色]图$|^来一?[点份张].*[涩瑟色]图|^[再]?来?(\d*)?[份点张]([涩色瑟]图)?')
 async def send_random_setu(bot, ev):
     num = 1
     match = ev['match']
@@ -122,7 +122,7 @@ async def send_random_setu(bot, ev):
                 print('撤回失败')
             await asyncio.sleep(1)
 
-@sv.on_rex(r'^搜[索]*(\d*)[份张]*(.*?)[涩瑟色]图(.*)')
+@sv.on_rex(r'^搜[索]?(\d*)[份张]*(.*?)[涩瑟色]图(.*)')
 async def send_search_setu(bot, ev):
     uid = ev['user_id']
     gid = ev['group_id']
@@ -164,10 +164,10 @@ async def send_search_setu(bot, ev):
                 print('撤回失败')
             await asyncio.sleep(1)
             
-@sv.on_rex(r'^[本每]日[涩色瑟]图排行榜\D*(\d*)')
+@sv.on_rex(r'([本每]日)?[涩色瑟]图排行榜\D*(\d*)')
 async def send_ranking(bot, ev):
     gid = ev['group_id']
-    page = ev['match'].group(1)
+    page = ev['match'].group(2)
     if page and page.isdigit():
         page = int(page)
         page -= 1

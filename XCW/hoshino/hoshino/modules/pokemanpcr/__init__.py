@@ -1,7 +1,9 @@
 import os
 import sqlite3
 from collections import Counter
-from datetime import datetime
+from datetime import datetime, timedelta
+
+from hoshino.util import DailyNumberLimiter
 
 
 class CardRecordDAO:
@@ -92,3 +94,17 @@ class ExchangeRequestMaster:
     def delete_exchange_request(self, gid, uid):
         if (gid, uid) in self.last_exchange_request:
             del self.last_exchange_request[(gid, uid)]
+
+
+class DailyAmountLimiter(DailyNumberLimiter):
+    def __init__(self, max_num, reset_hour):
+        super().__init__(max_num)
+        self.reset_hour = reset_hour
+
+    def check(self, key) -> bool:
+        now = datetime.now(self.tz)
+        day = (now - timedelta(hours=self.reset_hour)).day
+        if day != self.today:
+            self.today = day
+            self.count.clear()
+        return bool(self.count[key] < self.max)

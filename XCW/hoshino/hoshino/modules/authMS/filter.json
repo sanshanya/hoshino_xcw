@@ -1,0 +1,30 @@
+{
+    ".or": [
+        {
+            "group_id": {
+                ".in": [
+                ]
+            }
+        },
+        {
+            "post_type": {
+                ".regex": "notice|request|meta_event"
+            }
+        },
+        {
+            "raw_message": {
+                ".or": [
+                    {
+                        ".contains": "查询授权"
+                    },
+                    {
+                        ".regex": "^充值ֵ"
+                    }
+                ]
+            }
+        },
+        {
+            "message_type": "private"
+        }
+    ]
+}
