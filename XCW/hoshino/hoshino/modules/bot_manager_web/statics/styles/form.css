@@ -1,9 +1,0 @@
-.addRedStar:before {
-    content: '*';
-    color: red;
-    font-size: 18px;
-}
-.errorMsg{
-    color: red;
-    margin-left: 10px;
-}

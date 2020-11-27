@@ -19,6 +19,7 @@ PYS ={335557741}            #高级权限用户的QQ号
 NICKNAME = r'镜华|小仓唯|露娜|at,qq=2380695163'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot,推荐修改
 IP = '333.33.33.3'                                      #修改为你的服务器ip,推荐修改
 public_address = '333.33.33.3:9222'                     #修改为你的服务器ip+端口,推荐修改
+PassWord = '123456'                                           #登录一些只限维护人知道密码的网页
 ###################################
 '''
 -----上方内容请务必结合注释修改-----
@@ -40,7 +41,9 @@ shitu_api = ''
 jjc_api = ""
 tenxun_api_ID = '2154581933'
 tenxun_api_KEY = 'gtv1yCMqKSKSoeuD'
-baidu_api = ''                                         
+baidu_api_ID = ''    
+baidu_api_KEY = ''
+baidu_api_SECRET = ''                                 
 ###################################
 '''-----------pixiv账号----------'''
 pixiv_id = ''                           #pixiv账号,无需会员
@@ -132,6 +135,7 @@ MODULES_ON = {
     'Genshin_Impact',#原神系列
     #'pcravatarguesskiller',#人机猜头像，通常用于群有两个及以上Bot
     #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
-    #'pcr_calendar',#全服务器通用日程表
-    #'concatHead',#接头霸王，需要百度api
+    'pcr_calendar',#全服务器通用日历表，关键词为日历
+    #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
+    'weather'
 }

@@ -1,1 +1,1 @@
-filetype==1.0.7
+filetype

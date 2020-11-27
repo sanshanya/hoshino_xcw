@@ -1,3 +1,0 @@
-在hoshino/config目录下有个叫bot_manager_web.py的文件，去看看
-
-设置好了，发送“bot设置”
