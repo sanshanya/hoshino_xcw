@@ -90,17 +90,15 @@ MODULES_ON = {
     #'shitu',#识图功能需要apikey
     'shifan',#识别番剧
     'battle_report',#会战报告生成，需要修改路径
-    'bot_manager_web',#新版webmanage
     'voiceguess',#猜语音
     #'eclanrank',
     'aichat',#需要apikey，用前修改概率
-    #'QA',#问答功能,下方有集成优化版
     'hiumsentences',#网抑云语录
     'generator',#营销文生成等五个小功能
     #'ontree_scheduler',#挂树优化提醒
     #'eqa',#问答功能2
     'russian',#俄罗斯轮盘赌
-    'explosion',#每天一发惠惠
+    #'explosion',#每天一发惠惠
     'boxcolle',#BOX查询
     'timeline',#轴上传
     'picapi',#自定义拉取图片
@@ -108,8 +106,7 @@ MODULES_ON = {
     #'bilisearchspider',#b站订阅
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色,需要设置go-cqhttp的心跳间隔,推荐3
-    #'shebot',##集合了许多插件,请勿和shebot及QA同时开启
-    #'nmsl',#抽象抽象抽抽抽像像像
+    'nmsl',#抽象抽象抽抽抽像像像
     'baidupan',#百度盘解析
     'meme_web',#memegenerator的web化,勿同时开启
     'pcrmiddaymusic',#公主连结午间音乐
@@ -137,5 +134,5 @@ MODULES_ON = {
     #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
     'pcr_calendar',#全服务器通用日历表，关键词为日历
     #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
-    'weather'
+    'weather'#天气插件
 }

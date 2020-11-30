@@ -21,7 +21,7 @@ async def special_title(bot, ev):
     await util.title_get(bot, ev, uid, sid, gid, title)
 
 #go-cqhttp似乎暂时不支持收回专属头衔...
-@sv.on_fullmatch(('删除头衔','清除头衔','收回头衔','回收头衔'))
+@sv.on_fullmatch(('删除头衔','清除头衔','收回头衔','回收头衔','取消头衔'))
 async def del_special_title(bot, ev):
     uid = ev.user_id
     sid = None
@@ -34,7 +34,7 @@ async def del_special_title(bot, ev):
         sid = uid
     await util.title_get(bot, ev, uid, sid, gid, title)
 
-@sv.on_prefix(('来发口球','塞口球','禁言一下'))
+@sv.on_prefix(('来发口球','塞口球','禁言一下','禁言','口球','黑屋'))
 async def umm_ahh(bot, ev):
     uid = ev.user_id
     sid = None
@@ -50,7 +50,7 @@ async def umm_ahh(bot, ev):
         sid = uid
     await util.member_silence(bot, ev, uid, sid, gid, time)
 
-@sv.on_prefix(('解除口球','取消口球','摘口球','脱口球','取消禁言','解除禁言'))
+@sv.on_prefix(('解除口球','取消口球','摘口球','脱口球','取消禁言','解除禁言','摘下口球','解禁'))
 async def cancel_ban_member(bot, ev):
     uid = ev.user_id
     gid = ev.group_id
@@ -79,7 +79,7 @@ async def cancel_ban_all(bot, ev):
     status = False
     await util.gruop_silence(bot, ev, gid, status)
 
-@sv.on_prefix(('来张飞机票','踢出本群','移出本群','踢出此群','移出群聊'))
+@sv.on_prefix(('来张飞机票','踢出本群','移出本群','踢出此群','移出群聊','飞机票','飞机','滚'))
 async def guoup_kick(bot, ev):
     uid = ev.user_id
     gid = ev.group_id
