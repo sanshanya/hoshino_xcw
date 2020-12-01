@@ -128,11 +128,12 @@ MODULES_ON = {
     'pcrsealkiller',#海豹杀手
     'setu_mix',#俩涩图插件合二为一
     #'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
-    'rss',#适用于Hoshino v2的rss订阅插件,详情https://github.com/zyujs/rss
+    #'rss',#适用于Hoshino v2的rss订阅插件,详情https://github.com/zyujs/rss
     'Genshin_Impact',#原神系列
     #'pcravatarguesskiller',#人机猜头像，通常用于群有两个及以上Bot
     #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
     'pcr_calendar',#全服务器通用日历表，关键词为日历
     #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
     'weather'#天气插件
+    #'snitchgenerator'#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
 }

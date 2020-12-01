@@ -1,1 +1,0 @@
-sqlitedict~=1.6.0
