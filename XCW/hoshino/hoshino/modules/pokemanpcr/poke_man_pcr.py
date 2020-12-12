@@ -25,10 +25,11 @@ POKE_COOLING_TIME = 3           # 增加冷却时间避免连续点击
 GIVE_DAILY_LIMIT = 3            # 每人每天最多接受几次赠卡
 RESET_HOUR = 0                  # 每日戳一戳、赠送等指令使用次数的重置时间，0代表凌晨0点，1代表凌晨1点，以此类推
 COL_NUM = 17                    # 查看仓库时每行显示的卡片个数
+OMIT_THRESHOLD = 20             # 当获得卡片数超过这个阈值时，不再显示获得卡片的具体名称，只显示获得的各个稀有度的卡片数目
 BLACKLIST_CARD = []             # 填写不希望被加载的卡片文件名，以逗号分隔。如['icon_unit_100161.png'], 表示不加载六星猫拳的头像
 # 献祭卡片时的获得不同稀有度卡片的概率，-1,0,1表示被献祭卡片的三种稀有度，后面长度为3的列表表示献祭获得卡片三种不同稀有度的概率，要求加和为1
-MIX_PROBABILITY = {str(list((-1,-1))):[0.8,0.195,0.005], str(list((-1,0))):[0.45,0.5,0.05], str(list((-1,1))):[0.55,0.35,0.1],
-                   str(list((0,0))):[0.1,0.8,0.1],       str(list((0,1))):[0.1,0.7,0.2],      str(list((1,1))):[0.15,0.25,0.6]}
+MIX_PROBABILITY = {str(list((-1,-1))):[0.835,0.16,0.005], str(list((-1,0))):[0.47,0.5,0.03], str(list((-1,1))):[0.55,0.35,0.1],
+                   str(list((0,0))):[0.17,0.75,0.08],       str(list((0,1))):[0.1,0.7,0.2],      str(list((1,1))):[0.15,0.25,0.6]}
 
 PRELOAD=True                    # 是否启动时直接将所有图片加载到内存中以提高查看仓库的速度(增加约几M内存消耗)
 
@@ -36,6 +37,7 @@ sv = Service('poke-man-pcr', bundle='pcr娱乐', help_='''
 戳一戳机器人, 她可能会送你公主连结卡片哦~
 查看仓库 [@某人](这是可选参数): 查看某人的卡片仓库和收集度排名，不加参数默认查看自己的仓库
 合成 [卡片1昵称] [卡片2昵称]: 献祭两张卡片以获得一张新的卡片
+一键合成 [稀有度1] [稀有度2] [合成轮数](这是可选参数,不填则合成尽可能多的轮数): 一键进行若干轮"稀有度1"和"稀有度2"的卡片合成
 赠送 [@某人] [赠送的卡片名]: 将自己的卡片赠予别人
 交换 [卡片1昵称] [@某人] [卡片2昵称]: 向某人发起卡片交换请求，用自己的卡片1交换他的卡片2
 确认交换: 收到换卡请求后一定时间内输入这个指令可完成换卡
@@ -50,8 +52,9 @@ db = CardRecordDAO(DB_PATH)
 font = ImageFont.truetype('arial.ttf', 16)
 card_ids = []
 card_file_names_all = []
-star2rarity = {'1':-1, '3':0, '6':1}          # 角色头像星级->卡片稀有度
-cards = {'1':[], '3':[], '6':[]}              # 1,3,6表示不同星级的角色头像
+star2rarity = {'1':-1, '3':0, '6':1}                    # 角色头像星级->卡片稀有度
+rarity_desc2rarity = {'普通':-1, '稀有':0, '超稀有':1}     # 稀有度文字描述->卡片稀有度
+cards = {'1':[], '3':[], '6':[]}                        # 1,3,6表示不同星级的角色头像
 chara_ids = {'1':[], '3':[], '6':[]}
 
 # 资源预检
@@ -150,25 +153,22 @@ def draw_num_text(img, num, draw_base_color, color, offset_x, offset_y):
     return img
 
 
-def get_random_cards_list():
+def get_random_cards_list(super_rare_prob, rare_prob):
     r = random.random()
-    if r < SUPER_RARE_PROBABILITY:
+    if r < super_rare_prob:
         cards_list = cards['6']
-    elif r < SUPER_RARE_PROBABILITY + RARE_PROBABILITY:
+    elif r < super_rare_prob + rare_prob:
         cards_list = cards['3']
     else:
         cards_list = cards['1']
     return cards_list
 
 
-def get_random_cards(origin_cards, card_file_names_list = card_file_names_all, amount = 1, bonus = True):
-    card_ids = []
+def get_random_cards(origin_cards, row_num, col_num, amount, bonus, get_random_cards_func = get_random_cards_list, *args):
     size = 80
     margin = 7
     margin_offset_x = 6
     margin_offset_y = 6
-    col_num = math.ceil(amount/2)
-    row_num = 2 if amount != 1 else 1
     cards_amount = []
     extra_bonus = False
     for i in range(amount):
@@ -186,16 +186,19 @@ def get_random_cards(origin_cards, card_file_names_list = card_file_names_all, a
     if extra_bonus:
         base = add_icon(base, 'pokecriticalstrike.png', int(size_x/2) - 71, int(offset_y/2) - 2)
     card_counter = {}
+    rarity_counter = {1:[0,0], 0:[0,0], -1:[0,0]}
     card_descs = []
     rarity_desc = {1:'超稀有', 0:'稀有', -1:'普通'}
     for i in range(amount):
-        random_card = random.choice(card_file_names_list) if card_file_names_list != card_file_names_all else random.choice(get_random_cards_list())
+        random_card = random.choice(get_random_cards_func(*args))
         card_id, rarity = get_card_id_by_file_name(random_card)
+        new_string = ' 【NEW】' if card_id not in origin_cards and card_id not in card_counter else ''
         card_amount = cards_amount[i]
-        card_counter[card_id] = card_amount
-        new_string = ' 【NEW】' if card_id not in origin_cards else ''
+        card_counter[card_id] = card_amount if card_id not in card_counter else card_counter[card_id] + card_amount
         card_desc = f'{rarity_desc[rarity]}「{get_chara_name(card_id)[1]}」×{card_amount}{new_string}'
         card_descs.append(card_desc)
+        rarity_counter[rarity][0] += 1
+        rarity_counter[rarity][1] += 1 if new_string else 0
         if PRELOAD:
             img = image_cache[random_card]
         else:
@@ -210,6 +213,14 @@ def get_random_cards(origin_cards, card_file_names_list = card_file_names_all, a
         base.paste(img, (coor_x, coor_y), mask=img.split()[3])
         if card_id not in origin_cards:
             base = add_icon(base, 'new.png', coor_x + size - 27, coor_y - 5)
+    # 当获得的卡片数过多时，只显示各稀有度获得的卡片数量
+    if amount > OMIT_THRESHOLD:
+        card_descs = []
+        rarity_desc = {1:'超稀有', 0:'稀有卡', -1:'普通卡'}
+        for rarity in rarity_counter:
+            if rarity_counter[rarity][0] > 0:
+                msg_part = f' (【NEW】x{rarity_counter[rarity][1]})' if rarity_counter[rarity][1] else ''
+                card_descs.append(f'【{rarity_desc[rarity]}】x{rarity_counter[rarity][0]}{msg_part}')
     return card_counter, card_descs, MessageSegment.image(util.pic2b64(base))
 
 
@@ -222,8 +233,8 @@ def get_card_name_with_rarity(card_name):
         chara_suffix = card_name[0:2]
         chara_nickname = card_name[2:]
     else:
-        chara_suffix = ''
-        chara_nickname = card_name
+        chara_suffix = '普通'
+        chara_nickname = card_name[2:] if card_name.startswith('普通') else card_name
     chara_name = chara.fromname(chara_nickname).name
     return f'{chara_suffix}「{chara_name}」'
 
@@ -332,8 +343,11 @@ async def poke_back(session: NoticeSession):
                               })
         await session.send(poke)
     else:
-        card_counter, card_descs, card = get_random_cards(db.get_cards_num(session.ctx['group_id'], session.ctx['user_id']), card_file_names_all,
-                                                          roll_cards_amount(), True)
+        amount = roll_cards_amount()
+        col_num = math.ceil(amount / 2)
+        row_num = 2 if amount != 1 else 1
+        card_counter, card_descs, card = get_random_cards(db.get_cards_num(session.ctx['group_id'], session.ctx['user_id']), row_num, col_num,
+                                                          amount, True, get_random_cards_list, SUPER_RARE_PROBABILITY, RARE_PROBABILITY)
         dash =  '----------------------------------------'
         msg_part = '\n'.join(card_descs)
         await session.send(f'别戳了别戳了o(╥﹏╥)o{card}{at_user}这些卡送给你了, 让我安静会...\n{dash}\n获得了:\n{msg_part}')
@@ -367,20 +381,85 @@ async def mix_card(bot, ev: CQEvent):
             await bot.finish(ev, f'{get_card_name_with_rarity(args[1])}卡数量不足, 无法合成')
     # 开始献祭
     [normal_prob, rare_prob, super_rare_prob] = MIX_PROBABILITY[str(sorted(list((get_card_rarity(card1_id), get_card_rarity(card2_id)))))]
-    r = random.random()
-    if r < normal_prob:
-        cards_list = cards['1']
-    elif r < normal_prob + rare_prob:
-        cards_list = cards['3']
-    else:
-        cards_list = cards['6']
-    card_counter, card_descs, card = get_random_cards(db.get_cards_num(ev.group_id, ev.user_id), cards_list, 1, False)
+    card_counter, card_descs, card = get_random_cards(db.get_cards_num(ev.group_id, ev.user_id), 1, 1, 1, False, get_random_cards_list, super_rare_prob, rare_prob)
     card_id = list(card_counter.keys())[0]
     rarity_desc, chara_name = get_chara_name(card_id)
     db.add_card_num(ev.group_id, ev.user_id, card1_id, -1)
     db.add_card_num(ev.group_id, ev.user_id, card2_id, -1)
     db.add_card_num(ev.group_id, ev.user_id, card_id)
     await bot.send(ev, f'将两张卡片进行了融合……然后{card}获得了{rarity_desc}「{chara_name}」×1~', at_sender=True)
+
+
+@sv.on_prefix(('一键献祭','一键合成','一键融合'))
+async def auto_mix_card(bot, ev: CQEvent):
+    # 参数识别
+    s = ev.message.extract_plain_text()
+    args = s.split(' ')
+    if len(args) == 2 and args[0] in rarity_desc2rarity and args[1] in rarity_desc2rarity:
+        pass
+    elif len(args) == 3 and args[0] in rarity_desc2rarity and args[1] in rarity_desc2rarity and args[2].isdigit() and int(args[2]) > 0:
+        pass
+    else:
+        await bot.finish(ev, '参数格式错误, 请按正确格式输入指令参数')
+    # 自动消耗多余的卡
+    surplus_cards = db.get_surplus_cards(ev.group_id, ev.user_id)
+    surplus_cards = {card_id: card_amount for card_id, card_amount in surplus_cards.items() if card_id in card_ids}
+    if args[0] == args[1]:
+        rarity = rarity_desc2rarity[args[0]]
+        rarity1, rarity2 = rarity, rarity
+        available_cards = {card_id: card_amount for card_id, card_amount in surplus_cards.items() if get_card_rarity(card_id) == rarity}
+        available_card_amount = sum(available_cards.values())
+        if len(args) == 3 and int(args[2])*2 > available_card_amount:
+            await bot.finish(ev, f'合成失败, 多余的【{args[0]}】卡数量不足{args[2]*2}, 无法一键合成{args[2]}次.')
+        if len(args) == 2 and available_card_amount < 2:
+            await bot.finish(ev, f'合成失败, 多余的【{args[0]}】卡数量不足2, 无法一键合成')
+        mix_rounds = int(args[2]) if len(args) == 3 else math.floor(available_card_amount/2)
+        mixed_cards_amount = 0
+        for card_id in available_cards:
+            card_amount = available_cards[card_id]
+            if mixed_cards_amount + card_amount <= 2 * mix_rounds:
+                db.add_card_num(ev.group_id, ev.user_id, card_id, -card_amount)
+                mixed_cards_amount += card_amount
+            else:
+                db.add_card_num(ev.group_id, ev.user_id, card_id, -(2*mix_rounds - mixed_cards_amount))
+                break
+    else:
+        rarity1 = rarity_desc2rarity[args[0]]
+        rarity2 = rarity_desc2rarity[args[1]]
+        available_cards1 = {card_id: card_amount for card_id, card_amount in surplus_cards.items() if get_card_rarity(card_id) == rarity1}
+        available_cards2 = {card_id: card_amount for card_id, card_amount in surplus_cards.items() if get_card_rarity(card_id) == rarity2}
+        available_card_amount1 = sum(available_cards1.values())
+        available_card_amount2 = sum(available_cards2.values())
+        if len(args) == 3:
+            if int(args[2]) > available_card_amount1:
+                await bot.finish(ev, f'合成失败, 多余的【{args[0]}】卡数量不足{args[2]}, 无法一键合成{args[2]}次.')
+            if int(args[2]) > available_card_amount2:
+                await bot.finish(ev, f'合成失败, 多余的【{args[1]}】卡数量不足{args[2]}, 无法一键合成{args[2]}次.')
+        if len(args) == 2:
+            if available_cards1 < 1:
+                await bot.finish(ev, f'合成失败, 多余的【{args[0]}】卡数量不足1, 无法一键合成')
+            if available_cards2 < 1:
+                await bot.finish(ev, f'合成失败, 多余的【{args[1]}】卡数量不足1, 无法一键合成')
+        mix_rounds = int(args[2]) if len(args) == 3 else math.min(available_cards1, available_cards2)
+        for available_cards in [available_cards1, available_cards2]:
+            mixed_cards_amount = 0
+            for card_id in available_cards:
+                card_amount = available_cards[card_id]
+                if mixed_cards_amount + card_amount <= 2 * mix_rounds:
+                    db.add_card_num(ev.group_id, ev.user_id, card_id, -card_amount)
+                    mixed_cards_amount += card_amount
+                else:
+                    db.add_card_num(ev.group_id, ev.user_id, card_id, -(2*mix_rounds - mixed_cards_amount))
+                    break
+    # 获得自动合成的卡
+    [normal_prob, rare_prob, super_rare_prob] = MIX_PROBABILITY[str(sorted(list((rarity1, rarity2))))]
+    col_num = math.ceil(math.sqrt(mix_rounds))
+    row_num = math.ceil(mix_rounds / col_num)
+    card_counter, card_descs, card = get_random_cards(db.get_cards_num(ev.group_id, ev.user_id), row_num, col_num, mix_rounds, False, get_random_cards_list, super_rare_prob, rare_prob)
+    msg_part = '\n'.join(card_descs)
+    await bot.send(ev, f'进行了{mix_rounds}轮融合……然后{card}获得了:\n{msg_part}', at_sender = True)
+    for card_id in card_counter.keys():
+        db.add_card_num(ev.group_id, ev.user_id, card_id, card_counter[card_id])
 
 
 @sv.on_prefix(('交换','交易','互换'))

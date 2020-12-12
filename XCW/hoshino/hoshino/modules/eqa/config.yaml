@@ -37,7 +37,7 @@ comm:
 #规则
 rule:
   # 是否只允许管理员（包括群管）设置 comm.answer_all 的问题, true 的话群员就只能用 comm.answer_me 设置的问题了
-  only_admin_answer_all: false
+  only_admin_answer_all: true
 
   # 超级管理员设置的是否为所有群问答
   super_admin_is_all_group: true

@@ -134,6 +134,7 @@ MODULES_ON = {
     #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
     'pcr_calendar',#全服务器通用日历表，关键词为日历
     #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
-    'weather'#天气插件
-    #'snitchgenerator'#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
+    'weather',#天气插件
+    #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
+    'xcw',
 }

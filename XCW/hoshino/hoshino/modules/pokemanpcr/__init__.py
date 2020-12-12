@@ -47,6 +47,13 @@ class CardRecordDAO:
             ).fetchall()
         return {c[0]:c[1] for c in r} if r else {}
 
+    def get_surplus_cards(self, gid, uid):
+        with self.connect() as conn:
+            r = conn.execute(
+                "SELECT cid, num FROM card_record WHERE gid=? AND uid=? AND num>1", (gid, uid)
+            ).fetchall()
+        return {c[0]:(c[1]-1) for c in r} if r else {}
+
     def get_group_ranking(self, gid, uid):
         with self.connect() as conn:
             r = conn.execute(
