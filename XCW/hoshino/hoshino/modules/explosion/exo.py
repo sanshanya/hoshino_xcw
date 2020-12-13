@@ -16,7 +16,9 @@ _max = 2
 EXCEED_NOTICE = f'惠惠今天已经使用了{_max}次爆裂魔法哦~~~明天再使用爆裂魔法吧!'
 _nlmt = DailyNumberLimiter(_max)
 
-sv = Service('explosion', visible=True, manage_priv=priv.ADMIN, enable_on_default=True)
+sv = Service('来一发', visible= False, enable_on_default= True, bundle='来一发', help_='''
+- [来一发]
+'''.strip())
 
 EXPLOSION_HELP = '''
 “エクスプロージョン（Explosion）！”

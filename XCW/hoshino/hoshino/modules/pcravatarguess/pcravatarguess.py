@@ -9,9 +9,9 @@ import hoshino
 import math, sqlite3, os, random, asyncio
 
 
-sv = Service('avatarguess', bundle='pcr娱乐', help_='''
-猜头像 | 猜猜机器人随机发送的头像的一小部分来自哪位角色
-猜头像群排行 | 显示猜头像小游戏猜对次数的群排行榜(只显示前十名)
+sv = Service('猜头像', visible= True, enable_on_default= True, bundle='猜头像', help_='''
+-[猜头像]  猜猜机器人随机发送的头像的一小部分来自哪位角色
+-[猜头像群排行]  显示猜头像小游戏猜对次数的群排行榜(只显示前十名)
 '''.strip())
 
 

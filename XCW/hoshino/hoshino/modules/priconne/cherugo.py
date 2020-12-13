@@ -16,7 +16,7 @@ from nonebot.message import escape
 from hoshino import Service, util
 from hoshino.typing import CQEvent
 
-sv = Service('pcr-cherugo', bundle='pcr娱乐', help_='''
+sv = Service('切噜语', bundle='切噜语', help_='''
 [切噜一下] 转换为切噜语
 [切噜～♪切啰巴切拉切蹦切蹦] 切噜语翻译
 '''.strip())

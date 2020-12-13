@@ -6,10 +6,10 @@ from dataclasses import dataclass
 from typing import List, Union
 import hoshino, json, os
 
-sv = Service('bili-search-spider', bundle='pcr订阅', help_='''
-添加B站爬虫 <关键词> | 添加爬取关键词。每次添加一个，可添加多次
-查看B站爬虫 | 查看当前爬取关键词列表
-删除B站爬虫 <关键词> | 删除指定爬取关键词
+sv = Service('B站爬虫', visible= True, enable_on_default= True, bundle='B站爬虫', help_='''
+- [添加B站爬虫 关键词 ] 添加爬取关键词。每次添加一个，可添加多次
+- [查看B站爬虫]  查看当前爬取关键词列表
+- [删除B站爬虫 关键词 ] 删除指定爬取关键词
 '''.strip())
 
 

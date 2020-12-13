@@ -2,9 +2,9 @@ from .nmsl_local import *
 
 from hoshino import Service
 
-sv = Service('text2emoji', bundle='pcr娱乐', help_='''
-[抽象一下] 转换为抽象话
-[我佛辣] 转换为深度抽象话
+sv = Service('抽象话', visible= True, enable_on_default= True, bundle='抽象话', help_='''
+- [抽象一下 XX] 将XX转换为抽象话
+- [我佛辣 XX] 将XX转换为深度抽象话
 '''.strip())
 
 @sv.on_prefix(('抽象一下','轻度抽象'))

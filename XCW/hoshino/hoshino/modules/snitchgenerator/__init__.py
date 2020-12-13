@@ -9,8 +9,10 @@ from PIL import Image
 from hoshino.util import pic2b64
 from nonebot import MessageSegment
 
-HELP_MSG = '''/nokia <文案> | 生成一张内鬼表情包'''
-sv = Service('有内鬼', bundle='pcr娱乐', help_=HELP_MSG)
+
+sv = Service('有内鬼', visible= True, enable_on_default= True, bundle='有内鬼', help_='''
+- [有内鬼 文案]  生成一张内鬼表情包
+'''.strip())
 
 
 @sv.on_prefix(('/nokia', '有内鬼'))

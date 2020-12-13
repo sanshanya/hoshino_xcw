@@ -15,8 +15,9 @@ from hoshino.typing import MessageSegment, CQEvent
 from . import GameMaster
 
 
-sv = Service('voiceguess', bundle='pcr娱乐', help_='''
-[cygames] 猜猜随机的"cygames"语音来自哪位角色
+sv = Service('猜语音', visible= True, enable_on_default= True, bundle='猜语音', help_='''
+- [cygames] 猜猜随机的"cygames"语音来自哪位角色
+- [猜语音] 猜猜随机的语音来自哪位角色
 '''.strip())
 
 DOWNLOAD_THRESHOLD = 76

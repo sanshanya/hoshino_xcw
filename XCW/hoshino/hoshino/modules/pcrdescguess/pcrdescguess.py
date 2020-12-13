@@ -6,9 +6,9 @@ from . import _chara_data
 import hoshino
 import sqlite3, os, random, asyncio
 
-sv = Service('descguess', bundle='pcr娱乐', help_='''
-猜角色 | 猜猜机器人随机发送的文本在描述哪位角色
-猜角色群排行 | 显示猜角色小游戏猜对次数的群排行榜(只显示前十名)
+sv = Service('猜角色', visible= True, enable_on_default= True, bundle='猜角色', help_='''
+- [猜角色] 猜猜机器人随机发送的文本在描述哪位角色
+- [猜角色群排行] 显示猜角色小游戏猜对次数的群排行榜(只显示前十名)
 '''.strip())
 
 

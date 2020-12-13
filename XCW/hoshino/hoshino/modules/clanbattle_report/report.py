@@ -53,7 +53,7 @@ url_valid = re.compile(
         r'(?::\d+)?' # optional port
         r'(?:/?|[/?]\S+)$', re.IGNORECASE)
 
-sv = Service('clanbattle_report', bundle='pcr查询', help_='生成会战报告 [@用户] [API地址] : 生成会战报告\n生成离职报告 [@用户] [API地址] : 生成离职报告\n设置工会api API地址 : (需要管理员权限)为本群设置默认的Yobot工会API\n查看工会api : (需要管理员权限)查看本群设置的Yobot API\n清除工会api : (需要管理员权限)清除本群设置的Yobot API\n加入可选项[@用户]表示查看指定用户的报告，需要管理员权限')
+sv = Service('会战报告', visible= True, enable_on_default= True, bundle='会战报告', help_='生成会战报告 [@用户] [API地址] : 生成会战报告\n生成离职报告 [@用户] [API地址] : 生成离职报告\n设置工会api API地址 : (需要管理员权限)为本群设置默认的Yobot工会API\n查看工会api : (需要管理员权限)查看本群设置的Yobot API\n清除工会api : (需要管理员权限)清除本群设置的Yobot API\n加入可选项[@用户]表示查看指定用户的报告，需要管理员权限')
 
 # 单json文件储存全部群api会出现奇怪的bug 所以每个群使用一个独立文件
 #读取群api

@@ -13,7 +13,9 @@ params = {
 
 tm_url = ['template_url', 'merge_url']
 
-sv = Service('mergeface')
+sv = Service('换脸', visible= False, enable_on_default= False, bundle='换脸', help_='''
+无说明
+'''.strip())
 
 wait_list = {}
 

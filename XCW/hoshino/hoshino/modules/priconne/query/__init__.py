@@ -12,7 +12,7 @@ sv_help = '''
 [谁是霸瞳] 角色别称查询
 '''.strip()
 
-sv = Service('pcr-query', help_=sv_help, bundle='pcr查询')
+sv = Service('pcr查询', help_=sv_help, bundle='pcr查询')
 
 from .query import *
 from .whois import *

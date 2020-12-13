@@ -5,7 +5,7 @@ from hoshino import Service, aiorequests
 from hoshino.modules.pcrmiddaymusic import _song_data
 from hoshino.typing import CQEvent, MessageSegment
 
-sv = Service('pcr-midday-music', bundle='pcr娱乐', help_='''
+sv = Service('午间音乐', visible= True, enable_on_default= False, bundle='午间音乐', help_='''
 每日午间自动推送pcr相关音乐, 也可直接在群内发送"来点音乐"请求pcr歌曲
 '''.strip())
 

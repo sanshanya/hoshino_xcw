@@ -1,7 +1,9 @@
 from hoshino import R, Service, priv, util
 import json
-sv = Service('fake', visible=False)
-@sv.on_prefix("造假",only_to_me=True)
+sv = Service('造假', visible= True, enable_on_default= True, bundle='制造假消息', help_='''
+- [造假@某人 名字说XXX]就会生成一条聊天记录
+'''.strip())
+@sv.on_prefix("造假",only_to_me=False)
 async def chat_say(bot, ev):
     print(ev)
     message = ev["message"]

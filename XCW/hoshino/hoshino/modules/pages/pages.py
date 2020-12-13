@@ -8,7 +8,12 @@ from pathlib import Path
 public_address = config.IP#修改为服务器公网ip
 
 
-sv = Service('pages', manage_priv=priv.SUPERUSER, enable_on_default=True, visible=False)
+sv = Service('网页端', visible= True, enable_on_default= True, bundle='网页端', help_='''
+- [#帮助] 帮助页面的网页端
+- [手册] 打开会战手册
+- [主页] 浏览主页
+'''.strip())
+
 work_env = Path(os.path.dirname(__file__))
 homework_folder = work_env.joinpath('img')
 static_folder = work_env.joinpath('static')
@@ -53,7 +58,7 @@ async def get_uploader_url(bot, ev):
     cfg = config.__bot__
     await bot.send(ev,f'http://{public_address}:{cfg.PORT}/xcwmain')
 
-@sv.on_fullmatch("帮助",only_to_me=False)
+@sv.on_fullmatch("#帮助",only_to_me=False)
 async def get_uploader_url(bot, ev):
     cfg = config.__bot__
     await bot.send(ev,f'http://{public_address}:{cfg.PORT}/xcwhelp')

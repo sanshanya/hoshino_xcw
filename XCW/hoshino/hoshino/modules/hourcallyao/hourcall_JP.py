@@ -5,7 +5,7 @@ from hoshino import util
 from hoshino import R
 from hoshino.service import Service
 
-sv = Service('hourcallyao_jp', enable_on_default=False)
+sv = Service('提醒买药(日本)', enable_on_default=False)
 
 def get_hour_call():
     """从HOUR_CALLS中挑出一组时报，每日更换，一日之内保持相同"""

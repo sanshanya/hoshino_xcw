@@ -16,7 +16,7 @@ sv_help = '''
 [点赞] 接作业id 评价作业
 [点踩] 接作业id 评价作业
 '''.strip()
-sv = Service('pcr-arena', help_=sv_help, bundle='pcr查询')
+sv = Service('竞技场查询', help_=sv_help, bundle='竞技场查询')
 
 from . import arena
 

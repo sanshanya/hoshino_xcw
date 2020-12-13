@@ -7,9 +7,9 @@ from hoshino.typing import MessageSegment, CQEvent
 from . import game_util, GameMaster
 
 
-sv = Service('pcr-perfect-match', bundle='pcr娱乐', help_='''
-[完美配对] 开启一局公主连结主题的完美配対小游戏
-[完美配对排行] 查看完美配对小游戏群排行
+sv = Service('完美配对', visible= True, enable_on_default= True, bundle='完美配对', help_='''
+- [完美配对] 开启一局公主连结主题的完美配対小游戏
+- [完美配对排行] 查看完美配对小游戏群排行
 '''.strip())
 
 

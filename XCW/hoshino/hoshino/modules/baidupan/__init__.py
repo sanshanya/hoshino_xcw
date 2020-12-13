@@ -5,7 +5,6 @@ from . import util, api, dupan_link, share, ru
 from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
-sv = Service('baidupan')  # 如果使用hoshino的分群管理取消注释这行
 
 # 初始化配置文件
 config = util.get_config()
@@ -14,7 +13,10 @@ config = util.get_config()
 _bot = get_bot()
 
 
-@sv.on_message('group')  # 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
+sv = Service('网盘解析', visible= False, enable_on_default= False, bundle='网盘解析', help_='''
+暂不使用
+'''.strip()) 
+# 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
 # @_bot.on_message  # nonebot使用这
 async def pan_main(*params):
     bot, ctx = (_bot, params[0]) if len(params) == 1 else params

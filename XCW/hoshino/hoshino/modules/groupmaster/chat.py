@@ -11,7 +11,7 @@ async def say_hello(session):
     await session.send('はい！私はいつも貴方の側にいますよ！')
 
 
-sv = Service('chat', visible=False)
+sv = Service('交流', visible=False)
 
 @sv.on_fullmatch(('沙雕机器人', '沙雕機器人'))
 async def say_sorry(bot, ev):

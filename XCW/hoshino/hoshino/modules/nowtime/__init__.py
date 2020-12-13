@@ -6,7 +6,9 @@ from hoshino import util
 from hoshino import Service
 from .data_source import add_text,pic_to_b64
 
-sv = Service('报时')
+sv = Service('报时', visible= False, enable_on_default= True, bundle='报时', help_='''
+生成一张报时图
+'''.strip())
 @sv.on_fullmatch('报时')
 async def showtime(bot, event):
     now = datetime.now()

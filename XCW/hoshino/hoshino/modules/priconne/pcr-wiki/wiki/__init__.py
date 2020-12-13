@@ -10,7 +10,7 @@ sv_help = '''
 [@bot羁绊ue] 角色羁绊
 '''.strip()
 
-sv = Service('wiki', help_=sv_help, bundle='pcr查询')
+sv = Service('公主连结wiki', help_=sv_help, bundle='公主连结wiki')
 
 def get_chara(name, types):
     id_ = chara.name2id(name)

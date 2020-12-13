@@ -20,7 +20,9 @@ def save(data, file):
     with open(file, 'w') as f:
         json.dump(data, f)
 
-sv = Service('俄罗斯轮盘游戏', enable_on_default=True, visible=True, help_='[开枪]俄罗斯轮盘游戏')
+sv = Service('俄罗斯轮盘游戏', visible= True, enable_on_default= True, bundle='俄罗斯轮盘游戏', help_='''
+[开枪] 俄罗斯轮盘游戏
+'''.strip())
 # main part
 @sv.on_command('rs', aliases=('俄罗斯轮盘','开枪'), only_to_me=False)
 async def spin(session: CommandSession):

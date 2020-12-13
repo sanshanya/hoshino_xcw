@@ -13,7 +13,15 @@ loginPassword = 'xcw'#登录密码
 bot_name = 'xcw'#机器人名字
 group_name = '镜华的表情包'#公会名
 
-sv = Service('meme_web', manage_priv=priv.SUPERUSER, enable_on_default=True, visible=False)
+sv = Service('生成表情包', visible= True, enable_on_default= True, bundle='生成表情包', help_='''
+- [表情列表] 查看目前有哪些表情
+- [生成表情 表情名字 文案] 生成一张表情包
+- [查看表情 XXX] XXX是表情名字,要准确
+- [查看XX表情] XX是表情名字的关键词,支持模糊搜索
+- [删除表情 XX] XX是表情名字
+- [上传表情 表情名字 图片] 上传一张表情
+'''.strip())
+
 work_env = Path(os.path.dirname(__file__))
 meme_folder = work_env.joinpath('meme')
 static_folder = work_env.joinpath('static')

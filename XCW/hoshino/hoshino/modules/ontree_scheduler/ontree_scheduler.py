@@ -7,7 +7,10 @@ from nonebot import get_bot
 import hoshino
 from hoshino import Service
 
-sv = Service('ontree_scheduler', enable_on_default=True, help_='挂树提醒')
+sv = Service('挂树提醒加强版', visible= True, enable_on_default= True, bundle='挂树提醒加强版', help_='''
+- [取消挂树]
+- [挂树]
+'''.strip())
 
 @sv.on_command('挂树')
 async def climb_tree(session):

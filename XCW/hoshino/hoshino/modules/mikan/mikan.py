@@ -6,7 +6,9 @@ from lxml import etree
 import hoshino
 from hoshino import Service, aiorequests
 
-sv = Service('bangumi', enable_on_default=False, help_='蜜柑番剧更新推送')
+sv = Service('蜜柑番剧推送', visible= True, enable_on_default= False, bundle='蜜柑番剧推送', help_='''
+暂无说明
+'''.strip())
 
 class Mikan:
     link_cache = set()

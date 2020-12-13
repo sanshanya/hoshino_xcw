@@ -2,7 +2,9 @@ from hoshino import Service, R
 from . import main
 from . import get
 
-sv = Service('image-generate')
+sv = Service('选图生成', visible= True, enable_on_default= True, bundle='选图生成', help_='''
+- [表情包帮助] 
+'''.strip())
 
 @sv.on_prefix(('选图','imgsw','IMGSW'))
 async def switch_img(bot, ev):

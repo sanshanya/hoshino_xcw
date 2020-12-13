@@ -10,7 +10,7 @@ from .dao.boxcollesqlitedao import BoxColleDao
 import datetime, random, os, csv, asyncio, math
 from PIL import Image, ImageDraw, ImageFont
 
-sv = Service('boxcolle', bundle='pcrbox统计', help_='''
+sv = Service('BOX统计插件', visible= True, enable_on_default= True, bundle='BOX统计插件', help_='''
 一键box统计 [补录] | 在配置完box统计参数后使用此指令，机器人会自动私聊公会成员统计其box。如果填写参数"补录"，则会开启补录模式，只让成员填写他们还没录入的角色星级和Rank
 ----------
 设置box统计 <数据库名> <统计对象> <备注> <统计的角色名(逗号分隔,需要统计Rank的角色请在角色名后加上"R")> | 统计对象参数目前支持填写"all"(全部成员) 或"allE@xxx@yyy"(全部成员除去xxx和yyy) 或"@xxx@yyy"(xxx和yyy)

@@ -5,7 +5,11 @@ from . import util, pixiv, permission, download, short_url
 from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
-sv = Service('epixiv')  # 如果使用hoshino的分群管理取消注释这行
+sv = Service('pixiv搜图', visible= True, enable_on_default= True, bundle='pixiv搜图', help_='''
+- [来一份XX] XX为你想搜索的标签
+其余按照提示来即可
+'''.strip()) 
+# 如果使用hoshino的分群管理取消注释这行
 
 # 初始化配置文件
 config = util.get_config()

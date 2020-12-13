@@ -32,7 +32,7 @@ sv_help = '''
 [删除表情 <名字>] 删除一张表情（仅限管理员）
 '''.strip()
 
-sv = Service('表情生成器', help_=sv_help, bundle='pcr娱乐')
+sv = Service('表情生成器', visible= False, help_=sv_help, bundle='pcr娱乐')
 
 @sv.on_fullmatch(('表情列表','查看表情列表'))
 async def show_memes(bot,event):

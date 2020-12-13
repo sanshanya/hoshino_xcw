@@ -10,7 +10,7 @@ from hoshino import Service, priv, aiorequests
 from hoshino.modules.priconne.news import BaseSpider, Item
 from hoshino.typing import CQEvent
 
-sv = Service('nga-clan-battle-spider', bundle='pcr订阅', help_='''
+sv = Service('nga会战爬虫', bundle='nga会战爬虫', help_='''
 启用nga会战爬虫 [国服/日服/台服] | 启用nga会战爬虫并设置爬取版块为:国服讨论/日服讨论/台服讨论，默认是国服讨论，每隔一段时间爬虫将自动爬取nga会战相关帖子
 禁用nga会战爬虫 | 关闭nga会战爬虫服务
 '''.strip())

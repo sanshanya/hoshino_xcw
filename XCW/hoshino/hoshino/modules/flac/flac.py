@@ -3,7 +3,9 @@ from hoshino import Service, priv, logger, aiorequests
 from hoshino.typing import CQEvent
 from urllib.parse import quote
 
-sv = Service('flac', help_='[搜无损] +关键词搜索')
+sv = Service('搜无损音乐', visible= False, enable_on_default= False, bundle='搜无损音乐', help_='''
+无说明
+'''.strip())
 
 @sv.on_prefix('搜无损')
 async def search_flac(bot, ev: CQEvent):

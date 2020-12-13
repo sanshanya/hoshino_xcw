@@ -101,11 +101,10 @@ from hoshino import Service, priv, util, R, HoshinoBot
 from hoshino.typing import CQEvent
 
 HAHAHA_VTB_TIANGOU = R.img('hahaha_vtb_tiangou.jpg')
-sv = Service('anti-holo', manage_priv=priv.SUPERUSER)
+sv = Service('站在历史正确的一边', manage_priv=priv.SUPERUSER)
 
 @sv.on_keyword(SB_HOLO)
 async def anti_holo(bot: HoshinoBot, ev: CQEvent):
     priv.set_block_user(ev.user_id, timedelta(minutes=1))
     await util.silence(ev, 60, skip_su=False)
-    await bot.send(ev, HAHAHA_VTB_TIANGOU.cqcode)
     await bot.delete_msg(self_id=ev.self_id, message_id=ev.message_id)

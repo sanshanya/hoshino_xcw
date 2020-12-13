@@ -3,7 +3,7 @@ from datetime import datetime
 import hoshino
 from hoshino import Service
 
-sv = Service('hourcall', enable_on_default=False, help_='时报')
+sv = Service('时报功能', enable_on_default=False, help_='时报功能')
 tz = pytz.timezone('Asia/Shanghai')
 
 def get_hour_call():

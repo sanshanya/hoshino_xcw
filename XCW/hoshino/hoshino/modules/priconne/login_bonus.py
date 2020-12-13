@@ -3,7 +3,7 @@ from hoshino import Service, R
 from hoshino.typing import CQEvent
 from hoshino.util import DailyNumberLimiter
 
-sv = Service('pcr-login-bonus', bundle='pcr娱乐', help_='[星乃签到] 给主さま盖章章')
+sv = Service('签到', bundle='签到', help_='[xcw签到] 给主さま盖章章')
 
 lmt = DailyNumberLimiter(1)
 login_presents = [

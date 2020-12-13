@@ -32,7 +32,9 @@ class RandomC:
         return hoshino.config.__bot__.RES_DIR
 
 
-sv = Service('随机图片', visible=True, help_='随机图片调用')
+sv = Service('随机图片', visible= False, enable_on_default= False, bundle='随机图片', help_='''
+无说明
+'''.strip())
 
 
 @sv.on_message('group')

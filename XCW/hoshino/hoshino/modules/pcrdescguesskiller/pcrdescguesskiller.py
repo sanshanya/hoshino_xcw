@@ -6,7 +6,7 @@ from hoshino.modules.priconne import chara
 import hoshino
 import os
 
-sv = Service('descguess_killer', enable_on_default=False, bundle='pcr娱乐', help_='猜角色杀手')
+sv = Service('猜角色杀手', enable_on_default=False, bundle='pcr娱乐', help_='猜角色杀手')
 
 
 BLOOD_TYPE = ''

@@ -5,7 +5,16 @@ import random
 
 from . import util
 
-sv = Service('group-manager', enable_on_default=True, visible=True)
+sv = Service('群管', visible= True, enable_on_default= True, bundle='群管', help_='''
+- [申请头衔XX] XX为头衔名
+- [删除头衔] 删除自己获得的头衔,可以@其他人
+- [禁言@sb XX] sb就是sb , xx为秒数
+- [解除禁言@sb] 字面意思
+- [全员禁言] 开启全员禁言
+- [飞机票@sb] 把sb请出本群
+- [谁是龙王] 迫害龙王
+
+'''.strip())
 
 @sv.on_prefix('申请头衔')
 async def special_title(bot, ev):

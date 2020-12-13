@@ -7,7 +7,7 @@ from . import main
 import hoshino
 import os
 
-sv = Service('avatarguess_killer', enable_on_default=True, bundle='pcr娱乐', help_='猜头像杀手')
+sv = Service('猜头像杀手', enable_on_default=True, bundle='pcr娱乐', help_='猜头像杀手')
 
 logger = log.new_logger('avatarguess_killer', hoshino.config.DEBUG)
 

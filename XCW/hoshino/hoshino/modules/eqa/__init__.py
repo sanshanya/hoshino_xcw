@@ -12,7 +12,15 @@ from . import util
 from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
-sv = Service('eqa')  # 如果使用hoshino的分群管理取消注释这行
+sv = Service('调教', visible= True, enable_on_default= True, bundle='调教', help_='''
+- [有人/大家说AA回答BB] 对所有人生效
+- [我说AA回答BB] 仅仅对个人生效
+- [不要回答AA] 删除某问题下的回答(优先度:自己设置的>最后设置的)
+- [问答] 查看自己的回答,@别人可以看别人的
+- [全部问答] 查看本群设置的回答
+- 只有管理可以删别人设置的哦~~~
+'''.strip())
+# 如果使用hoshino的分群管理取消注释这行
 
 config = util.get_config()
 db = util.init_db(config['cache_dir'])

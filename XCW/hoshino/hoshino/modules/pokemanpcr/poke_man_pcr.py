@@ -33,7 +33,7 @@ MIX_PROBABILITY = {str(list((-1,-1))):[0.835,0.16,0.005], str(list((-1,0))):[0.4
 
 PRELOAD=True                    # 是否启动时直接将所有图片加载到内存中以提高查看仓库的速度(增加约几M内存消耗)
 
-sv = Service('poke-man-pcr', bundle='pcr娱乐', help_='''
+sv = Service('戳一戳', visible= True, enable_on_default= False, bundle='戳一戳', help_='''
 戳一戳机器人, 她可能会送你公主连结卡片哦~
 查看仓库 [@某人](这是可选参数): 查看某人的卡片仓库和收集度排名，不加参数默认查看自己的仓库
 合成 [卡片1昵称] [卡片2昵称]: 献祭两张卡片以获得一张新的卡片

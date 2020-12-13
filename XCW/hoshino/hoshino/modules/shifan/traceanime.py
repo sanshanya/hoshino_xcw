@@ -9,7 +9,7 @@ from hoshino import Service
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64
 
-sv = Service('traceanime', help_='''
+sv = Service('搜番', help_='''
 [搜番+图片] 根据图片查询番剧(日本本土二次元番剧)
 '''.strip())
 

@@ -16,7 +16,10 @@ from .config import *
 from .data_source import detect_face, concat, KyaruHead, auto_head, gen_head
 
 conf_path = path.join(path.dirname(__file__), 'user_conf')
-sv = Service('接头霸王')
+sv = Service('接头霸王', visible= True, enable_on_default= True, bundle='接头霸王', help_='''
+- [接头 XX] XX为一张图片
+- [选头 1/2/3/auto] 选一张头或自动选头
+'''.strip())
 _nlt = DailyNumberLimiter(DAILY_MAX_NUM)
 _flt = FreqLimiter(5)
 

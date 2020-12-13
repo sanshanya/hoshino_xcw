@@ -9,7 +9,9 @@ from hoshino.typing import HoshinoBot, CQEvent
 from .data_source import generate_gif
 from .._res import Res as R
 
-sv = Service('Rua')
+sv = Service('rua', visible= True, enable_on_default= True, bundle='rua', help_='''
+- [rua @sb]
+'''.strip())
 data_dir = path.join(path.dirname(__file__), 'data')
 
 @sv.on_message()

@@ -10,7 +10,7 @@ from hoshino import Service, config
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64
 
-sv = Service('picfinder', help_='''
+sv = Service('搜图', help_='''
 [识图+图片] 查询图片来源
 '''.strip())
 

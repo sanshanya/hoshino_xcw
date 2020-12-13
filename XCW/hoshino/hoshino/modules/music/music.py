@@ -10,14 +10,14 @@ from .search_qq_music import search as searchqq
 from .search_migu_music import search as searchmigu
 
 sv = Service(
-    'music',
+    '点歌',
     enable_on_default=True,
     visible=True,
     help_="[点歌 好日子] 混合搜索\n"
           "[搜网易云 好日子] 搜索网易云\n"
           "[搜QQ音乐 好日子] 搜索QQ音乐\n"
           "[搜咪咕音乐 好日子] 搜索咪咕音乐",
-    bundle='pcr娱乐'
+    bundle='点歌'
 )
 
 cool_down = datetime.timedelta(minutes=3)  # 冷却时间

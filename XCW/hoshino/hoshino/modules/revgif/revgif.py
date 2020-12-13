@@ -8,7 +8,9 @@ from io import BytesIO
 import nonebot
 from hoshino import Service
 
-sv = Service('revgif', help_="GIF倒放功能")
+sv = Service('GIF倒放', visible= True, enable_on_default= True, bundle='GIF倒放', help_='''
+- [倒放 xx] xx为gif图
+'''.strip())
 
 headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) ",
            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

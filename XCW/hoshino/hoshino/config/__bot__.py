@@ -89,7 +89,7 @@ MODULES_ON = {
     'flac',#搜无损音乐  
     #'shitu',#识图功能需要apikey
     'shifan',#识别番剧
-    'battle_report',#会战报告生成，需要修改路径
+    'clanbattle_report',#会战报告生成，需要修改路径
     'voiceguess',#猜语音
     #'eclanrank',
     'aichat',#需要apikey，用前修改概率
@@ -137,4 +137,5 @@ MODULES_ON = {
     'weather',#天气插件
     #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
     'xcw',
+    'revgif',
 }

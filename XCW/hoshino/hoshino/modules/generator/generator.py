@@ -12,7 +12,7 @@ from hoshino import R, Service
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64, FreqLimiter
 
-sv = Service('generator', help_='''
+sv = Service('生成器', visible= True, enable_on_default= True, bundle='生成器', help_='''
 生成器
 [营销号 主体/事件/另一种说法] 营销号生成器
 [狗屁不通 主题] 狗屁不通生成器

@@ -13,13 +13,13 @@ from .luck_type import luck_type
 from PIL import Image, ImageSequence, ImageDraw, ImageFont
 
 
-sv_help = '''
+
+#帮助文本
+sv = Service('抽签', visible= True, enable_on_default= True, bundle='抽签', help_='''
 [抽签|人品|运势|抽凯露签]
 随机角色/指定凯露预测今日运势
 准确率高达114.514%！
-'''.strip()
-#帮助文本
-sv = Service('portune', help_=sv_help, bundle='pcr娱乐')
+'''.strip())
 
 lmt = DailyNumberLimiter(1)
 #设置每日抽签的次数，默认为1

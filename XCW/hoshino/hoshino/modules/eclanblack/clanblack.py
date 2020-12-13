@@ -5,7 +5,9 @@ import asyncio
 from hoshino import Service
 from hoshino.typing import CQEvent
 
-sv = Service('clanblack')
+sv = Service('失信名单', visible= False, enable_on_default= False, bundle='失信名单', help_='''
+@bot
+'''.strip())
 
 # 忽略的表头有4行
 keep_head_column = 4

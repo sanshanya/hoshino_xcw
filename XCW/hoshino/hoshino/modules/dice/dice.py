@@ -4,7 +4,7 @@ import random
 from hoshino import Service
 from hoshino.typing import CQEvent
 
-sv = Service('dice', help_='''
+sv = Service('掷骰子', visible= True, enable_on_default= True, bundle='掷骰子', help_='''
 [.r] 掷骰子
 [.r 3d12] 掷3次12面骰子
 '''.strip())

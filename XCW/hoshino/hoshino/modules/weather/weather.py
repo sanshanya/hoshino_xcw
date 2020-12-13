@@ -9,7 +9,9 @@ import requests
 from bs4 import BeautifulSoup
 from hoshino import Service
 
-sv = Service('weather')
+sv = Service('天气', visible= True, enable_on_default= True, bundle='天气', help_='''
+- [天气] 群聊发送天气查询世界上任意一个城市的天气吧~
+'''.strip())
 
 @sv.on_command('weather', aliases=('天气', '天气预报', '查天气'))
 async def weather(session: CommandSession):

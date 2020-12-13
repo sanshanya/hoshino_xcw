@@ -9,7 +9,7 @@ from hoshino import Service, util, priv
 from hoshino.modules.pcrsealkiller import Config
 from hoshino.typing import CQEvent, MessageSegment
 
-sv = Service('pcr-seal-killer', bundle='pcr娱乐', help_='''
+sv = Service('击杀晒卡海豹', visible= False, enable_on_default= False, bundle='击杀晒卡海豹', help_='''
 自动击杀晒卡海豹，请给机器人管理员或者群主，配置指令如下：
 启用海豹杀手 [海豹判定阈值]：如果不输入参数，默认阈值是100
 禁用海豹杀手：关闭海豹杀手服务，减轻机器人运行开销

@@ -21,7 +21,9 @@ SELF_CONCURRENCY = True
 HOSHINO_TRIGGER_DICTS = [trigger.prefix.trie, trigger.suffix.trie, trigger.keyword.allkw, trigger.rex.allrex]
 
 
-sv = Service('anti-concurrency')
+sv = Service('反并发', visible= False, enable_on_default= True, bundle='反并发', help_='''
+防止某些插件并发执行
+'''.strip())
 process_status_dict = {}
 
 

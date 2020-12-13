@@ -1,7 +1,9 @@
 from hoshino import Service
 import aiohttp
 
-sv = Service('nbnhhsh', enable_on_default=True)
+sv = Service('nbnhhsh', visible= True, enable_on_default= True, bundle='nbnhhsh', help_='''
+[? XX] XX是你不理解的dx
+'''.strip())
 
 
 @sv.on_rex(r'^[\?\？]{1,2} ?([a-z0-9]+)$', normalize=True)

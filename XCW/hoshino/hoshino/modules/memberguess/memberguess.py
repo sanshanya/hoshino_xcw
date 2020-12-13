@@ -4,7 +4,7 @@ import math, sqlite3, os, random, asyncio, hoshino, requests
 from nonebot import MessageSegment
 from hoshino.util import DailyNumberLimiter
 
-sv = Service('memberguess', help_='''
+sv = Service('猜群友', visible= True, enable_on_default= True, bundle='猜群友', help_='''
 猜群友 | 猜猜机器人随机发送的头像的一小部分来自哪位群友
 '''.strip())
 

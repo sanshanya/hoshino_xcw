@@ -14,12 +14,12 @@ from .base import *
 from .info import *
 from .yobot import *
 
-HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,个人出刀表,boss状态,预约,取消预约,查看预约,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n详细说明见项目文档: https://github.com/zyujs/clanbattle_info'
+HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,个人出刀表,boss状态,预约,取消预约,查看预约,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n默认不启用，启用请通知维护'
 
 lmt = FreqLimiter(60)   #冷却时间60秒
 process_lock = {}
 
-sv = Service('clanbattle_info', bundle='pcr查询', help_= HELP_MSG)
+sv = Service('自动报刀', visible= True, enable_on_default= False, bundle='自动报刀', help_= HELP_MSG)
 
 @sv.on_prefix('cbi')
 async def cbi(bot, ev: CQEvent):

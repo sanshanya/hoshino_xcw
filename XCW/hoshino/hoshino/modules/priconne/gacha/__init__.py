@@ -22,7 +22,7 @@ sv_help = '''
 [查看卡池] 模拟卡池&出率
 [切换卡池] 更换模拟卡池
 '''.strip()
-sv = Service('gacha', help_=sv_help, bundle='pcr娱乐')
+sv = Service('抽卡', help_=sv_help, bundle='抽卡')
 jewel_limit = DailyNumberLimiter(15000)
 tenjo_limit = DailyNumberLimiter(5)
 

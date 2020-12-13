@@ -23,7 +23,9 @@ from . import locked
 from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
 
 #
-sv = Service('epck')  # 如果使用hoshino的分群管理取消注释这行
+sv = Service('工会排名2', visible= True, enable_on_default= False, bundle='工会排名2', help_='''
+无说明,不要和工会排名同时开启
+'''.strip())
 
 # 初始化配置文件
 config = util.get_config()

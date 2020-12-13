@@ -7,9 +7,9 @@ from hoshino.typing import MessageSegment, CQEvent
 from . import game_util, GameMaster
 
 
-sv = Service('pcr-neurasthenia', bundle='pcr娱乐', help_='''
-[神经衰弱] 开启一局公主连结主题的神经衰弱小游戏
-[神经衰弱排行] 查看神经衰弱小游戏群排行
+sv = Service('神经衰弱', visible= True, enable_on_default= True, bundle='神经衰弱', help_='''
+- [神经衰弱] 开启一局公主连结主题的神经衰弱小游戏
+- [神经衰弱排行] 查看神经衰弱小游戏群排行
 '''.strip())
 
 
