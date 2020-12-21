@@ -89,9 +89,11 @@ bossData = {
     'scoreRate': [
         [1, 1, 1.3, 1.3, 1.5],
         [1.3, 1.3, 1.8, 1.8, 2],
+        [2.0, 2.0, 2.5, 2.5, 3.0]
     ],
     'hp': [6000000, 8000000, 10000000, 12000000, 20000000],
-    'max': 2,
+    'max1': 2,
+    'max2': 6
 }
 
 
@@ -105,7 +107,13 @@ def calc_hp(hp_base: int):
     remainPer = 0.0
 
     while True:
-        nowZm = bossData['max'] - 1 if zm > bossData['max'] else zm - 1
+        if zm < bossData['max1']:
+            nowZm = 0
+        elif bossData['max1'] <= zm < bossData['max2']:
+            nowZm = 1
+        elif zm >= bossData['max2']:  
+            nowZm = 2
+        #nowZm = bossData['max1'] - 1 if zm > bossData['max1'] else zm - 1
         cc += bossData['scoreRate'][nowZm][king - 1] * bossData['hp'][king - 1]
         if cc > hp_base:
             cc -= bossData['scoreRate'][nowZm][king - 1] * bossData['hp'][king - 1]

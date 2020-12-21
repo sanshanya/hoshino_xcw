@@ -148,20 +148,44 @@ async def card_edit(bot, ev, uid, sid, gid, card_text):
         await bot.send(ev, '只有管理才能给别人设置名片了啦！', at_sender=True)
 
 		
-
-async def group_name(bot, ev, gid, name_text):
+#群名修改
+async def group_name(bot, ev, gid, name):
     self_info = await self_member_info(bot, ev, gid)
     if self_info['role'] != 'owner' and self_info['role'] != 'admin':
         await bot.send(ev, '\n我还没获得管理权限呢...', at_sender=True)
         return    
     if not priv.check_priv(ev,priv.ADMIN):
-        await bot.send(ev, '只有管理才能修改群名哦！', at_sender=True) 
+        await bot.send(ev, '才不听你的~变态ヽ(*。>Д<)o゜', at_sender=True) 
     else:   
         try:
             await bot.set_group_name(
 			    group_id = gid,
-			    name = name_text
+			    group_name = name
 			)
-            await bot.send(ev, f'群名已修改为“{name_text}”啦')
+            await bot.send(ev, f'群名已修改为“{name}”啦')
         except Exception as e:
             await bot.send(ev, '群名修改失败惹...\n错误代码：{e}', at_sender=True)
+            
+#管理设置
+async def admin_set(bot, ev, sid, gid, status):
+    self_info = await self_member_info(bot, ev, gid)
+    if self_info['role'] != 'owner':
+        await bot.send(ev, '我必须要当群主才行o(╥﹏╥)o', at_sender=True)
+        return
+    if not priv.check_priv(ev,priv.ADMIN):
+        await bot.send(ev, '才不听你的~哼╭(╯^╰)╮', at_sender=True) 
+        return
+    else: 
+        try:
+            for m in ev.message:
+                await bot.set_group_admin(
+                    group_id= gid, 
+                    user_id= sid, 
+                    enable= status
+                )
+            if not status:
+                await bot.send(ev, f'[CQ:at,qq={sid}]已经成为成员啦~')
+            else:
+                await bot.send(ev, f'[CQ:at,qq={sid}]已经成为管理啦~')
+        except Exception as e:
+            await bot.send(ev, f'诶！！！为什么设置成功！\n错误代码：{e}', at_sender=True)

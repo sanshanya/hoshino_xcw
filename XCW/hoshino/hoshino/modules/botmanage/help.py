@@ -12,8 +12,11 @@ TOP_MANUAL = '''
 [lssv] 查看功能表
 ※发送以下关键词查看功能的具体帮助：
 [帮助XXX] XXX为的功能的名字
-※注意某些功能已经被隐藏
-※注意某些功能没有帮助说明
+※发送[开启 XXX] 可以开启XXX功能
+※发送[禁用 XXX] 可以禁用XXX功能
+※注意某些功能被隐藏或没有说明
+※注意某些功能无法被您开关
+※请您至少给bot管理或群主权限
 '''.strip()
 
 def gen_bundle_manual(bundle_name, service_list, gid):

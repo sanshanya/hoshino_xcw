@@ -12,8 +12,9 @@ sv = Service('群管', visible= True, enable_on_default= True, bundle='群管', 
 - [解除禁言@sb] 字面意思
 - [全员禁言] 开启全员禁言
 - [飞机票@sb] 把sb请出本群
-- [谁是龙王] 迫害龙王
-
+- [设置管理员 @sb] 
+- [取消管理员 @sb] 
+- [修改名片@sb xxx] 吧sb的群名片设置为xxx
 '''.strip())
 
 @sv.on_prefix('申请头衔')
@@ -29,7 +30,7 @@ async def special_title(bot, ev):
         sid = uid
     await util.title_get(bot, ev, uid, sid, gid, title)
 
-#go-cqhttp似乎暂时不支持收回专属头衔...
+
 @sv.on_fullmatch(('删除头衔','清除头衔','收回头衔','回收头衔','取消头衔'))
 async def del_special_title(bot, ev):
     uid = ev.user_id
@@ -42,6 +43,7 @@ async def del_special_title(bot, ev):
     if sid is None:
         sid = uid
     await util.title_get(bot, ev, uid, sid, gid, title)
+#####
 
 @sv.on_prefix(('来发口球','塞口球','禁言一下','禁言','口球','黑屋'))
 async def umm_ahh(bot, ev):
@@ -75,6 +77,40 @@ async def cancel_ban_member(bot, ev):
         await bot.send(ev, '请@需要摘口球的群员哦w')
         return
     await util.member_silence(bot, ev, uid, sid, gid, time)
+    
+####  
+@sv.on_prefix(('设置管理员','设置管理','右迁','升职'))
+async def set_admin(bot, ev):
+    uid = ev.user_id
+    sid = None
+    gid = ev.group_id
+    for m in ev.message:
+        if m.type == 'at' and m.data['qq'] != 'all':
+            sid = int(m.data['qq'])
+        elif m.type == 'at' and m.data['qq'] == 'all':
+            await bot.send(ev, '你一定是喝醉了~', at_sender=True)
+            return
+    if sid is None:
+        await bot.send(ev, '请@需要成为管理的成员哦')
+        return
+    await util.admin_set(bot, ev, sid, gid, True)
+    
+        
+@sv.on_prefix(('取消管理员','取消管理','左迁','降职'))
+async def unset_admin(bot, ev):
+    uid = ev.user_id
+    sid = None
+    gid = ev.group_id
+    for m in ev.message:
+        if m.type == 'at' and m.data['qq'] != 'all':
+            sid = int(m.data['qq'])
+        elif m.type == 'at' and m.data['qq'] == 'all':
+            await bot.send(ev, '你清醒点!!!', at_sender=True)
+            return
+    if sid is None:
+        await bot.send(ev, '请@需要取消管理的成员哦')
+        return
+    await util.admin_set(bot, ev, sid, gid, False)
 
 @sv.on_fullmatch(('全员口球','全员禁言'))
 async def ban_all(bot, ev):
@@ -102,6 +138,8 @@ async def guoup_kick(bot, ev):
             return
     if sid is None:
         sid = uid
+        await bot.send(ev, '后面@需要踢走的人', at_sender=True)
+        return
     await util.member_kick(bot, ev, uid, sid, gid, is_reject)
 
 @sv.on_prefix(('修改名片','修改群名片','设置名片','设置群名片'))
@@ -117,28 +155,12 @@ async def card_set(bot, ev):
         sid = uid
     await util.card_edit(bot, ev, uid, sid, gid, card_text)
     
-@sv.on_fullmatch(('谁是龙王','迫害龙王','龙王是谁'))
-async def whois_dragon_king(bot, ev):
-    gid = ev.group_id
-    self_info = await util.self_member_info(bot, ev, gid)
-    sid = self_info['user_id']
-    honor_type = 'talkative'
-    ta_info = await util.honor_info(bot, ev, gid, honor_type)
-    if 'current_talkative' not in ta_info:
-        await bot.send(ev, '本群没有开启龙王标志哦~')
-        return
-    dk = ta_info['current_talkative']['user_id']
-    if sid == dk:
-        pic = R.img('dk_is_me.jpg').cqcode
-        await bot.send(ev,f'啊，我是龙王\n{pic}')
-    else:
-        action=random.choice(['龙王出来挨透','龙王出来喷水'])
-        dk_avater = ta_info['current_talkative']['avatar'] + '640' + f'&t={dk}'
-        await bot.send(ev, f'[CQ:at,qq={dk}]\n{action}\n[CQ:image,file={dk_avater}]')
+
 
 @sv.on_prefix(('修改群名','设置群名'))
 async def set_group_name(bot, ev):
     gid = ev.group_id
     uid = ev.user_id
-    name_text = ev.message.extract_plain_text()
-    await util.group_name(bot, ev, gid, name_text)
+    name = ev.message.extract_plain_text()
+    await util.group_name(bot, ev, gid, name)
+

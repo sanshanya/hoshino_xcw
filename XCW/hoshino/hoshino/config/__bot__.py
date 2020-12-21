@@ -84,7 +84,7 @@ MODULES_ON = {
     # 'twitter',#推特订阅，需要配置本目录下的twitter.py
     'yobot',#yobot会战功能
     'hourcallyao',#买药提醒
-    'reload',#重启，暂时不知是否能生效
+    'reload',#重启
     'tarot',#塔罗牌
     'flac',#搜无损音乐  
     #'shitu',#识图功能需要apikey
@@ -95,8 +95,8 @@ MODULES_ON = {
     'aichat',#需要apikey，用前修改概率
     'hiumsentences',#网抑云语录
     'generator',#营销文生成等五个小功能
-    #'ontree_scheduler',#挂树优化提醒
-    #'eqa',#问答功能2
+    'ontree_scheduler',#挂树优化提醒
+    'eqa',#问答功能2
     'russian',#俄罗斯轮盘赌
     #'explosion',#每天一发惠惠
     'boxcolle',#BOX查询
@@ -136,6 +136,6 @@ MODULES_ON = {
     #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
     'weather',#天气插件
     #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
-    'xcw',
+    #'xcw',
     'revgif',
 }

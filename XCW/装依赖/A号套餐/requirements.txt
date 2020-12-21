@@ -34,7 +34,7 @@ filetype==1.0.7
 logzero
 jieba
 pinyin
-xlrd
+xlrd==1.2.0
 pycryptodome
 pycryptodomex
 httpx

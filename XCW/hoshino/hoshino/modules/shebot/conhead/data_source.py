@@ -4,9 +4,11 @@ from datetime import datetime, timedelta
 from math import sqrt
 from os import path, listdir
 from random import choice, randint, shuffle
-from hoshino import config
+
 import aiohttp
 from PIL import Image
+
+from .config import CLIENT_ID, CLIENT_SECRET
 from .._util import load_config
 from .._res  import Res as R
 
@@ -21,30 +23,30 @@ class KyaruHead:
 
     @property
     def img(self):
-        head = path.join(path.dirname(__file__), 'head', self.head_name, f'{self.head_name}.png')
+        head = path.join(path.dirname(__file__), 'data/head', self.head_name, f'{self.head_name}.png')
         return Image.open(head)
 
     @classmethod
     def from_name(cls, head_name):
-        dat_path = path.join(path.dirname(__file__), 'head', head_name, 'dat.json')
-        pic_path = path.join(path.dirname(__file__), 'head', head_name, f'{head_name}.png')
+        dat_path = path.join(path.dirname(__file__), 'data/head', head_name, 'dat.json')
+        pic_path = path.join(path.dirname(__file__), 'data/head', head_name, f'{head_name}.png')
         dat = load_config(dat_path)
         cqcode = R.image(pic_path)
         return cls(head_name, dat['angle'], dat['face_width'], dat['chin_tip_x'], dat['chin_tip_y'], cqcode)
 
     @staticmethod
     def exist_head(head_name):
-        if not path.exists(path.join(path.dirname(__file__), 'head', head_name)):
+        if not path.exists(path.join(path.dirname(__file__), 'data/head', head_name)):
             return False
-        if not path.exists(path.join(path.dirname(__file__), 'head', head_name, f'{head_name}.png')):
+        if not path.exists(path.join(path.dirname(__file__), 'data/head', head_name, f'{head_name}.png')):
             return False
         return True
 
     @classmethod
     def rand_head(cls):
         heads = []
-        for i in listdir(path.join(path.dirname(__file__), 'head')):
-            if path.isdir(path.join(path.dirname(__file__), 'head', i)):
+        for i in listdir(path.join(path.dirname(__file__), 'data/head')):
+            if path.isdir(path.join(path.dirname(__file__), 'data/head', i)):
                 heads.append(i)
         return cls.from_name(choice(heads))
 
@@ -55,8 +57,8 @@ def auto_head(face_dat: dict) -> KyaruHead:
 
 def gen_head():
     heads = []
-    for i in listdir(path.join(path.dirname(__file__), 'head')):
-        if path.isdir(path.join(path.dirname(__file__), 'head', i)):
+    for i in listdir(path.join(path.dirname(__file__), 'data/head')):
+        if path.isdir(path.join(path.dirname(__file__), 'data/head', i)):
             heads.append(i)
     shuffle(heads)
     for head in heads:
@@ -64,8 +66,8 @@ def gen_head():
 
 def get_token() -> str:
     grant_type = 'client_credentials'
-    client_id = config.baidu_api_KEY
-    client_secret = config.baidu_api_SECRET
+    client_id = CLIENT_ID
+    client_secret = CLIENT_SECRET
     url = 'https://aip.baidubce.com/oauth/2.0/token'
     params = {'grant_type':grant_type,'client_id':client_id,'client_secret':client_secret}
     with requests.get(url, params) as resp:
@@ -74,12 +76,8 @@ def get_token() -> str:
         expire_time = datetime.now() + timedelta(seconds=data['expires_in'])
         return token, expire_time
 
-token = get_token()
-
 async def detect_face(imgb64: str) -> dict:
-    global token
-    if not token or datetime.now() > token[1]:
-        token = get_token()
+    token = get_token()
     api_url = f'https://aip.baidubce.com/rest/2.0/face/v3/detect?access_token={token[0]}'
     data = {
         "image" : imgb64,

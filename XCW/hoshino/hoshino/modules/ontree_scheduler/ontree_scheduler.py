@@ -1,17 +1,19 @@
 import os
 import sqlite3
+import math
 from datetime import datetime,timedelta
 
 from nonebot import get_bot 
 
 import hoshino
-from hoshino import Service
+from hoshino import R, Service, priv, util
 
-sv = Service('挂树提醒加强版', visible= True, enable_on_default= True, bundle='挂树提醒加强版', help_='''
-- [取消挂树]
-- [挂树]
+sv = Service('会战辅助', visible= True, enable_on_default= True, bundle='会战辅助', help_='''
+- [挂树/取消挂树] 带计时的挂树功能,按55分钟算
+- [合刀 A B C] 三个字母分别是刀1伤害/刀2伤害/剩余血量(国服)
 '''.strip())
 
+###挂树部分
 @sv.on_command('挂树')
 async def climb_tree(session):
     #获取上树成员以及其所在群信息
@@ -35,7 +37,7 @@ async def climb_tree(session):
         cur.execute(f"INSERT INTO tree VALUES(NULL,{user_id},{group_id},\"{loss_time}\")")
         con.commit()
         con.close()
-        msg = f'>>>挂树计时提醒\n[CQ:at,qq={user_id}]开始挂树\n因上报时间与游戏时间存在误差\n挂树时长按照55分钟计算\n开始时间:{climb_stime}\n下树期限:{loss_stime}\n距离下树期限(约)10分钟时会连续提醒您三次\n如果没有人帮助请及时下树'
+        msg = f'>>>挂树计时提醒\n[CQ:at,qq={user_id}]开始挂树\n因上报时间与游戏时间存在误差\n挂树时长按照55分钟计算\n开始时间:{climb_stime}\n下树期限:{loss_stime}\n距离下树期限(约)10分钟时会连续提醒您三次\n如果没有人帮助请及时下树\n发送"取消挂树"可取消提醒'
     await session.send(msg)
 
 @sv.on_command('取消挂树')
@@ -73,9 +75,63 @@ async def ontree_scheduler():
         loss_time = row[2][11:]
         if(".000" in loss_time):
             loss_time = loss_time[:-4]
-        msg = f'>>>挂树计时提醒\n[CQ:at,qq={qq_id}]\n你的挂树剩余时间小于10分钟\n预计下树极限时间: {loss_time}\n请及时下树，防止掉刀'
+        msg = f'>>>挂树计时提醒\n[CQ:at,qq={qq_id}]\n你的挂树剩余时间小于10分钟\n预计下树极限时间: {loss_time}\n请及时下树，防止掉刀\n发送"取消挂树"可取消提醒'
         await bot.send_group_msg(group_id=group_id, message=msg)
     cur.execute("DELETE FROM tree WHERE (strftime('%s',loss_time)-strftime('%s',datetime(strftime('%s','now'), 'unixepoch', 'localtime')))<0")
     con.commit()
     con.close()
     return
+    
+#####合刀部分    
+@sv.on_prefix('合刀')
+async def hedao(bot, event):
+    shanghai = event.message.extract_plain_text().strip()
+    shanghai = shanghai.split()
+    if not shanghai:
+        msg = '请输入：合刀 刀1伤害 刀2伤害 剩余血量\n如：合刀 50 60 70'
+        await bot.finish(event, msg)
+    if len(shanghai) != 3:
+        return
+    if is_number(shanghai[0]) is False:
+        return
+    if is_number(shanghai[1]) is False:
+        return
+    if is_number(shanghai[2]) is False:
+        return
+    dao_a = int(shanghai[0])
+    dao_b = int(shanghai[1])
+    current_hp = int(shanghai[2])
+    if dao_a + dao_b < current_hp:
+        await bot.finish(event, '当前合刀造成的伤害不能击杀boss')
+    # a先出
+    a_out = current_hp - dao_a
+    a_per = a_out / dao_b
+    a_t = (1 - a_per) * 90 + 10
+    a_result = math.ceil(a_t)
+    if a_result > 90:
+        a_result = 90
+    # b先出
+    b_out = current_hp - dao_b
+    b_per = b_out / dao_a
+    b_t = (1 - b_per) * 90 + 10
+    b_result = math.ceil(b_t)
+    if b_result > 90:
+        b_result = 90
+    msg = f'{dao_a}先出，另一刀可获得{a_result}秒补偿刀\n{dao_b}先出，另一刀可获得{b_result}秒补偿刀'
+    await bot.send(event, msg)
+
+
+def is_number(s):
+    '''判断是否是数字'''
+    try:
+        float(s)
+        return True
+    except ValueError:
+        pass
+    try:
+        import unicodedata
+        unicodedata.numeric(s)
+        return True
+    except (TypeError, ValueError):
+        pass
+    return False
