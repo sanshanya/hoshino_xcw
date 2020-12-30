@@ -27,9 +27,17 @@ def add_salt(data):
     salt = ''.join(random.sample(string.ascii_letters + string.digits, 6))
     return data + bytes(salt, encoding="utf8")
 
-def format_setu_msg(image):
+def format_setu_msg(group_id, image):
     base64_str = f"base64://{base64.b64encode(add_salt(image['data'])).decode()}"
-    msg = f'title:{image["title"]}\nauthor:{image["author"]}\nid:{image["id"]}\n[CQ:image,file={base64_str}]'
+    if get_group_config(group_id, "xml"):
+        msg = f'[CQ:cardimage,file={base64_str},source={image["title"]} (id:{image["id"]} author:{image["author"]})]'
+    else:
+        msg = f'title:{image["title"]}\nauthor:{image["author"]}\nid:{image["id"]}\n[CQ:image,file={base64_str}]'
+    return msg
+
+def format_setu_msg1(group_id, image):
+    base64_str = f"base64://{base64.b64encode(add_salt(image['data'])).decode()}"
+    msg = f'[CQ:cardimage,file={base64_str},source={image["title"]} (id:{image["id"]} author:{image["author"]})]'
     return msg
 
 async def get_setu(group_id):
@@ -56,7 +64,35 @@ async def get_setu(group_id):
     if not image:
         return '获取失败'
     elif image['id'] != 0:
-        return format_setu_msg(image)
+        return format_setu_msg(group_id, image)
+    else:
+        return image['title']
+
+async def get_setu1(group_id):
+    source_list = []
+    if get_group_config(group_id, 'lolicon'):
+        source_list.append(1)
+    if get_group_config(group_id, 'lolicon_r18'):
+        source_list.append(2)
+    if get_group_config(group_id, 'acggov'):
+        source_list.append(3)
+    source = 0
+    if len(source_list) > 0:
+        source = random.choice(source_list)
+    
+    image = None
+    if source == 1:
+        image = await lolicon_get_setu(0)
+    elif source == 2:
+        image = await lolicon_get_setu(1)
+    elif source == 3:
+        image = await acggov_get_setu()
+    else:
+        return None
+    if not image:
+        return '获取失败'
+    elif image['id'] != 0:
+        return format_setu_msg1(group_id, image)
     else:
         return image['title']
 
@@ -88,7 +124,7 @@ async def search_setu(group_id, keyword, num):
             image_list = await acggov_search_setu(keyword, num)
         if image_list and len(image_list) > 0:
             for image in image_list:
-                msg_list.append(format_setu_msg(image))
+                msg_list.append(format_setu_msg(group_id, image))
     return msg_list
 
 async def get_ranking(group_id, page: int = 0):
@@ -104,7 +140,7 @@ async def get_ranking_setu(group_id, number: int) -> (int, str):
     if not image:
         return '获取失败'
     elif image['id'] != 0:
-        return format_setu_msg(image)
+        return format_setu_msg(group_id, image)
     else:
         return image['title']
 

@@ -21,7 +21,7 @@ def check_lmt(uid, num):
     if num > 1 and (get_config('base', 'daily_max') - tlmt.get_num(uid)) < num:
             return 1, f"您今天的剩余次数为{get_config('base', 'daily_max') - tlmt.get_num(uid)}次,已不足{num}次,请节制!"
     if not flmt.check(uid):
-        return 0, ''
+        return 1, f'您冲的太快了,请等待{round(flmt.left_time(uid))}秒!'
     #tlmt.increase(uid,num)
     flmt.start_cd(uid)
     return 0, ''
@@ -51,6 +51,8 @@ async def send_setu(bot, ev):
             key = 'acggov'
         elif args[1] == 'withdraw':
             key = 'withdraw'
+        elif args[1] == 'xml':
+            key = 'xml'
         if args[2] == 'on' or args[2] == 'true':
             value = True
         elif args[2] == 'off' or args[2] == 'false':
@@ -67,6 +69,7 @@ async def send_setu(bot, ev):
             gid = int(args[1])
         msg = f'group {gid} :'
         msg += f'\nwithdraw : {get_group_config(gid, "withdraw")}'
+        msg += f'\nxml : {get_group_config(gid, "xml")}'
         msg += f'\nlolicon : {get_group_config(gid, "lolicon")}'
         msg += f'\nlolicon_r18 : {get_group_config(gid, "lolicon_r18")}'
         msg += f'\nacggov : {get_group_config(gid, "acggov")}'
@@ -83,7 +86,7 @@ async def send_setu(bot, ev):
         msg = 'invalid parameter'
     await bot.send(ev, msg)
 
-@sv.on_rex(r'^不够[涩瑟色]|^[涩瑟色]图$|^来一?[点份张].*[涩瑟色]图|^[再]?来?(\d*)?[份点张]([涩色瑟]图)?')
+@sv.on_rex(r'^不够[涩瑟色]|^再来[点张份]|^[涩瑟色]图$|^[再]?来?(\d*)?[份点张]([涩色瑟]图)')
 async def send_random_setu(bot, ev):
     num = 1
     match = ev['match']
@@ -121,98 +124,6 @@ async def send_random_setu(bot, ev):
             except:
                 print('撤回失败')
             await asyncio.sleep(1)
-
-@sv.on_prefix("匿名色图")
-async def send_random_setu(bot, ev):    
-    uid = ev['user_id']
-    gid = ev['group_id']
-    data_all = []
-    text1 = await get_setu(gid)
-    text2 = await get_setu(gid)
-    text3 = await get_setu(gid)
-    text4 = await get_setu(gid)
-    text5 = await get_setu(gid)
-    text6 = await get_setu(gid)
-    text7 = await get_setu(gid)
-    text8 = await get_setu(gid)
-    text9 = await get_setu(gid)
-    data1 ={
-            "type": "node",
-            "data": {
-                "name": 'Q群涩图管家',
-                "uin": '2854196310',
-                "content": text1
-            }
-            }
-    data2 ={
-            "type": "node",
-            "data": {
-                "name": '好色的小冰',
-                "uin": '2854196306',
-                "content": text2
-            }
-            }
-    data3 ={
-            "type": "node",
-            "data": {
-                "name": '涩图豆',
-                "uin": '2854196314',
-                "content": text3
-            }
-            }
-    data4 ={
-            "type": "node",
-            "data": {
-                "name": 'Q群官方色图',
-                "uin": '2854196320',
-                "content": text4
-            }
-            }
-    data5 ={
-            "type": "node",
-            "data": {
-                "name": 'QQ涩图惠购',
-                "uin": '2854196925',
-                "content": text5
-            }
-            }
-    data6 ={
-            "type": "node",
-            "data": {
-                "name": '涩图图',
-                "uin": '2854200117',
-                "content": text6
-            }
-            } 
-    data7 ={
-            "type": "node",
-            "data": {
-                "name": '涩小狐',
-                "uin": '2854196311',
-                "content": text7
-            }
-            }
-    data8 ={
-            "type": "node",
-            "data": {
-                "name": '涩图老铁',
-                "uin": '2854196312',
-                "content": text8
-            }
-            }  
-    data9 ={
-            "type": "node",
-            "data": {
-                "name": '堕落星妹',
-                "uin": '2854214267',
-                "content": text9
-            }
-            }            
-    data_all=[data1,data2,data3,data4,data5,data6,data7,data8,data9]
-    await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
-   
-
-    
 
 @sv.on_rex(r'^搜[索]?(\d*)[份张]*(.*?)[涩瑟色]图(.*)')
 async def send_search_setu(bot, ev):
@@ -312,6 +223,96 @@ async def send_ranking_setu(bot, ev):
             except:
                 print('撤回失败')
             await asyncio.sleep(1)
+
+@sv.on_prefix("匿名色图")
+async def send_random_setu(bot, ev):    
+    uid = ev['user_id']
+    gid = ev['group_id']
+    data_all = []
+    text1 = await get_setu1(gid)
+    text2 = await get_setu1(gid)
+    text3 = await get_setu1(gid)
+    text4 = await get_setu1(gid)
+    text5 = await get_setu1(gid)
+    text6 = await get_setu1(gid)
+    text7 = await get_setu1(gid)
+    text8 = await get_setu1(gid)
+    text9 = await get_setu1(gid)
+    data1 ={
+            "type": "node",
+            "data": {
+                "name": 'Q群涩图管家',
+                "uin": '2854196310',
+                "content": text1
+            }
+            }
+    data2 ={
+            "type": "node",
+            "data": {
+                "name": '好色的小冰',
+                "uin": '2854196306',
+                "content": text2
+            }
+            }
+    data3 ={
+            "type": "node",
+            "data": {
+                "name": '涩图豆',
+                "uin": '2854196314',
+                "content": text3
+            }
+            }
+    data4 ={
+            "type": "node",
+            "data": {
+                "name": 'Q群官方色图',
+                "uin": '2854196320',
+                "content": text4
+            }
+            }
+    data5 ={
+            "type": "node",
+            "data": {
+                "name": 'QQ涩图惠购',
+                "uin": '2854196925',
+                "content": text5
+            }
+            }
+    data6 ={
+            "type": "node",
+            "data": {
+                "name": '涩图图',
+                "uin": '2854200117',
+                "content": text6
+            }
+            } 
+    data7 ={
+            "type": "node",
+            "data": {
+                "name": '涩小狐',
+                "uin": '2854196311',
+                "content": text7
+            }
+            }
+    data8 ={
+            "type": "node",
+            "data": {
+                "name": '涩图老铁',
+                "uin": '2854196312',
+                "content": text8
+            }
+            }  
+    data9 ={
+            "type": "node",
+            "data": {
+                "name": '堕落星妹',
+                "uin": '2854214267',
+                "content": text9
+            }
+            }            
+    data_all=[data1,data2,data3,data4,data5,data6,data7,data8,data9]
+    await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
+
 
 @sv.scheduled_job('interval', minutes=30)
 async def job():

@@ -16,13 +16,14 @@ except:
     import json
 
 sv_help = '''
-[妈十连] 转蛋模拟
-[妈来发单抽] 转蛋模拟
-[妈来一井] 4w5钻！
+[@Bot十连] 转蛋模拟
+[@Bot来发单抽] 转蛋模拟
+[@Bot来一井] 4w5钻！
 [查看卡池] 模拟卡池&出率
 [切换卡池] 更换模拟卡池
+[氪金@某人] 为某人氪金, 恢复抽卡次数
 '''.strip()
-sv = Service('抽卡', help_=sv_help, bundle='抽卡')
+sv = Service('gacha', help_=sv_help, bundle='pcr娱乐')
 jewel_limit = DailyNumberLimiter(15000)
 tenjo_limit = DailyNumberLimiter(5)
 
@@ -90,7 +91,7 @@ async def set_pool(bot, ev: CQEvent):
     elif name in ('限定'):
         await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装限定\n> 选择卡池 万圣限定\n> 选择卡池 圣诞限定\n> 选择卡池 春节限定\n> 选择卡池 情人节限定')
     elif name in ('泳装限定'):
-        await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装佩可\n> 选择卡池 泳装铃莓\n> 选择卡池 泳装凯露\n> 选择卡池 泳装珠希\n> 选择卡池 泳装铃奈\n> 选择卡池 泳装咲恋\n> 选择卡池 泳装真琴\n> 选择卡池 泳装真步\n> 选择卡池 泳装流夏\n> 选择卡池 泳装纯\n> 选择卡池 泳装镜华')
+        await bot.finish(ev,'请选择以下卡池\n> 选择卡池 泳装佩可\n> 选择卡池 泳装铃莓\n> 选择卡池 泳装凯露\n> 选择卡池 泳装珠希\n> 选择卡池 泳装铃奈\n> 选择卡池 泳装咲恋\n> 选择卡池 泳装真琴\n> 选择卡池 泳装真步\n> 选择卡池 泳装流夏')
     elif name in ('泳装佩可', '泳装吃货', '水吃'):
         name = '泳裝-佩可'
     elif name in ('泳装铃莓', '泳装女仆', '水女仆'):
@@ -111,8 +112,6 @@ async def set_pool(bot, ev: CQEvent):
         name = '泳裝-流夏'
     elif name in ('泳装纯', '泳装黑骑','水纯'):
         name = '泳裝-纯'
-    elif name in ('泳装镜华', '泳装小仓唯','水仓唯'):
-        name = '泳裝-镜华'
     elif name in ('万圣限定'):
         await bot.finish(ev,'请选择以下卡池\n> 选择卡池 万圣忍\n> 选择卡池 万圣美咲\n> 选择卡池 万圣小仓唯')
     elif name in ('万圣忍', '瓜忍'):
@@ -173,12 +172,12 @@ async def gacha_1(bot, ev: CQEvent):
     gid = str(ev.group_id)
     gacha = Gacha(_group_pool[gid])
     chara, hiishi = gacha.gacha_one(gacha.up_prob, gacha.s3_prob, gacha.s2_prob)
-    silence_time = hiishi * 60
+    # silence_time = hiishi * 60
 
     res = f'{chara.name} {"★"*chara.star}'
     res = f'{chara.icon.cqcode} {res}'
 
-    #await silence(ev, silence_time)
+    # await silence(ev, silence_time)
     await bot.send(ev, f'素敵な仲間が増えますよ！\n{res}', at_sender=True)
 
 
@@ -192,7 +191,7 @@ async def gacha_10(bot, ev: CQEvent):
     gid = str(ev.group_id)
     gacha = Gacha(_group_pool[gid])
     result, hiishi = gacha.gacha_ten()
-    silence_time = hiishi * 6 if hiishi < SUPER_LUCKY_LINE else hiishi * 60
+    # silence_time = hiishi * 6 if hiishi < SUPER_LUCKY_LINE else hiishi * 60
 
 
     res1 = chara.gen_team_pic(result[:5], star_slot_verbose=False)

@@ -15,6 +15,9 @@ sv = Service('群管plus', visible= True, enable_on_default= True, bundle='群�
 @sv.on_fullmatch(('谁是龙王','迫害龙王','龙王是谁'))
 async def whois_dragon_king(bot, ev):
     gid = ev.group_id
+    img_path = R.img('longwang/').path #随机龙王图开始
+    filename = random.choice(files)
+    pic = R.img('longwang/', filename).cqcode #随机龙王图结束
     self_info = await util.self_member_info(bot, ev, gid)
     sid = self_info['user_id']
     honor_type = 'talkative'
@@ -24,7 +27,6 @@ async def whois_dragon_king(bot, ev):
         return
     dk = ta_info['current_talkative']['user_id']
     if sid == dk:
-        pic = R.img('dk_is_me.jpg').cqcode
         await bot.send(ev,f'啊，我是龙王\n{pic}')
     else:
         action=random.choice(['龙王出来挨透','龙王出来喷水'])

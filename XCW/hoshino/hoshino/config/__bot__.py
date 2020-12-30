@@ -138,4 +138,6 @@ MODULES_ON = {
     #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
     #'xcw',
     'revgif',
+    'groupmanager',
+    #'yocool'安装yocool
 }
