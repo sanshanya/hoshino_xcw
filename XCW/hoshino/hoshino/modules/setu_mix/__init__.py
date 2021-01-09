@@ -9,7 +9,7 @@ sv = Service('色图', visible= True, enable_on_default= False, bundle='色图',
 - [搜N张色图 XX] 搜索XX的色图,附带数量可以获取多张
 - [本日涩图排行榜 X ] 获取p站排行榜(需开启acggov模块),X为页数
 - [看涩图 X /看涩图 X Y] 获取p站排行榜指定序号色图(需开启acggov模块),从X到Y或者只看X
-- [匿名色图] Q群bot受到不可名状意志去屎(需关闭xml模块)
+- [匿名色图] Q群的bots受到不可名状意志的控制(需关闭xml模块)
 - [show色图/show来N张色图] 带上show前缀涩图会发生变化(需关闭xml模块)
 '''.strip())
 
