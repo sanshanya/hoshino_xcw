@@ -4,7 +4,7 @@ import traceback
 
 config = {
     "base": {
-        "daily_max": 10,
+        "daily_max": 30,
         "freq_limit": 10,
     },
     "default": {
@@ -15,16 +15,16 @@ config = {
         "xml": False,
     },
     "lolicon": {
-        "mode": 1,
+        "mode": 2,
         "apikey": "",
-        "r18": True,
+        "r18": False,
         "use_thumb": True,
         "pixiv_direct": False,
         "pixiv_proxy": "",
     },
     "acggov": {
         # 0禁用 1无缓存 2有缓存在线 3有缓存离线
-        "mode": 1,
+        "mode": 2,
         "apikey": "",
         "ranking_mode": "daily",
         "per_page": 25,

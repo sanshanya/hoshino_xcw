@@ -3,11 +3,14 @@ import asyncio
 from .base import *
 from .config import get_config, get_group_config, set_group_config
 
-HELP_MSG = '''色图/来n张色图 : 随机获取1张/n张色图
-搜[n张]色图 keyword : 搜索指定关键字的色图,附带数量可以获取多张
-本日涩图排行榜 [page] : 获取p站排行榜(需开启acggov模块)
-看涩图 [n] 或 [start end] : 获取p站排行榜指定序号色图(需开启acggov模块)'''
-sv = hoshino.Service('setu_mix', bundle='pcr娱乐', help_=HELP_MSG)
+sv = Service('空调', visible= True, enable_on_default= False, bundle='空调', help_='''
+- [色图/来N张色图] 随机获取1张/n张色图
+- [搜N张色图 XX] 搜索XX的色图,附带数量可以获取多张
+- [本日涩图排行榜 X ] 获取p站排行榜(需开启acggov模块),X为页数
+- [看涩图 X /看涩图 X Y] 获取p站排行榜指定序号色图(需开启acggov模块),从X到Y或者只看X
+- [匿名色图] Q群bot受到不可名状意志去屎(需关闭xml模块)
+- [show色图/show来N张色图] 带上show前缀涩图会发生变化(需关闭xml模块)
+'''.strip())
 
 #设置limiter
 tlmt = hoshino.util.DailyNumberLimiter(get_config('base', 'daily_max'))
@@ -277,6 +280,95 @@ async def send_random_setu(bot, ev):
     text7 = await get_setu1(gid)
     text8 = await get_setu1(gid)
     text9 = await get_setu1(gid)
+    data1 ={
+            "type": "node",
+            "data": {
+                "name": 'Q群涩图管家',
+                "uin": '2854196310',
+                "content": text1
+            }
+            }
+    data2 ={
+            "type": "node",
+            "data": {
+                "name": '好色的小冰',
+                "uin": '2854196306',
+                "content": text2
+            }
+            }
+    data3 ={
+            "type": "node",
+            "data": {
+                "name": '涩图豆',
+                "uin": '2854196314',
+                "content": text3
+            }
+            }
+    data4 ={
+            "type": "node",
+            "data": {
+                "name": 'Q群官方色图',
+                "uin": '2854196320',
+                "content": text4
+            }
+            }
+    data5 ={
+            "type": "node",
+            "data": {
+                "name": 'QQ涩图惠购',
+                "uin": '2854196925',
+                "content": text5
+            }
+            }
+    data6 ={
+            "type": "node",
+            "data": {
+                "name": '涩图图',
+                "uin": '2854200117',
+                "content": text6
+            }
+            } 
+    data7 ={
+            "type": "node",
+            "data": {
+                "name": '涩小狐',
+                "uin": '2854196311',
+                "content": text7
+            }
+            }
+    data8 ={
+            "type": "node",
+            "data": {
+                "name": '涩图老铁',
+                "uin": '2854196312',
+                "content": text8
+            }
+            }  
+    data9 ={
+            "type": "node",
+            "data": {
+                "name": '堕落星妹',
+                "uin": '2854214267',
+                "content": text9
+            }
+            }            
+    data_all=[data1,data2,data3,data4,data5,data6,data7,data8,data9]
+    await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
+
+@sv.on_prefix("show匿名色图")
+async def send_random_setu(bot, ev):    
+    uid = ev['user_id']
+    gid = ev['group_id']
+    data_all = []
+    text1 = await get_setu2(gid)
+    text2 = await get_setu2(gid)
+    text3 = await get_setu2(gid)
+    text4 = await get_setu2(gid)
+    text5 = await get_setu2(gid)
+    text6 = await get_setu2(gid)
+    text7 = await get_setu2(gid)
+    text8 = await get_setu2(gid)
+    text9 = await get_setu2(gid)
     data1 ={
             "type": "node",
             "data": {

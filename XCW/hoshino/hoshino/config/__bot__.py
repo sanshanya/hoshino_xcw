@@ -29,8 +29,8 @@ PassWord = '123456'                                           #登录一些只�
 
 '''
 -------------apikeys---------------
-lolicon_api,相关插件shebot/shebot_old,申请地址https://api.lolicon.app/#/setu?id=apikey
-acggov_api,相关插件acggov,setuacggov,申请地址https://www.acg-gov.com/
+lolicon_api,相关插件setu_mix,申请地址https://api.lolicon.app/#/setu?id=apikey
+acggov_api,相关插件setu_mix,申请地址https://www.acgmx.com/
 shitu_api,相关插件shitu,申请地址http://saucenao.com/
 jjc_api,相关插件arena,申请地址https://www.pcrdfans.com/bot
 tenxun_api,相关插件aichat,申请地址https://ai.qq.com/,已经为你默认准备了一个,但建议自行申请进行个性定制
