@@ -3,7 +3,7 @@ import asyncio
 from .base import *
 from .config import get_config, get_group_config, set_group_config
 
-sv = Service('空调', visible= True, enable_on_default= False, bundle='空调', help_='''
+sv = Service('色图', visible= True, enable_on_default= False, bundle='色图', help_='''
 - [色图/来N张色图] 随机获取1张/n张色图
 - [搜N张色图 XX] 搜索XX的色图,附带数量可以获取多张
 - [本日涩图排行榜 X ] 获取p站排行榜(需开启acggov模块),X为页数
