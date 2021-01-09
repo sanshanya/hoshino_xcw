@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+
+<head>
+    <meta name='viewport' content='width=device-width, initial-scale=1' charset="utf-8" />
+    <title>yobot</title>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.6.11/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/0.19.2/axios.min.js"></script>
+</head>
+
+<body>
+    <div id="sending">
+        <h1>Marionette</h1>
+        发送类型：
+        <select v-model="message_type">
+            <option value="private">私聊</option>
+            <option value="group">群组</option>
+        </select>
+        <div v-if="message_type=='private'">
+            QQ号：<input v-model.number="user_id" />
+        </div>
+        <div v-else>
+            群号：<input v-model.number="group_id" />
+        </div>
+        消息：<input v-model="message" />
+        <button @click="send_msg">发送</button>
+    </div>
+</body>
+<script>var api_path = "{{ url_for('yobot_marionette_api') }}";</script>
+<script src="{{ url_for('yobot_static', filename='marionette.js') }}"></script>
+
+</html>

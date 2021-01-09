@@ -34,7 +34,7 @@ async def whois_dragon_king(bot, ev):
         await bot.send(ev, f'[CQ:at,qq={dk}]\n{action}\n[CQ:image,file={dk_avater}]')
         
 
-@sv.on_prefix(('送礼物','，土豪，我也要礼物~','给我礼物','我要礼物','要礼物','饿饿'),only_to_me=True)
+@sv.on_prefix(('送礼物','，土豪，我也要礼物~','给我礼物','我要礼物','要礼物','饿饿'),only_to_me=False)
 async def send_gift(bot, ev):
     uid = ev.user_id
     sid = None
@@ -48,4 +48,19 @@ async def send_gift(bot, ev):
     if sid is None:
         sid = uid
     await bot.send(ev, f'[CQ:gift,qq={sid},id={random.randint(0,13)}]')
-    
+'''
+@sv.on_prefix(('点赞','赞我'),only_to_me=False)
+async def send_zan(bot, ev):
+    uid = ev.user_id
+    sid = None
+    gid = ev.group_id
+    for m in ev.message:
+        if m.type == 'at' and m.data['qq'] != 'all':
+            sid = int(m.data['qq'])
+        elif m.type == 'at' and m.data['qq'] == 'all':
+            await bot.send(ev, '这种事情做不到啦~', at_sender=True)
+            return
+    if sid is None:
+        sid = uid
+    await bot.send_like(user_id={sid})
+ '''       

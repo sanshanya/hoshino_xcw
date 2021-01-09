@@ -1,14 +1,18 @@
-
+from hoshino import Service
 from nonebot import *
 import json
 import pytz
 import asyncio
 from random import randint
 
+sv = Service('塔罗牌', visible= True, enable_on_default= True, bundle='塔罗牌', help_='''
+私聊可用哦
+'''.strip())
+
 bot = get_bot()
 
 #初始化自定义信息
-fn = "./hoshino/modules/tarot/data/"
+fn = "./hoshino/modules/tarot/"
 with open(fn + 'settings.json') as f:
 	s = json.load(f)
 me = s['机器人自称']

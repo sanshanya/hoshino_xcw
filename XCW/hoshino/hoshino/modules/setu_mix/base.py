@@ -40,6 +40,11 @@ def format_setu_msg1(group_id, image):
     msg = f'[CQ:cardimage,file={base64_str},source={image["title"]} (id:{image["id"]} author:{image["author"]})]'
     return msg
 
+def format_setu_msg2(group_id, image):
+    base64_str = f"base64://{base64.b64encode(add_salt(image['data'])).decode()}"
+    msg = f'[CQ:image,file={base64_str},type=show,id=40000]'
+    return msg
+
 async def get_setu(group_id):
     source_list = []
     if get_group_config(group_id, 'lolicon'):
@@ -93,6 +98,34 @@ async def get_setu1(group_id):
         return '获取失败'
     elif image['id'] != 0:
         return format_setu_msg1(group_id, image)
+    else:
+        return image['title']
+
+async def get_setu2(group_id):
+    source_list = []
+    if get_group_config(group_id, 'lolicon'):
+        source_list.append(1)
+    if get_group_config(group_id, 'lolicon_r18'):
+        source_list.append(2)
+    if get_group_config(group_id, 'acggov'):
+        source_list.append(3)
+    source = 0
+    if len(source_list) > 0:
+        source = random.choice(source_list)
+    
+    image = None
+    if source == 1:
+        image = await lolicon_get_setu(0)
+    elif source == 2:
+        image = await lolicon_get_setu(1)
+    elif source == 3:
+        image = await acggov_get_setu()
+    else:
+        return None
+    if not image:
+        return '获取失败'
+    elif image['id'] != 0:
+        return format_setu_msg2(group_id, image)
     else:
         return image['title']
 

@@ -31,7 +31,7 @@ async def get_online_pcrdata():
     '''
     获取在线的角色数据信息, 并处理为json格式
     '''
-    online_pcrdata = await aiorequests.get(url=online_pcr_data_url, timeout=10)
+    online_pcrdata = await aiorequests.get(url=online_pcr_data_url, timeout=10, verify=False)
     if online_pcrdata.status_code != 200:
         hoshino.logger.error(f'获取在线角色数据时发生错误{online_pcrdata.status_code}')
         return {}
@@ -102,7 +102,7 @@ async def get_online_ver() -> int:
     '''
     获取在线版本号
     '''
-    online_pool_ver = await aiorequests.get(url=online_ver_url, timeout=10)
+    online_pool_ver = await aiorequests.get(url=online_ver_url, timeout=10, verify=False)
 
     if online_pool_ver.status_code != 200:
         hoshino.logger.error(f'获取在线卡池版本时发生错误{online_pool_ver.status_code}')
@@ -129,7 +129,7 @@ async def get_online_pool():
     获取在线卡池, 返回json格式
     '''
     hoshino.logger.info(f'开始获取在线卡池')
-    online_pool_f = await aiorequests.get(online_pool_url, timeout=10)
+    online_pool_f = await aiorequests.get(online_pool_url, timeout=10, verify=False)
     if online_pool_f.status_code != 200:
         hoshino.logger.error(f'获取在线卡池时发生错误{online_pool_f.status_code}')
         return online_pool_f.status_code

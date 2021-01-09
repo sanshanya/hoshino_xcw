@@ -34,7 +34,7 @@ async def lssv(session:CommandSession):
         if verbose_all or (sv.visible ^ only_hidden):
             x = '○' if on else '×'
             msg.append(f"|{x}| {sv.name}")
-    await session.send('\n'.join(msg))
+    await session.send('|'.join(msg))
 
 
 @on_command('enable', aliases=('启用', '开启', '打开'), permission=perm.GROUP, only_to_me=False)

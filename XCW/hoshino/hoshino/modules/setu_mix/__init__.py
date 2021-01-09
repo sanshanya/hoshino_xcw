@@ -125,6 +125,45 @@ async def send_random_setu(bot, ev):
                 print('撤回失败')
             await asyncio.sleep(1)
 
+@sv.on_rex(r'^show不够[涩瑟色]|^show再来[点张份]|^show[涩瑟色]图$|^show[再]?来?(\d*)?[份点张]([涩色瑟]图)')
+async def send_random_setu(bot, ev):
+    num = 1
+    match = ev['match']
+    try:
+        num = int(match.group(1))
+    except:
+        pass
+    uid = ev['user_id']
+    gid = ev['group_id']
+    result, msg = check_lmt(uid, num)
+    if result != 0:
+        await bot.send(ev, msg)
+        return
+
+    result_list = []
+    for _ in range(num):
+        msg = await get_setu2(gid)
+        if msg == None:
+            await bot.send(ev, '无可用模块')
+            return
+        try:
+            result_list.append(await bot.send(ev, msg))
+        except:
+            print('图片发送失败')
+        await asyncio.sleep(1)
+
+    tlmt.increase(uid, len(result_list))
+
+    second = get_group_config(gid, "withdraw")
+    if second and second > 0:
+        await asyncio.sleep(second)
+        for result in result_list:
+            try:
+                await bot.delete_msg(self_id=ev['self_id'], message_id=result['message_id'])
+            except:
+                print('撤回失败')
+            await asyncio.sleep(1)
+            
 @sv.on_rex(r'^搜[索]?(\d*)[份张]*(.*?)[涩瑟色]图(.*)')
 async def send_search_setu(bot, ev):
     uid = ev['user_id']
@@ -312,7 +351,6 @@ async def send_random_setu(bot, ev):
             }            
     data_all=[data1,data2,data3,data4,data5,data6,data7,data8,data9]
     await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
-
 
 @sv.scheduled_job('interval', minutes=30)
 async def job():
