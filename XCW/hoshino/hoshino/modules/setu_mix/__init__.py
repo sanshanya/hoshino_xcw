@@ -1,6 +1,7 @@
 import hoshino
 import asyncio
 from .base import *
+from hoshino import Service
 from .config import get_config, get_group_config, set_group_config
 
 sv = Service('色图', visible= True, enable_on_default= False, bundle='色图', help_='''
