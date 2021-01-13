@@ -4,7 +4,7 @@ from hoshino import Service
 from hoshino.typing import *
 
 sv = Service('翻译', visible= True, enable_on_default= False, bundle='翻译', help_='''
-- [翻译 XXX] 通过有道词典进行翻译,XXX为内容
+- [翻译] 通过有道词典进行翻译
 '''.strip())
 
 Headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}

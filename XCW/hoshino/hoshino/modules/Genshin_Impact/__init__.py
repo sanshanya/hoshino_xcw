@@ -43,6 +43,19 @@ XXX哪里有：查询XXX的位置图，XXX是资源的名字
 
 @sv.on_fullmatch("原神帮助")
 async def help(bot, ev):
-    await bot.send(ev, help_txt)
+    uid = ev['user_id']
+    gid = ev['group_id']
+    data_all = []
+    text1 = help_txt
+    data1 ={
+            "type": "node",
+            "data": {
+                "name": 'Q群原神管家',
+                "uin": '2854196310',
+                "content": text1
+            }
+            }
+    data_all=[data1]
+    await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
 
 

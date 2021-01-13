@@ -2,7 +2,7 @@ import random
 
 from nonebot import on_command
 
-from hoshino import R, Service, priv, util
+from hoshino import R, Service, priv, util, config
 
 
 # basic function for debug, not included in Service('chat')
@@ -17,6 +17,10 @@ sv = Service('交流', visible=False)
 async def say_sorry(bot, ev):
     await bot.send(ev, 'ごめんなさい！嘤嘤嘤(〒︿〒)')
 
+@sv.on_fullmatch(('ver', 'version','Version'))
+async def say_sorry(bot, ev):
+    ver = config.version
+    await bot.send(ev, f'当前版本{ver}')
 
 @sv.on_fullmatch(('老婆', 'waifu', 'laopo'), only_to_me=True)
 async def chat_waifu(bot, ev):

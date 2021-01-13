@@ -140,4 +140,7 @@ MODULES_ON = {
     'revgif',
     'groupmanager',
     #'yocool'安装yocool
+    'pcrjjc',#竞技场背刺推送
 }
+
+version = 'hoshino_xcw_0.8'

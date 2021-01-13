@@ -16,7 +16,7 @@ async def showtime(bot, event):
     minute = now.minute
     hour_str = f' {hour}' if hour<10 else str(hour)
     minute_str = f' {minute}' if minute<10 else str(minute)
-    num = random.randint(1, 7)
+    num = random.randint(1, 10)
     if num == 1:
         template_path = os.path.join(os.path.dirname(__file__),'template1.jpg')
         save_path = os.path.join(os.path.dirname(__file__),'nowtime.jpg')
@@ -44,7 +44,19 @@ async def showtime(bot, event):
     elif num ==7:
         template_path = os.path.join(os.path.dirname(__file__),'template7.jpg')
         save_path = os.path.join(os.path.dirname(__file__),'nowtime.jpg')
-        add_text(template_path,save_path,f'{hour_str}点{minute_str}分',textsize=110,textfill='black',position=(260,400))        
+        add_text(template_path,save_path,f'{hour_str}点{minute_str}分',textsize=110,textfill='black',position=(260,400))   
+    elif num ==8:
+        template_path = os.path.join(os.path.dirname(__file__),'template8.jpg')
+        save_path = os.path.join(os.path.dirname(__file__),'nowtime.jpg')
+        add_text(template_path,save_path,f'{hour_str}点{minute_str}分',textsize=60,textfill='black',position=(220,160))
+    elif num ==9:
+        template_path = os.path.join(os.path.dirname(__file__),'template9.jpg')
+        save_path = os.path.join(os.path.dirname(__file__),'nowtime.jpg')
+        add_text(template_path,save_path,f'{hour_str}点{minute_str}分',textsize=105,textfill='black',position=(270,220))     
+    elif num ==10:
+        template_path = os.path.join(os.path.dirname(__file__),'template10.jpg')
+        save_path = os.path.join(os.path.dirname(__file__),'nowtime.jpg')
+        add_text(template_path,save_path,f'{hour_str}点{minute_str}分',textsize=60,textfill='black',position=(180,230))
 	#修改此行调整文字大小位置
     '''
     textsize文字大小

@@ -9,6 +9,7 @@ sv = Service('群管plus', visible= True, enable_on_default= True, bundle='群�
 - [谁是龙王] 迫害龙王
 - [@bot 送礼物@sb] 让bot送sb礼物
 - [@bot 饿饿] 让bot送自己礼物
+- [说 XX] bot说xx
 '''.strip())
 
 
@@ -64,3 +65,11 @@ async def send_zan(bot, ev):
         sid = uid
     await bot.send_like(user_id={sid})
  '''       
+ 
+@sv.on_prefix(('说','跟我说'),only_to_me=True)
+async def send_gift(bot, ev):
+    uid = ev.user_id
+    sid = None
+    gid = ev.group_id
+    res = str(ev.message.extract_plain_text())
+    await bot.send(ev, f'[CQ:tts,text={res}]')

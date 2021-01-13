@@ -17,11 +17,11 @@ class Message:
 
     @staticmethod
     def match(cmd: str) -> int:
-        if cmd == "ver" or cmd == "V" or cmd == "version":
+        if cmd == "！ver" or cmd == "！V" or cmd == "！version":
             return 99
-        elif cmd == "帮助" or cmd == "help":
+        elif cmd == "！帮助" or cmd == "！help":
             return 98
-        elif cmd == "手册":
+        elif cmd == "！手册":
             return 97
         else:
             return 0

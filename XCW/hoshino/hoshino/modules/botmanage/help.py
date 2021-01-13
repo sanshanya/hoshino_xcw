@@ -1,4 +1,4 @@
-from hoshino import Service, priv
+from hoshino import Service, priv, config
 from hoshino.typing import CQEvent
 
 sv = Service('_help_', manage_priv=priv.SUPERUSER, visible=False)
@@ -37,6 +37,7 @@ async def send_help(bot, ev: CQEvent):
     bundles = Service.get_bundles()
     if not bundle_name:
         await bot.send(ev, TOP_MANUAL)
+        await bot.send(ev, f'当前版本{config.version}')
     elif bundle_name in bundles:
         msg = gen_bundle_manual(bundle_name, bundles[bundle_name], ev.group_id)
         await bot.send(ev, msg)
