@@ -26,13 +26,15 @@ class NewAaiorequests:
 
     async def get(self, url, params=None, **kwargs):
         kwargs['timeout'] = timeout
-        return await aiorequests.get(url, proxies=proxies, params=params, **kwargs)
+        kwargs['proxies'] = proxies
+        return await aiorequests.get(url, params=params, **kwargs)
 
+@seheduler_func
 async def new_update_seeker():
     global update_seeker
     if update_seeker:
         try:
-            await update_seeker()
+            await update_seeker.__wrapped__()
         except:
             pass
 

@@ -20,6 +20,16 @@ def keyword_remove(keyword_list):
         if k in keywords:
             rex.allkw.pop(k)
 
+def keyword_add(keyword_list, original_list):
+    sf = keyword_get_servicefunc(original_list)
+    if not sf:
+        return False
+    allkw = hoshino.trigger.keyword.allkw
+    for keyword in keyword_list:
+        keyword = hoshino.util.normalize_str(keyword)
+        if keyword not in allkw:
+            allkw[keyword] = sf
+
 def keyword_get_servicefunc(keyword_list):
     keywords = set()
     for keyword in keyword_list:

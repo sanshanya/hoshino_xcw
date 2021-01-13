@@ -11,7 +11,11 @@ from hoshino.modules.hoshino_training.util.keyword import *
 #从HoshinoBot\hoshino\modules\groupmaster\anti_holo.py的SB_HOLO触发词中删除指定词语
 WHITE_LIST = '''
 可可
-凑阿库娅 湊あくあ Minato Aqua 阿库娅 洋葱 阿夸 夸哥 夸神 海王 山田赫敏 大亏哥 桐谷夸人 
+'''.split()
+
+#额外的anti-holo触发词
+BLACK_LIST = '''
+神楽 神乐 めあ かぐら mea 屑女仆
 '''.split()
 
 def get_origin_tiangou_pic():
@@ -35,8 +39,8 @@ def get_tiangou_pic():
     
 
 async def anti_holo(bot: HoshinoBot, ev: CQEvent):
-    priv.set_block_user(ev.user_id, timedelta(minutes=5))
-    await util.silence(ev, 5 * 60, skip_su=False)
+    priv.set_block_user(ev.user_id, timedelta(minutes=1))
+    await util.silence(ev, 60, skip_su=False)
     pic = get_tiangou_pic()
     if pic:
         await bot.send(ev, pic.cqcode)
@@ -48,3 +52,4 @@ SB_HOLO = module_get('hoshino.modules.groupmaster.anti_holo', 'SB_HOLO')
 if SB_HOLO:
     keyword_replace(SB_HOLO, anti_holo)
     keyword_remove(WHITE_LIST)
+    keyword_add(BLACK_LIST, SB_HOLO)

@@ -14,9 +14,9 @@ Hoshino调教助手
 
 ## 预置模块介绍
 
-- `functions/util.py` 移除抽卡禁言
+- `functions/gacha.py` 抽卡功能增强
 
-  移除来一井抽卡后的禁言
+  移除来一井抽卡后的禁言, 增加"来一井"每日可抽次数至5次.
 
 - `functions/query.py` rank图快捷修改
 
