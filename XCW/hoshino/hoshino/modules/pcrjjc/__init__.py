@@ -20,7 +20,7 @@ sv_help = '''
 [竞技场订阅状态] 查看排名变动推送绑定状态
 '''.strip()
 
-sv = Service('竞技场推送',help_=sv_help, bundle='pcr查询')
+sv = Service('竞技场推送',help_=sv_help, bundle='竞技场推送')
 
 Inited = False
 pcrprofile = None

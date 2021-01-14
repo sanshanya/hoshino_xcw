@@ -11,7 +11,7 @@ import traceback
 import os
 import json
 import time
-
+from html.parser import HTMLParser
 
 rss_news = {}
 
@@ -34,7 +34,7 @@ rss mode 0/1 : 设置消息模式 标准/简略
 详细说明见项目主页: https://github.com/zyujs/rss
 '''
 
-sv = hoshino.Service('rss', bundle='pcr订阅', help_= HELP_MSG)
+sv = hoshino.Service('rss', bundle='rss', help_= HELP_MSG)
 
 def save_data():
     path = os.path.join(os.path.dirname(__file__), 'data.json')
@@ -85,7 +85,7 @@ async def query_data(url, proxy=''):
         return None
 
 def get_image_url(desc):
-    imgs = re.findall('<img src="(.+?)".+?>', desc)
+    imgs = re.findall(r'<img.*?src="(.+?)".+?>', desc)
     return imgs
 
 def remove_html(content):
@@ -107,6 +107,7 @@ async def generate_image(url_list):
     raw_images = []
     num = 0
     for url in url_list:
+        url = HTMLParser().unescape(url)
         proxy = ''
         for purl in data['proxy_urls']:
             if purl in url:
@@ -134,7 +135,7 @@ async def generate_image(url_list):
     box_size = 300
     row = 3
     border = 5
-    width = 0
+    height = 0
     width = 0
     if num == 3 or num >= 5:    #3列
         width = 900 + border * 2

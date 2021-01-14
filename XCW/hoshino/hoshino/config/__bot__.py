@@ -136,11 +136,11 @@ MODULES_ON = {
     #'shebot',#插件合集，来源https://github.com/pcrbot/plugins-for-Hoshino,其中的接头需要百度云api
     'weather',#天气插件
     #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
-    #'xcw',
+    #'xcw',#数个插件的混合，需要xcw资源包配合链接：https://pan.baidu.com/s/1tb0skZTs8NSHYZ-Tm3Cs0w 提取码：2333 
     'revgif',
     'groupmanager',
     #'yocool'安装yocool
     'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2,地址https://github.com/qq1176321897/pcrjjc2
 }
 
-version = 'hoshino_xcw_0.8'
+version = 'hoshino_xcw_0.81'

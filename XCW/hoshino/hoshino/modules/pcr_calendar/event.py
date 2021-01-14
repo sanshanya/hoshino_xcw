@@ -125,7 +125,7 @@ async def get_events(server, offset, days):
             event['start_days'] = math.ceil((event['start'] - start) / datetime.timedelta(days=1)) #还有几天开始
             event['left_days'] = math.floor((event['end'] - start) / datetime.timedelta(days=1)) #还有几天结束
             events.append(event)
-    events.sort(key=lambda item: item["type"],reverse = True) #按type从大到小排列
+    events.sort(key=lambda item: item["type"] * 10 - item['left_days'], reverse = True) #按type从大到小 按剩余天数从小到大
     return events
 
 
