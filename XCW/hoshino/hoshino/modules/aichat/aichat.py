@@ -18,7 +18,7 @@ from nonebot import get_bot
 from nonebot.helpers import render_expression
 from hoshino import Service, priv
 #from hoshino.service import Service, Privilege as Priv
-sv = Service('人工智障', visible= True, enable_on_default= True, bundle='人工智障', help_='''
+sv = Service('人工智障', visible= True, enable_on_default= False, bundle='人工智障', help_='''
 @bot就可以与bot对话
 '''.strip())
 try:
