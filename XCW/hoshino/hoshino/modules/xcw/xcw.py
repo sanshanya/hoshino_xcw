@@ -9,7 +9,7 @@ from nonebot import MessageSegment
 from hoshino import R, Service, priv
 
 
-sv = Service('xcw语音', visible= True, enable_on_default= True, bundle='xcw语音', help_='''
+sv = Service('xcw语音', visible= True, enable_on_default= False, bundle='xcw语音', help_='''
 - [@bot 骂我] xcw就会真的骂你
 '''.strip())
 
