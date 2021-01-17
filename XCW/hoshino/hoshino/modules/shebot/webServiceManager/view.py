@@ -40,11 +40,11 @@ async def login():
             session['user_ip'] = user_ip
             session.permanent = True
             app.permanent_session_lifetime = timedelta(weeks=2)
-            return redirect('/manager')
+            return redirect('/svmanager')
         else:
             return redirect('/login')
 
-@switcher.route('/manager')
+@switcher.route('/svmanager')
 async def manager():
     return await render_template('main.html',public_address=public_address,port=port)
 
@@ -110,4 +110,4 @@ async def set_group():
 async def setting(ctx):
     message = ctx['raw_message']
     if message in ['服务管理', 'bot设置']:
-        await bot.send(ctx,f'http://{public_address}:{port}/manager',at_sender=False)
+        await bot.send(ctx,f'http://{public_address}:{port}/svmanager',at_sender=False)

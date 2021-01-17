@@ -39,8 +39,8 @@ lolicon_api = ''
 acggov_api = '' 
 shitu_api = ''                                     
 jjc_api = ""
-tenxun_api_ID = '2154581933'
-tenxun_api_KEY = 'gtv1yCMqKSKSoeuD'
+tenxun_api_ID = '2154581933'   #仅供测试用的默认apikey，画像：名字：冰川镜华 年龄：8岁
+tenxun_api_KEY = 'gtv1yCMqKSKSoeuD'  
 baidu_api_ID = ''    
 baidu_api_KEY = ''
 baidu_api_SECRET = ''                                 
@@ -137,8 +137,8 @@ MODULES_ON = {
     'weather',#天气插件
     #'snitchgenerator',#需要安装字体，位于XCW\hoshino\hoshino\modules\snitchgenerator\fonts
     #'xcw',#数个插件的混合，需要xcw资源包配合链接：https://pan.baidu.com/s/1tb0skZTs8NSHYZ-Tm3Cs0w 提取码：2333 
-    'revgif',
-    'groupmanager',
+    'revgif',#GIF图倒放
+    'groupmanager',#群管插件
     #'yocool'安装yocool
     'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2,地址https://github.com/qq1176321897/pcrjjc2
 }
