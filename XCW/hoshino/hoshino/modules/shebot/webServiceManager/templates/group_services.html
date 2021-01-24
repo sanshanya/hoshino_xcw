@@ -73,7 +73,7 @@
             }
         }
         function save(){
-            var url = 'http://{{ public_address }}:{{ port }}/set'
+            var url = 'http://{{ public_address }}:{{ port }}/svset'
             var request = new XMLHttpRequest();
             request.onload = function() {
                 if (request.status == 200) {
