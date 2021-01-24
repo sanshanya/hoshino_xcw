@@ -16,10 +16,25 @@ from .yobot import *
 
 HELP_MSG = 'clanbattle_info\n公会战信息管理系统\n指令前缀:cbi\n指令表:帮助,总表,日总表,日出刀表,boss出刀表,个人出刀表,boss状态,预约,取消预约,查看预约,状态,检查成员,绑定,解除绑定,查看绑定,绑定未知成员,解除绑定未知成员,继续报刀,暂停报刀,重置报刀进度,重置推送进度,初始化,生成会战报告,生成离职报告\n默认不启用，启用请通知维护'
 
+sv = Service(
+    name = '自动报刀',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = HELP_MSG #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助自动报刀"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, HELP_MSG)
+
+
 lmt = FreqLimiter(60)   #冷却时间60秒
 process_lock = {}
 
-sv = Service('自动报刀', visible= True, enable_on_default= False, bundle='自动报刀', help_= HELP_MSG)
+
 
 @sv.on_prefix('cbi')
 async def cbi(bot, ev: CQEvent):

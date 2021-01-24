@@ -225,7 +225,7 @@ async def update_pool_chat(session):
     '''
     手动更新卡池时试用此命令
     '''
-    if not priv.check_priv(session.event, priv.SUPERUSER):
+    if not priv.check_priv(session.event, priv.ADMIN):
         return
     status = await update_pool()
     if status == 0:

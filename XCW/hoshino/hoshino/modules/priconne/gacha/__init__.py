@@ -16,14 +16,31 @@ except:
     import json
 
 sv_help = '''
-[@Bot十连] 转蛋模拟
-[@Bot来发单抽] 转蛋模拟
-[@Bot来一井] 4w5钻！
-[查看卡池] 模拟卡池&出率
-[切换卡池] 更换模拟卡池
-[氪金@某人] 为某人氪金, 恢复抽卡次数
+- [@Bot十连] 转蛋模拟
+- [@Bot来发单抽] 转蛋模拟
+- [@Bot来一井] 4w5钻！
+- [查看卡池] 模拟卡池&出率
+- [切换卡池] 更换模拟卡池
+- [氪金@某人] 为某人氪金, 恢复抽卡次数
+- [重载花名册] 用于更新人物
+- [更新卡池] 用于更新卡池
 '''.strip()
-sv = Service('gacha', help_=sv_help, bundle='pcr娱乐')
+
+sv = Service(
+    name = 'gacha',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助gacha"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 jewel_limit = DailyNumberLimiter(15000)
 tenjo_limit = DailyNumberLimiter(5)
 

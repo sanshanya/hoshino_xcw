@@ -1,7 +1,7 @@
 import datetime
 from functools import wraps
 
-from hoshino import Service, trigger
+from hoshino import Service, priv, trigger
 from hoshino.typing import CQEvent
 from . import Process_Monitor
 
@@ -14,16 +14,31 @@ from . import Process_Monitor
 如: ANTI_CONCURRENCY_GROUPS = [['猜头像', '猜角色'], ['完美配对', '神经衰弱']]
 表示"猜头像"指令不能和"猜角色"指令并发, "完美配对"指令不能和"神经衰弱"指令并发
 """
-ANTI_CONCURRENCY_GROUPS = [[]]
+ANTI_CONCURRENCY_GROUPS = [['猜头像', '猜角色', 'cygames','猜群友','猜语音','完美配对','神经衰弱']]
 # 是否允许同一条指令自己和自己并发
 SELF_CONCURRENCY = True
 # HoshinoBot的触发器字典，一般不用修改
 HOSHINO_TRIGGER_DICTS = [trigger.prefix.trie, trigger.suffix.trie, trigger.keyword.allkw, trigger.rex.allrex]
 
-
-sv = Service('反并发', visible= False, enable_on_default= True, bundle='反并发', help_='''
+sv_help = '''
 防止某些插件并发执行
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '反并发',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助反并发"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 process_status_dict = {}
 
 

@@ -7,7 +7,24 @@ from . import main
 import hoshino
 import os
 
-sv = Service('猜头像杀手', enable_on_default=True, bundle='pcr娱乐', help_='猜头像杀手')
+sv_help = '''
+杀手~
+'''.strip()
+
+sv = Service(
+    name = '猜头像杀手',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = False, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助猜头像杀手"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 logger = log.new_logger('avatarguess_killer', hoshino.config.DEBUG)
 

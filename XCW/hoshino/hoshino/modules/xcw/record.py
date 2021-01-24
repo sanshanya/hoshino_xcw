@@ -1,11 +1,31 @@
 import os
 import random
 from hoshino.typing import CQEvent
-from hoshino import R, Service
+from hoshino import R, Service, priv
 from nonebot import MessageSegment
 from hoshino.modules.priconne import chara
 
-sv = Service('pcr-record', help_='公主连结角色语音\n[语音+角色名]\n[角色名+语音] 听指定角色的语音\n例如: ue语音', visible=True, enable_on_default=True)
+sv_help = '''
+公主连结角色语音
+- [语音+角色名]
+- [角色名+语音]
+※例如: ue语音
+'''.strip()
+
+sv = Service(
+    name = '语音连结',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助语音连结"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
 
 @sv.on_suffix('语音')
 @sv.on_prefix('语音')

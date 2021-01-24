@@ -4,11 +4,11 @@ from hoshino import Service
 sv = Service("原神帮助")
 
 
-help_txt1 = '''
+sv_help1 = '''
 原神相关插件
 插件仓库在 https://github.com/H-K-Y/Genshin_Impact_bot.git
 '''.strip()
-help_txt2 = '''
+sv_help2 = '''
 抽卡指令：
 - [@bot相遇之缘]：10连抽卡
 - [@bot纠缠之缘]：90连抽卡
@@ -16,12 +16,12 @@ help_txt2 = '''
 - [原神卡池]：查看当前UP池，这个指令也可以用来重载卡池配置文件，config.json保存的是当前卡池信息
 - [原神卡池切换]：切换其他原神卡池
 '''.strip()
-help_txt3 = '''
+sv_help3 = '''
 丘丘语指令：
 [丘丘一下 丘丘语句] ：翻译丘丘语,注意这个翻译只能把丘丘语翻译成中文，不能反向
 [丘丘词典 丘丘语句] ：查询丘丘语句的单词含义
 '''.strip()
-help_txt4 = '''
+sv_help4 = '''
 查找资源指令：
 -[找风神瞳 <神瞳编号>]：让机器人发送风神瞳的位置，神瞳编号为可选参数，不写编号机器人会随机一个编号，风可以换成岩来找岩神瞳
 -[找到神瞳了 <神瞳编号>]：让机器人记录这个神瞳编号，以后机器人不会给你发送这个编号
@@ -32,7 +32,7 @@ help_txt4 = '''
 -[XXX哪里有]：查询XXX的位置图，XXX是资源的名字
 -[原神资源列表]：查询所有的资源名称
 '''.strip()
-help_txt5 = '''
+sv_help5 = '''
 圣遗物收集:
 - [原神副本] ： 查询当前有哪些副本，掉落哪个套装  
 - [刷副本 副本名称] ： 刷一次副本，可获得狗粮点数和圣遗物  
@@ -56,7 +56,7 @@ async def help(bot, ev):
             "data": {
                 "name": 'Q群原神管家',
                 "uin": '2854196310',
-                "content": help_txt1
+                "content": sv_help1
             }
             }
     data2 ={
@@ -64,7 +64,7 @@ async def help(bot, ev):
             "data": {
                 "name": 'Q群原神管家',
                 "uin": '2854196310',
-                "content": help_txt2
+                "content": sv_help2
             }
             }
     data3 ={
@@ -72,7 +72,7 @@ async def help(bot, ev):
             "data": {
                 "name": 'Q群原神管家',
                 "uin": '2854196310',
-                "content": help_txt3
+                "content": sv_help3
             }
             }
     data4 ={
@@ -80,7 +80,7 @@ async def help(bot, ev):
             "data": {
                 "name": 'Q群原神管家',
                 "uin": '2854196310',
-                "content": help_txt4
+                "content": sv_help4
             }
             }
     data5 ={
@@ -88,7 +88,7 @@ async def help(bot, ev):
             "data": {
                 "name": 'Q群原神管家',
                 "uin": '2854196310',
-                "content": help_txt5
+                "content": sv_help5
             }
             }
     data_all=[data1,data2,data3,data4]

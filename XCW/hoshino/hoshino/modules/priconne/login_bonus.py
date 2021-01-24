@@ -1,9 +1,26 @@
 import random
-from hoshino import Service, R
+from hoshino import Service, priv, R
 from hoshino.typing import CQEvent
 from hoshino.util import DailyNumberLimiter
 
-sv = Service('签到', bundle='签到', help_='[xcw签到] 给主さま盖章章')
+sv_help = '''
+- [xcw签到] 给主さま盖章章
+'''.strip()
+
+sv = Service(
+    name = '签到',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助签到"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 lmt = DailyNumberLimiter(1)
 login_presents = [

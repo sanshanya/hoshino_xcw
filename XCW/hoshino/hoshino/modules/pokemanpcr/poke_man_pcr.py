@@ -4,7 +4,7 @@ import base64
 from PIL import Image, ImageFont, ImageDraw
 
 import hoshino
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.modules.priconne import chara, _pcr_data
 from hoshino.typing import MessageSegment, NoticeSession, CQEvent
 from . import *
@@ -40,15 +40,31 @@ OK_MIX_PROBABILITY = {str(list((-1, -1))): [0.846, 0.15, 0.004], str(list((-1, 0
 
 PRELOAD = True                    # 是否启动时直接将所有图片加载到内存中以提高查看仓库的速度(增加约几M内存消耗)
 
-sv = Service('poke-man-pcr', bundle='pcr娱乐', help_='''
+sv_help = '''
 戳一戳机器人, 她可能会送你公主连结卡片哦~
-查看仓库 [@某人](这是可选参数): 查看某人的卡片仓库和收集度排名，不加参数默认查看自己的仓库
+查看仓库 [@某人](这是可选参数): 不加参数默认查看自己的仓库
 合成 [卡片1昵称] [卡片2昵称]: 献祭两张卡片以获得一张新的卡片
 一键合成 [稀有度1] [稀有度2] [合成轮数](这是可选参数,不填则合成尽可能多的轮数): 一键进行若干轮"稀有度1"和"稀有度2"的卡片合成。注意: 使用一键合成指令获得稀有或超稀有卡的几率略低于使用合成指令
 赠送 [@某人] [赠送的卡片名]: 将自己的卡片赠予别人
 交换 [卡片1昵称] [@某人] [卡片2昵称]: 向某人发起卡片交换请求，用自己的卡片1交换他的卡片2
 确认交换: 收到换卡请求后一定时间内输入这个指令可完成换卡
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '戳一戳',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = False, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助戳一戳"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 poke_tip_cd_limiter = FreqLimiter(TIP_CD_LIMIT)
 daily_tip_limiter = DailyAmountLimiter("tip",POKE_TIP_LIMIT, RESET_HOUR)
 daily_limiter = DailyAmountLimiter("poke",POKE_DAILY_LIMIT, RESET_HOUR)

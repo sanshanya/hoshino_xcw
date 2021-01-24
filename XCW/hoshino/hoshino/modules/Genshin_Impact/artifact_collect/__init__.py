@@ -9,8 +9,6 @@ from hoshino import Service
 import random
 
 
-
-
 sv = Service("原神圣遗物收集")
 
 

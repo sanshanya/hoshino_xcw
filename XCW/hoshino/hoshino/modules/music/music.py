@@ -3,22 +3,33 @@ import typing
 
 from aiocqhttp.message import MessageSegment
 
-from hoshino import Service
+from hoshino import Service, priv
 
 from .search_netease_cloud_music import search as search163
 from .search_qq_music import search as searchqq
 from .search_migu_music import search as searchmigu
 
+sv_help = '''
+- [点歌 好日子] 混合搜索
+- [搜网易云 好日子] 搜索网易云
+- [搜QQ音乐 好日子] 搜索QQ音乐
+- [搜咪咕音乐 好日子] 搜索咪咕音乐
+'''.strip()
+
 sv = Service(
-    '点歌',
-    enable_on_default=True,
-    visible=True,
-    help_="[点歌 好日子] 混合搜索\n"
-          "[搜网易云 好日子] 搜索网易云\n"
-          "[搜QQ音乐 好日子] 搜索QQ音乐\n"
-          "[搜咪咕音乐 好日子] 搜索咪咕音乐",
-    bundle='点歌'
-)
+    name = '点歌',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助点歌"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 cool_down = datetime.timedelta(minutes=3)  # 冷却时间
 expire = datetime.timedelta(minutes=2)

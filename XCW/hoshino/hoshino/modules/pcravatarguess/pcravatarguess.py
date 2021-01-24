@@ -1,6 +1,6 @@
 from nonebot import MessageSegment
 
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.typing import CQEvent
 from hoshino.modules.priconne import chara
 from hoshino.modules.priconne import _pcr_data
@@ -8,11 +8,26 @@ from hoshino.modules.priconne import _pcr_data
 import hoshino
 import math, sqlite3, os, random, asyncio
 
-
-sv = Service('猜头像', visible= True, enable_on_default= True, bundle='猜头像', help_='''
+sv_help = '''
 -[猜头像]  猜猜机器人随机发送的头像的一小部分来自哪位角色
 -[猜头像群排行]  显示猜头像小游戏猜对次数的群排行榜(只显示前十名)
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '猜头像',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助猜头像"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
+
 
 
 PIC_SIDE_LENGTH = 25

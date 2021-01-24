@@ -2,9 +2,26 @@ from nonebot import *
 from hoshino import R, Service, priv, util
 
 bot=get_bot()
-sv = Service('防撤回', visible= False, enable_on_default= False, bundle='防撤回', help_='''
+
+sv_help = '''
 - 防止撤回desi~
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '防撤回',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助防撤回"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 def CQ_trans(cqcode:str) -> str:
     CQcode = cqcode
     CQcode = CQcode.replace('&#44;',',')

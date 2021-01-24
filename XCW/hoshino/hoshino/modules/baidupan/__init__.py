@@ -2,7 +2,7 @@ import re
 
 from nonebot import *
 from . import util, api, dupan_link, share, ru
-from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
+from hoshino import Service, priv  # 如果使用hoshino的分群管理取消注释这行
 
 #
 
@@ -12,10 +12,25 @@ config = util.get_config()
 # 初始化nonebot
 _bot = get_bot()
 
-
-sv = Service('网盘解析', visible= False, enable_on_default= False, bundle='网盘解析', help_='''
+sv_help = '''
 暂不使用
-'''.strip()) 
+'''.strip()
+
+sv = Service(
+    name = '网盘解析',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助网盘解析"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 # 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
 # @_bot.on_message  # nonebot使用这
 async def pan_main(*params):

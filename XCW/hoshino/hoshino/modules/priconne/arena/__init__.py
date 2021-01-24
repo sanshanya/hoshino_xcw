@@ -5,7 +5,7 @@ from collections import defaultdict
 from PIL import Image, ImageDraw, ImageFont
 
 import hoshino
-from hoshino import Service, R
+from hoshino import Service, priv, R
 from hoshino.typing import *
 from hoshino.util import FreqLimiter, concat_pic, pic2b64, silence
 
@@ -16,7 +16,22 @@ sv_help = '''
 [点赞] 接作业id 评价作业
 [点踩] 接作业id 评价作业
 '''.strip()
-sv = Service('竞技场查询', help_=sv_help, bundle='竞技场查询')
+
+sv = Service(
+    name = '竞技场查询',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助竞技场查询"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+     
+
 
 from . import arena
 

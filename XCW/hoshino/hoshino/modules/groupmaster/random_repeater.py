@@ -1,10 +1,27 @@
 import random
 
 import hoshino
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.typing import CQEvent, CQHttpError, Message
 
-sv = Service('量子复读', help_='量子复读')
+sv_help = '''
+基本对话
+'''.strip()
+
+sv = Service(
+    name = '随机复读',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助随机复读"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 PROB_A = 1.4
 group_stat = {}     # group_id: (last_msg, is_repeated, p)

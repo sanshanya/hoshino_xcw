@@ -7,11 +7,27 @@ import urllib
 
 import requests
 from bs4 import BeautifulSoup
-from hoshino import Service
+from hoshino import Service, priv
 
-sv = Service('天气', visible= True, enable_on_default= True, bundle='天气', help_='''
+sv_help = '''
 - [天气] 群聊发送天气查询世界上任意一个城市的天气吧~
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '天气',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助天气"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 @sv.on_command('weather', aliases=('天气', '天气预报', '查天气'))
 async def weather(session: CommandSession):

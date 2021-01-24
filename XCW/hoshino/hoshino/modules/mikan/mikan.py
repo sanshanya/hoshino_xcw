@@ -4,11 +4,27 @@ from datetime import datetime
 from lxml import etree
 
 import hoshino
-from hoshino import Service, aiorequests
+from hoshino import Service, priv, aiorequests
 
-sv = Service('蜜柑番剧推送', visible= True, enable_on_default= False, bundle='蜜柑番剧推送', help_='''
+sv_help = '''
 暂无说明
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '蜜柑番剧推送',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助蜜柑番剧推送"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+    
 
 class Mikan:
     link_cache = set()

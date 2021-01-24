@@ -6,11 +6,26 @@ from dataclasses import dataclass
 from typing import List, Union
 import hoshino, json, os
 
-sv = Service('B站爬虫', visible= True, enable_on_default= True, bundle='B站爬虫', help_='''
+sv_help = '''
 - [添加B站爬虫 关键词 ] 添加爬取关键词。每次添加一个，可添加多次
 - [查看B站爬虫]  查看当前爬取关键词列表
 - [删除B站爬虫 关键词 ] 删除指定爬取关键词
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'B站爬虫',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助B站爬虫"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 
 @dataclass

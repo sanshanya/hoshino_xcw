@@ -1,11 +1,26 @@
 import json
 import requests
-from hoshino import Service
+from hoshino import Service, priv
 from hoshino.typing import *
 
-sv = Service('翻译', visible= True, enable_on_default= False, bundle='翻译', help_='''
-- [翻译] 通过有道词典进行翻译
-'''.strip())
+sv_help = '''
+- [翻译 XXX] 通过有道词典进行翻译
+'''.strip()
+
+sv = Service(
+    name = '翻译',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助翻译"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 Headers = {'User-Agent': 'Mozilla/5.0 (Windows NT 6.1; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/58.0.3029.110 Safari/537.36'}
 

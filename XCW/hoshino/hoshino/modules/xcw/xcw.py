@@ -9,9 +9,25 @@ from nonebot import MessageSegment
 from hoshino import R, Service, priv
 
 
-sv = Service('xcw语音', visible= True, enable_on_default= False, bundle='xcw语音', help_='''
-- [@bot 骂我] xcw就会真的骂你
-'''.strip())
+
+sv_help = '''
+xcw系列功能，自行发掘彩蛋
+'''.strip()
+
+sv = Service(
+    name = 'xcw',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助xcw"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 '''-----随机发送文件夹内容①----------'''
 xcw_folder_mawo = R.get('img/xcw/record/mawo/').path

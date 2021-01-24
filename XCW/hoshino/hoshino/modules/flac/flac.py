@@ -3,9 +3,25 @@ from hoshino import Service, priv, logger, aiorequests
 from hoshino.typing import CQEvent
 from urllib.parse import quote
 
-sv = Service('搜无损音乐', visible= False, enable_on_default= False, bundle='搜无损音乐', help_='''
+sv_help = '''
 无说明
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '搜无损音乐',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助搜无损音乐"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 @sv.on_prefix('搜无损')
 async def search_flac(bot, ev: CQEvent):

@@ -1,12 +1,28 @@
 from hoshino.typing import CQEvent
-from hoshino import Service, R
+from hoshino import Service, priv, R
 import math, sqlite3, os, random, asyncio, hoshino, requests
 from nonebot import MessageSegment
 from hoshino.util import DailyNumberLimiter
 
-sv = Service('猜群友', visible= True, enable_on_default= True, bundle='猜群友', help_='''
-猜群友 | 猜猜机器人随机发送的头像的一小部分来自哪位群友
-'''.strip())
+sv_help = '''
+- [猜群友] 猜猜机器人随机发送的头像的一小部分来自哪位群友
+'''.strip()
+
+sv = Service(
+    name = '猜群友',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助猜群友"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 BLACKLIST_ID = [1000]
 PIC_SIDE_LENGTH = 30

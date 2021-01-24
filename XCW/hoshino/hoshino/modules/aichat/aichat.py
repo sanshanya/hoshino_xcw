@@ -18,13 +18,28 @@ from nonebot import get_bot
 from nonebot.helpers import render_expression
 from hoshino import Service, priv
 #from hoshino.service import Service, Privilege as Priv
-sv = Service('人工智障', visible= True, enable_on_default= False, bundle='人工智障', help_='''
-@bot就可以与bot对话
-'''.strip())
 try:
     import ujson as json
 except ImportError:
     import json
+
+sv_help = '''
+[@bot XX] @bot就可以与bot对话
+'''.strip()
+
+sv = Service(
+    name = '人工智障',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助人工智障"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
 
 bot = get_bot()
 cq_code_pattern = re.compile(r'\[CQ:\w+,.+\]')

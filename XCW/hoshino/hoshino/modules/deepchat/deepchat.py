@@ -2,7 +2,24 @@ import random
 import hoshino
 from hoshino import Service, aiorequests, priv
 
-sv = Service('deepchat', manage_priv=priv.SUPERUSER, enable_on_default=False, visible=False)
+sv_help = '''
+无
+'''.strip()
+
+sv = Service(
+    name = 'deepchat',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助deepchat"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
 
 @sv.on_message('group')
 async def deepchat(bot, ctx):

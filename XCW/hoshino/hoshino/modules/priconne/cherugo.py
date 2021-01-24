@@ -13,13 +13,29 @@ from itertools import zip_longest
 
 from nonebot.message import escape
 
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.typing import CQEvent
 
-sv = Service('切噜语', bundle='切噜语', help_='''
-[切噜一下] 转换为切噜语
-[切噜～♪切啰巴切拉切蹦切蹦] 切噜语翻译
-'''.strip())
+sv_help = '''
+- [切噜一下] 转换为切噜语
+- [切噜～♪切啰巴切拉切蹦切蹦] 切噜语翻译
+'''.strip()
+
+sv = Service(
+    name = '切噜语',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助切噜语"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 CHERU_SET = '切卟叮咧哔唎啪啰啵嘭噜噼巴拉蹦铃'
 CHERU_DIC = {c: i for i, c in enumerate(CHERU_SET)}

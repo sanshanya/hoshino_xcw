@@ -4,14 +4,31 @@ from nonebot import on_command
 
 from hoshino import R, Service, priv, util, config
 
+sv_help = '''
+基本对话
+'''.strip()
 
+sv = Service(
+    name = '基本对话',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助基本对话"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 # basic function for debug, not included in Service('chat')
 @on_command('zai?', aliases=('在?', '在？', '在吗', '在么？', '在嘛', '在嘛？'), only_to_me=True)
 async def say_hello(session):
     await session.send('はい！私はいつも貴方の側にいますよ！')
 
 
-sv = Service('交流', visible=False)
+
 
 @sv.on_fullmatch(('沙雕机器人', '沙雕機器人'))
 async def say_sorry(bot, ev):

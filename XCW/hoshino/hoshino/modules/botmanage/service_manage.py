@@ -3,11 +3,11 @@ from functools import cmp_to_key
 from nonebot import CommandSession, CQHttpError, on_command
 from nonebot import permission as perm
 from nonebot.argparse import ArgumentParser
-
+from nonebot import get_bot
 from hoshino import Service, priv
 
 PRIV_TIP = f'群主={priv.OWNER} 群管={priv.ADMIN} 群员={priv.NORMAL} bot维护组={priv.SUPERUSER}'
-
+bot = get_bot()
 @on_command('lssv', aliases=('服务列表', '功能列表'), permission=perm.GROUP_ADMIN, only_to_me=False, shell_like=True)
 async def lssv(session:CommandSession):
     parser = ArgumentParser(session=session)
@@ -34,7 +34,16 @@ async def lssv(session:CommandSession):
         if verbose_all or (sv.visible ^ only_hidden):
             x = '○' if on else '×'
             msg.append(f"|{x}| {sv.name}")
-    await session.send('|'.join(msg))
+    msg='\n'.join(msg)
+    data ={
+            "type": "node",
+            "data": {
+                "name": '成熟御姐小冰',
+                "uin": '2854196306',
+                "content": msg
+            }
+            }
+    await bot.send_group_forward_msg(group_id=session.ctx.get('group_id'), messages=data)
 
 
 @on_command('enable', aliases=('启用', '开启', '打开'), permission=perm.GROUP, only_to_me=False)

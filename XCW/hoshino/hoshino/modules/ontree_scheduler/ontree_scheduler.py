@@ -8,10 +8,25 @@ from nonebot import get_bot
 import hoshino
 from hoshino import R, Service, priv, util
 
-sv = Service('会战辅助', visible= True, enable_on_default= True, bundle='会战辅助', help_='''
+sv_help = '''
 - [挂树/取消挂树] 带计时的挂树功能,按55分钟算
 - [合刀 A B C] 三个字母分别是刀1伤害/刀2伤害/剩余血量(国服)
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '合刀及挂树',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助合刀及挂树"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 ###挂树部分
 @sv.on_command('挂树')

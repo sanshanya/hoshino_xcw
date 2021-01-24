@@ -9,16 +9,31 @@ import requests
 from bs4 import BeautifulSoup
 
 import hoshino
-from hoshino import Service
+from hoshino import Service, priv
 from hoshino.modules.priconne import chara
 from hoshino.typing import MessageSegment, CQEvent
 from . import GameMaster
 
 
-sv = Service('猜语音', visible= True, enable_on_default= True, bundle='猜语音', help_='''
+sv_help = '''
 - [cygames] 猜猜随机的"cygames"语音来自哪位角色
 - [猜语音] 猜猜随机的语音来自哪位角色
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '猜语音',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助猜语音"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 DOWNLOAD_THRESHOLD = 76
 MULTIPLE_VOICE_ESTERTION_ID_LIST = ['0044']

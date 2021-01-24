@@ -1,9 +1,26 @@
 import pytz
 from datetime import datetime
 import hoshino
-from hoshino import Service
+from hoshino import Service, priv
 
-sv = Service('时报功能', enable_on_default=False, help_='时报功能')
+sv_help = '''
+整点报时啦~
+'''.strip()
+
+sv = Service(
+    name = '时报',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助时报"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 tz = pytz.timezone('Asia/Shanghai')
 
 def get_hour_call():

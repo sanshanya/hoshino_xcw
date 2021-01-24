@@ -1,5 +1,5 @@
 import time
-from hoshino import Service, aiorequests
+from hoshino import Service, priv, aiorequests
 from nonebot import MessageSegment
 
 BASE_URL = 'https://api-cn.faceplusplus.com/imagepp/v1/mergeface'
@@ -13,9 +13,25 @@ params = {
 
 tm_url = ['template_url', 'merge_url']
 
-sv = Service('换脸', visible= False, enable_on_default= False, bundle='换脸', help_='''
+sv_help = '''
 无说明
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '换脸',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助换脸"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
+
 
 wait_list = {}
 

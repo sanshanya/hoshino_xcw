@@ -1,17 +1,33 @@
 import hoshino
 import asyncio
 from .base import *
-from hoshino import Service
+from hoshino import Service, priv
 from .config import get_config, get_group_config, set_group_config
 
-sv = Service('setu_mix', visible= True, enable_on_default= False, bundle='setu_mix', help_='''
+sv_help = '''
 - [色图/来N张色图] 随机获取1张/n张色图
 - [搜N张色图 XX] 搜索XX的色图,附带数量可以获取多张
 - [本日涩图排行榜 X ] 获取p站排行榜(需开启acggov模块),X为页数
 - [看涩图 X /看涩图 X Y] 获取p站排行榜指定序号色图(需开启acggov模块),从X到Y或者只看X
 - [匿名色图] Q群的bots受到不可名状意志的控制(需关闭xml模块)
 - [show色图/show来N张色图] 带上show前缀涩图会发生变化(需关闭xml模块)
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'setu_mix',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助setu_mix"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 #设置limiter
 tlmt = hoshino.util.DailyNumberLimiter(get_config('base', 'daily_max'))

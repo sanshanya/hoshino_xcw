@@ -5,12 +5,28 @@ import random
 
 from . import util
 
-sv = Service('群管plus', visible= True, enable_on_default= True, bundle='群管plus', help_='''
+sv_help = '''
 - [谁是龙王] 迫害龙王
 - [@bot 送礼物@sb] 让bot送sb礼物
 - [@bot 饿饿] 让bot送自己礼物
 - [说 XX] bot说xx
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '群管plus',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助群管plus"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 
 @sv.on_fullmatch(('谁是龙王','迫害龙王','龙王是谁'))

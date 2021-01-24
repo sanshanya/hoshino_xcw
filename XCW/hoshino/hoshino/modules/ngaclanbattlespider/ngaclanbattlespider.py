@@ -10,10 +10,26 @@ from hoshino import Service, priv, aiorequests
 from hoshino.modules.priconne.news import BaseSpider, Item
 from hoshino.typing import CQEvent
 
-sv = Service('nga会战爬虫', bundle='nga会战爬虫', help_='''
+sv_help = '''
 启用nga会战爬虫 [国服/日服/台服] | 启用nga会战爬虫并设置爬取版块为:国服讨论/日服讨论/台服讨论，默认是国服讨论，每隔一段时间爬虫将自动爬取nga会战相关帖子
 禁用nga会战爬虫 | 关闭nga会战爬虫服务
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'nga会战爬虫',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助nga会战爬虫"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 URL_CN = 'https://bbs.nga.cn/thread.php?stid=20775069'
 URL_JP = 'https://ngabbs.com/thread.php?stid=20774924'

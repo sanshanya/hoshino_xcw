@@ -19,76 +19,76 @@ passwd = config.PassWord #登录密码
 @switcher.before_request
 async def _():
     user_ip = request.remote_addr
-    if request.path == '/login':
+    if request.path == '/sv/login':
         return
-    if request.path == '/check':
+    if request.path == '/sv/check':
         return
     if session.get('user_ip') == user_ip:
         return
-    return redirect('/login') 
+    return redirect('/sv/login') 
 
-@switcher.route('/login',methods=['GET','POST'])
-async def login():
+@switcher.route('/sv/login',methods=['GET','POST'])
+async def svlogin():
     print(request.method)
     if request.method == 'GET':
         return await render_template('login.html',passwd=passwd,public_address=public_address,port=port)
     else:
-        login_data = await request.form
-        input_psd = login_data.get('password')
+        svlogin_data = await request.form
+        input_psd = svlogin_data.get('password')
         if input_psd == passwd:
             user_ip = request.remote_addr
             session['user_ip'] = user_ip
             session.permanent = True
             app.permanent_session_lifetime = timedelta(weeks=2)
-            return redirect('/svmanager')
+            return redirect('/sv/manager')
         else:
-            return redirect('/login')
+            return redirect('/sv/login')
 
-@switcher.route('/svmanager')
+@switcher.route('/sv/manager')
 async def manager():
     return await render_template('main.html',public_address=public_address,port=port)
 
-@switcher.route('/group')
+@switcher.route('/sv/group')
 async def test():
-    groups = await get_groups()
-    return await render_template('by_group.html',items=groups,public_address=public_address,port=port)
+    svgroups = await get_svgroups()
+    return await render_template('by_group.html',items=svgroups,public_address=public_address,port=port)
 
-@switcher.route('/service')
+@switcher.route('/sv/service')
 async def show_all_services():
     svs = Service.get_loaded_services()
     sv_names = list(svs)
     return await render_template('by_service.html',items=sv_names,public_address=public_address,port=port)
 
-@switcher.route('/group/<gid_str>')
-async def show_group_services(gid_str:str):
+@switcher.route('/sv/group/<gid_str>')
+async def show_svgroup_services(gid_str:str):
     gid = int(gid_str)
     svs = Service.get_loaded_services()
     conf = {}
     conf[gid_str] = {}
     for key in svs:
         conf[gid_str][key] = svs[key].check_enabled(gid)
-    return await render_template('group_services.html',group_id=gid_str,conf=conf,public_address=public_address,port=port)
+    return await render_template('group_services.html',svgroup_id=gid_str,conf=conf,public_address=public_address,port=port)
 
-@switcher.route('/service/<sv_name>')
-async def show_service_groups(sv_name:str):
+@switcher.route('/sv/service/<sv_name>')
+async def show_service_svgroups(sv_name:str):
     svs = Service.get_loaded_services()
-    groups = await get_groups()
+    svgroups = await get_svgroups()
     conf = {}
-    for group in groups :
-        gid = group['group_id']
+    for svgroup in svgroups :
+        gid = svgroup['svgroup_id']
         gid_str = str(gid)
         conf[gid_str] = {}
         if svs[sv_name].check_enabled(gid):
             conf[gid_str][sv_name] = True
         else:
             conf[gid_str][sv_name] = False
-    return await render_template('service_groups.html',sv_name=sv_name,conf=conf,groups=groups,public_address=public_address,port=port)
+    return await render_template('service_groups.html',sv_name=sv_name,conf=conf,svgroups=svgroups,public_address=public_address,port=port)
 
-async def get_groups():
-    return await bot.get_group_list()
+async def get_svgroups():
+    return await bot.get_svgroup_list()
 
-@switcher.route('/set/',methods=['GET','POST'])
-async def set_group():
+@switcher.route('/sv/set/',methods=['GET','POST'])
+async def set_svgroup():
     #接收前端传来的配置数据，数据格式{"<gid>":{'serviceA':True,'serviceB':False}}
     if request.method == 'POST':
         data = await request.get_data()
@@ -110,4 +110,4 @@ async def set_group():
 async def setting(ctx):
     message = ctx['raw_message']
     if message in ['服务管理', 'bot设置']:
-        await bot.send(ctx,f'http://{public_address}:{port}/svmanager',at_sender=False)
+        await bot.send(ctx,f'http://{public_address}:{port}/sv/manager',at_sender=False)

@@ -6,13 +6,29 @@ import requests
 from io import BytesIO
 from PIL import Image
 from collections import OrderedDict
-from hoshino import Service, config
+from hoshino import Service, priv, config
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64
 
-sv = Service('搜图', visible= True, enable_on_default= True, bundle='搜图', help_='''
-[识图+图片] 查询图片来源
-'''.strip())
+sv_help = '''
+- [识图 图片] 查询图片来源
+'''.strip()
+
+sv = Service(
+    name = '搜图',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助搜图"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 api_key=config.shitu_api#填写你自己的api_key
 minsim='70!'#相似度下限，低于下限不显示结果

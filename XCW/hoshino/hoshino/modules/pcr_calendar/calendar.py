@@ -8,15 +8,29 @@ import os
 import re
 import traceback
 
-
-sv = Service('日历', visible= True, enable_on_default= True, bundle='日历', help_='''
+sv_help = '''
 公主连结活动日历
 - [日历] 查看本群订阅服务器日历
 - [国/台/日服日历] 查看指定服务器日程
 - [国/台/日服日历 on/off ] 订阅/取消订阅指定服务器的日历推送
 - [日历 time 时:分] 设置日历推送时间
 - [日历 status] 查看本群日历推送设置
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '日历',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助日历"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 group_data = {}
 

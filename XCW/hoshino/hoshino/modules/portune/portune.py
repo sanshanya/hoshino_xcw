@@ -5,7 +5,7 @@ import random
 import os
 import hoshino
 from hoshino.util import DailyNumberLimiter
-from hoshino import R, Service
+from hoshino import R, Service, priv
 from hoshino.util import pic2b64
 from hoshino.typing import *
 from .luck_desc import luck_desc
@@ -13,7 +13,24 @@ from .luck_type import luck_type
 from PIL import Image, ImageSequence, ImageDraw, ImageFont
 
 
+sv_help = '''
+[@bot 抽签|人品|运势|抽镜华签]
+'''.strip()
 
+sv = Service(
+    name = '运势',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助运势"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 #帮助文本
 sv = Service('抽签', visible= True, enable_on_default= True, bundle='抽签', help_='''
 [抽签|人品|运势|抽凯露签]

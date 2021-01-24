@@ -82,7 +82,7 @@ MODULES_ON = {
     #'setu',#原生色图功能
     'translate',#原生翻译功能
     # 'twitter',#推特订阅，需要配置本目录下的twitter.py
-    'yobot',#yobot会战功能
+    #'yobot',#yobot会战功能,yobot在本版本推荐独立使用
     'hourcallyao',#买药提醒
     'reload',#重启
     'tarot',#塔罗牌
@@ -139,8 +139,10 @@ MODULES_ON = {
     #'xcw',#数个插件的混合，需要xcw资源包配合链接：https://pan.baidu.com/s/1tb0skZTs8NSHYZ-Tm3Cs0w 提取码：2333 
     'revgif',#GIF图倒放
     'groupmanager',#群管插件
-    #'yocool'安装yocool
+    #'yocool',#安装yocool
     'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2,地址https://github.com/qq1176321897/pcrjjc2
+    'bilidynamicpush',#B站动态
+    'CQTwitter',#rss订阅推特
 }
 
-version = 'hoshino_xcw_0.81'
+version = 'hoshino_xcw_0.9'

@@ -101,7 +101,24 @@ from hoshino import Service, priv, util, R, HoshinoBot
 from hoshino.typing import CQEvent
 
 HAHAHA_VTB_TIANGOU = R.img('hahaha_vtb_tiangou.jpg')
-sv = Service('站在历史正确的一边', manage_priv=priv.SUPERUSER)
+sv_help = '''
+站在历史正确的一边
+'''.strip()
+
+sv = Service(
+    name = '站在历史正确的一边',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助站在历史正确的一边"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 @sv.on_keyword(SB_HOLO)
 async def anti_holo(bot: HoshinoBot, ev: CQEvent):

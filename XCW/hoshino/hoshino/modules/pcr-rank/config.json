@@ -1,0 +1,19 @@
+{
+    "source": {
+        "cn": {
+            "name": "席巴鸽",
+            "channel": "stable",
+            "route" : "cn/xbg"
+        },
+        "tw": {
+            "name": "漪梦奈特",
+            "channel": "stable",
+            "route" : "tw/ymnt"
+        },
+        "jp": {
+            "name": "森佬",
+            "channel": "stable",
+            "route" : "jp/sl"
+        }
+    }
+}

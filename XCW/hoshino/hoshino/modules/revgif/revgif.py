@@ -6,11 +6,26 @@ import os
 from io import BytesIO
 
 import nonebot
-from hoshino import Service
+from hoshino import Service, priv
 
-sv = Service('GIF倒放', visible= True, enable_on_default= True, bundle='GIF倒放', help_='''
+sv_help = '''
 - [倒放 xx] xx为gif图
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'GIF倒放',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助GIF倒放"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 headers = {"User-Agent": "Mozilla/5.0 (Windows; U; Windows NT 5.1; zh-CN; rv:1.9.1.6) ",
            "Accept": "text/html,application/xhtml+xml,application/xml;q=0.9,*/*;q=0.8",

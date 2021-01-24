@@ -16,9 +16,25 @@ _max = 2
 EXCEED_NOTICE = f'惠惠今天已经使用了{_max}次爆裂魔法哦~~~明天再使用爆裂魔法吧!'
 _nlmt = DailyNumberLimiter(_max)
 
-sv = Service('来一发', visible= False, enable_on_default= True, bundle='来一发', help_='''
-- [来一发]
-'''.strip())
+sv_help = '''
+- [explosion帮助]
+'''.strip()
+
+sv = Service(
+    name = '来一发',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = False, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助来一发"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+    
 
 EXPLOSION_HELP = '''
 “エクスプロージョン（Explosion）！”

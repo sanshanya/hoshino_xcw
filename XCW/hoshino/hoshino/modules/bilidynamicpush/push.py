@@ -2,7 +2,7 @@ from hoshino import Service , R
 import json
 import asyncio
 from os import path
-from hoshino import aiorequests
+from hoshino import aiorequests, priv
 import time
 import nonebot
 from hoshino.priv import *
@@ -17,11 +17,27 @@ all_user_name ={}
 isOnChecking = False
 bilibiliCookie = ''
 
-sv = Service('B站动态', visible= True, enable_on_default= False, bundle='B站动态', help_='''
+sv_help = '''
 - 订阅动态+空格+需要订阅的UID+空格
 - 取消订阅动态+空格+需要取消订阅的UID
 - 重新载入动态推送配置
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'B站动态',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助B站动态"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+    
 
 async def broadcast(msg,groups=None,sv_name=None):
     bot = nonebot.get_bot()

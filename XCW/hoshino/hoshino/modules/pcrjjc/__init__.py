@@ -10,17 +10,31 @@ from .queryapi import getprofile
 import copy
 
 sv_help = '''
-[竞技场绑定 uid] 绑定竞技场排名变动推送（仅下降），默认双场均启用
-[竞技场查询( uid)] 查询竞技场简要信息
-[停止竞技场订阅] 停止战斗竞技场排名变动推送
-[停止公主竞技场订阅] 停止公主竞技场排名变动推送
-[启用竞技场订阅] 启用战斗竞技场排名变动推送
-[启用公主竞技场订阅] 启用公主竞技场排名变动推送
-[删除竞技场订阅] 删除竞技场排名变动推送绑定
-[竞技场订阅状态] 查看排名变动推送绑定状态
+- [竞技场绑定 uid] 绑定竞技场排名变动推送（仅下降），默认双场均启用
+- [竞技场查询( uid)] 查询竞技场简要信息
+- [停止竞技场订阅] 停止战斗竞技场排名变动推送
+- [停止公主竞技场订阅] 停止公主竞技场排名变动推送
+- [启用竞技场订阅] 启用战斗竞技场排名变动推送
+- [启用公主竞技场订阅] 启用公主竞技场排名变动推送
+- [删除竞技场订阅] 删除竞技场排名变动推送绑定
+- [竞技场订阅状态] 查看排名变动推送绑定状态
 '''.strip()
 
-sv = Service('竞技场推送',help_=sv_help, bundle='竞技场推送')
+sv = Service(
+    name = '竞技场推送',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = False, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助竞技场推送"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 Inited = False
 pcrprofile = None
@@ -31,7 +45,7 @@ tr = None
 
 @sv.on_fullmatch('jjc帮助', only_to_me=False)
 async def send_jjchelp(bot, ev):
-    await bot.send(ev, sv_help)
+    await bot.send(ev, sv_help, at_sender=True)
 
 def Init():
     global Inited
@@ -214,7 +228,7 @@ async def send_arena_sub_status(bot,ev):
             strList.append("关闭")
         await bot.send(ev,"".join(strList),at_sender=True)
 
-@sv.scheduled_job('interval', minutes=5)
+@sv.scheduled_job('interval', minutes=1)
 async def on_arena_schedule():
     global arena_ranks
     global grand_arena_ranks
@@ -240,7 +254,6 @@ async def on_arena_schedule():
                         msg = "[CQ:at,qq={uid}]您的竞技场排名发生变化：{origin_rank}->{new_rank}".format(uid=binds["arena_bind"][user]["uid"], origin_rank=str(origin_rank), new_rank=str(new_rank))
                         arena_ranks[user] = new_rank
                         await bot.send_group_msg(group_id=int(binds["arena_bind"][user]["gid"]),message=msg)
-                        await asyncio.sleep(1.5)
             if binds["arena_bind"][user]["grand_arena_on"]:
                 if not user in grand_arena_ranks:
                     grand_arena_ranks[user] = res["grand_arena_rank"]
@@ -253,7 +266,6 @@ async def on_arena_schedule():
                         msg = "[CQ:at,qq={uid}]您的公主竞技场排名发生变化：{origin_rank}->{new_rank}".format(uid=binds["arena_bind"][user]["uid"], origin_rank=str(origin_rank), new_rank=str(new_rank))
                         grand_arena_ranks[user] = new_rank
                         await bot.send_group_msg(group_id=int(binds["arena_bind"][user]["gid"]),message=msg)
-                        await asyncio.sleep(1.5)
         except:
             sv.logger.info("对{id}的检查出错".format(id=binds["arena_bind"][user]["id"]))
 

@@ -2,15 +2,30 @@ import asyncio
 import os
 import random
 
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.typing import MessageSegment, CQEvent
 from . import game_util, GameMaster
 
-
-sv = Service('神经衰弱', visible= True, enable_on_default= True, bundle='神经衰弱', help_='''
+sv_help = '''
 - [神经衰弱] 开启一局公主连结主题的神经衰弱小游戏
 - [神经衰弱排行] 查看神经衰弱小游戏群排行
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '神经衰弱',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助神经衰弱"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 
 # 神经衰弱(Neurasthenia)小游戏相关参数

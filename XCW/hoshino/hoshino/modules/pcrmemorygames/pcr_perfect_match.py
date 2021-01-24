@@ -2,15 +2,30 @@ import asyncio
 import os
 import random
 
-from hoshino import Service, util
+from hoshino import Service, priv, util
 from hoshino.typing import MessageSegment, CQEvent
 from . import game_util, GameMaster
 
-
-sv = Service('完美配对', visible= True, enable_on_default= True, bundle='完美配对', help_='''
+sv_help = '''
 - [完美配对] 开启一局公主连结主题的完美配対小游戏
 - [完美配对排行] 查看完美配对小游戏群排行
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '完美配对',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助完美配对"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 
 # 完美配对(Perfect Match)小游戏相关参数

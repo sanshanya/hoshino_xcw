@@ -1,13 +1,13 @@
 import datetime
 from .airconutils import get_group_aircon, write_group_aircon, update_aircon, new_aircon, print_aircon
-from hoshino import Service
+from hoshino import Service, priv
 
 try:
 	import ujson as json
 except:
 	import json
 
-sv = Service('空调', visible= True, enable_on_default= False, bundle='空调', help_='''
+sv_help = '''
 - [开空调] 打开空调（第一次使用时会自动安装空调）
 - [关空调] 关闭空调
 - [当前温度] 查看当前风速、设定温度、环境温度
@@ -17,7 +17,23 @@ sv = Service('空调', visible= True, enable_on_default= False, bundle='空调',
 - [升级空调] 升级空调（家用空调👉中央空调）
 - [降级空调] 降级空调（中央空调👉家用空调）
 - [空调类型] 查看空调类型（家用空调/中央空调）
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '空调',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助空调"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 ac_type_text = ["家用空调","中央空调"]
 AIRCON_HOME = 0

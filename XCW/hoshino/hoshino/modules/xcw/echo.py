@@ -1,9 +1,27 @@
 from nonebot import on_command, CommandSession
 from hoshino import R, Service, priv, util, config
 
-sv = Service('回响', visible= False, enable_on_default= True, bundle='回响', help_='''
-- 念念不忘 必有回响
-'''.strip())
+sv_help = '''
+- [echo XX] xx可以是图片/文字/CQ码
+- [parse XX] xx可以是图片/文字/CQ码
+※回响与解析能够相互配合
+'''.strip()
+
+sv = Service(
+    name = '回响及解析',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助回响"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 def CQ_trans(cqcode:str) -> str:
     CQcode = cqcode

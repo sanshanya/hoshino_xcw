@@ -1,4 +1,4 @@
-from hoshino import Service
+from hoshino import Service, priv
 from hoshino.typing import CQEvent
 from hoshino.modules.priconne import chara
 from . import _chara_data
@@ -6,10 +6,25 @@ from . import _chara_data
 import hoshino
 import sqlite3, os, random, asyncio
 
-sv = Service('猜角色', visible= True, enable_on_default= True, bundle='猜角色', help_='''
+sv_help = '''
 - [猜角色] 猜猜机器人随机发送的文本在描述哪位角色
 - [猜角色群排行] 显示猜角色小游戏猜对次数的群排行榜(只显示前十名)
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '猜角色',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助猜角色"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+
 
 
 PREPARE_TIME = 5

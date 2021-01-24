@@ -5,7 +5,7 @@ import asyncio
 import random
 import os
 import hoshino
-from hoshino import R, Service, util
+from hoshino import R, Service, priv, util
 
 bot = get_bot()
 fd = os.path.dirname(__file__)
@@ -20,9 +20,25 @@ def save(data, file):
     with open(file, 'w') as f:
         json.dump(data, f)
 
-sv = Service('俄罗斯轮盘游戏', visible= True, enable_on_default= True, bundle='俄罗斯轮盘游戏', help_='''
-[开枪] 俄罗斯轮盘游戏
-'''.strip())
+sv_help = '''
+- [开枪] 俄罗斯轮盘游戏
+'''.strip()
+
+sv = Service(
+    name = '俄罗斯轮盘游戏',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助俄罗斯轮盘游戏"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 # main part
 @sv.on_command('rs', aliases=('俄罗斯轮盘','开枪'), only_to_me=False)
 async def spin(session: CommandSession):

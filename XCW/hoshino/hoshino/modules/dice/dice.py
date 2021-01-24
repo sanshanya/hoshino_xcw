@@ -1,13 +1,28 @@
 import re
 import random
 
-from hoshino import Service
+from hoshino import Service, priv
 from hoshino.typing import CQEvent
 
-sv = Service('掷骰子', visible= True, enable_on_default= True, bundle='掷骰子', help_='''
+sv_help = '''
 [.r] 掷骰子
 [.r 3d12] 掷3次12面骰子
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '骰子',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助骰子"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 async def do_dice(bot, ev, num, min_, max_, opr, offset, TIP="的掷骰结果是："):
     if num == 0:

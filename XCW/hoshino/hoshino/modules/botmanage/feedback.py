@@ -3,9 +3,26 @@ from hoshino import Service, priv
 from hoshino.typing import CQEvent
 from hoshino.util import DailyNumberLimiter
 
-sv = Service('反馈插件', visible= True, enable_on_default= True, manage_priv=priv.SUPERUSER, help_='''
-- [来杯咖啡] 后接反馈内容 联系维护组
-'''.strip())
+sv_help = '''
+- [来杯咖啡] 后接反馈内容 联系维护组 请不要反馈无意义的事情
+'''.strip()
+
+sv = Service(
+    name = '来杯咖啡',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.SUPERUSER, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助来杯咖啡"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
+
 
 _max = 1
 lmt = DailyNumberLimiter(_max)

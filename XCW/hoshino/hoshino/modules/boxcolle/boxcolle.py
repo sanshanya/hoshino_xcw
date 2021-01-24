@@ -10,7 +10,7 @@ from .dao.boxcollesqlitedao import BoxColleDao
 import datetime, random, os, csv, asyncio, math
 from PIL import Image, ImageDraw, ImageFont
 
-sv = Service('BOX统计插件', visible= True, enable_on_default= True, bundle='BOX统计插件', help_='''
+sv_help = '''
 一键box统计 [补录] | 在配置完box统计参数后使用此指令，机器人会自动私聊公会成员统计其box。如果填写参数"补录"，则会开启补录模式，只让成员填写他们还没录入的角色星级和Rank
 ----------
 设置box统计 <数据库名> <统计对象> <备注> <统计的角色名(逗号分隔,需要统计Rank的角色请在角色名后加上"R")> | 统计对象参数目前支持填写"all"(全部成员) 或"allE@xxx@yyy"(全部成员除去xxx和yyy) 或"@xxx@yyy"(xxx和yyy)
@@ -34,7 +34,23 @@ sv = Service('BOX统计插件', visible= True, enable_on_default= True, bundle='
 导出box统计表 [数据库名] | 从数据库中导出csv格式的box统计表格到后台
 ----------
 发送box统计图 [数据库名] | 机器人发送图片形式的box统计表格到群里，需要机器人能够发图并且服务器装有"simsun.ttc"字体才能使用此功能
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'BOX统计',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助BOX统计"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+ 
+
 
 
 class CommandConfirmer:    

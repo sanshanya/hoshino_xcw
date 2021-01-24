@@ -9,11 +9,27 @@ from hoshino import Service, util, priv
 from hoshino.modules.pcrsealkiller import Config
 from hoshino.typing import CQEvent, MessageSegment
 
-sv = Service('击杀晒卡海豹', visible= False, enable_on_default= False, bundle='击杀晒卡海豹', help_='''
-自动击杀晒卡海豹，请给机器人管理员或者群主，配置指令如下：
-启用海豹杀手 [海豹判定阈值]：如果不输入参数，默认阈值是100
-禁用海豹杀手：关闭海豹杀手服务，减轻机器人运行开销
-'''.strip())
+sv_help = '''
+自动击杀晒卡海豹，请给机器人管理员或者群主：
+- [启用海豹杀手 海豹判定阈值]：如果不输入参数，默认阈值是100
+- [禁用海豹杀手] 关闭海豹杀手服务
+'''.strip()
+
+sv = Service(
+    name = '海豹杀手',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助海豹杀手"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 GACHA_KEYWORDS = ['所持角色交换Pt', '持有的角色交換Pt', '所持キャラ交換Pt', '持有的角色交换Pt', '所持キャラ交换Pt', '所持CSPキャラ交換Pt']
 FILE_FOLDER_PATH = './hoshino/modules/pcrsealkiller/'

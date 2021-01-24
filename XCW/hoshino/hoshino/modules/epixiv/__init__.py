@@ -2,13 +2,28 @@ import time
 from nonebot import *
 from . import util, pixiv, permission, download, short_url
 
-from hoshino import Service  # 如果使用hoshino的分群管理取消注释这行
+from hoshino import Service, priv  # 如果使用hoshino的分群管理取消注释这行
 
 #
-sv = Service('pixiv搜图', visible= True, enable_on_default= True, bundle='pixiv搜图', help_='''
+sv_help = '''
 - [来一份XX] XX为你想搜索的标签
-其余按照提示来即可
-'''.strip()) 
+'''.strip()
+
+sv = Service(
+    name = 'pixiv搜图',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助pixiv搜图"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+ 
 # 如果使用hoshino的分群管理取消注释这行
 
 # 初始化配置文件

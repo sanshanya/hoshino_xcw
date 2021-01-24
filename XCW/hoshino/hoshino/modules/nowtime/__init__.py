@@ -3,12 +3,28 @@ import time
 import random
 from  datetime import datetime
 from hoshino import util
-from hoshino import Service
+from hoshino import Service, priv
 from .data_source import add_text,pic_to_b64
 
-sv = Service('报时', visible= False, enable_on_default= True, bundle='报时', help_='''
+sv_help = '''
 生成一张报时图
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '报时',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助报时"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 @sv.on_fullmatch('报时')
 async def showtime(bot, event):
     now = datetime.now()

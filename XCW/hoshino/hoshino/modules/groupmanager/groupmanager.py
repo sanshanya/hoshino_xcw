@@ -5,7 +5,7 @@ import random
 
 from . import util
 
-sv = Service('群管', visible= True, enable_on_default= True, bundle='群管', help_='''
+sv_help = '''
 - [申请头衔XX] XX为头衔名
 - [删除头衔] 删除自己获得的头衔,可以@其他人
 - [禁言@sb XX] sb就是sb , xx为秒数
@@ -15,7 +15,23 @@ sv = Service('群管', visible= True, enable_on_default= True, bundle='群管', 
 - [设置管理员 @sb] 
 - [取消管理员 @sb] 
 - [修改名片@sb xxx] 吧sb的群名片设置为xxx
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '群管',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '通用', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助群管"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+  
+  
 
 @sv.on_prefix('申请头衔')
 async def special_title(bot, ev):

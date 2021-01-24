@@ -13,14 +13,29 @@ loginPassword = 'xcw'#登录密码
 bot_name = 'xcw'#机器人名字
 group_name = '镜华的表情包'#公会名
 
-sv = Service('生成表情包', visible= True, enable_on_default= True, bundle='生成表情包', help_='''
+sv_help = '''
 - [表情列表] 查看目前有哪些表情
 - [生成表情 表情名字 文案] 生成一张表情包
 - [查看表情 XXX] XXX是表情名字,要准确
 - [查看XX表情] XX是表情名字的关键词,支持模糊搜索
 - [删除表情 XX] XX是表情名字
 - [上传表情 表情名字 图片] 上传一张表情
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '表情包生成',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助表情包生成"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 work_env = Path(os.path.dirname(__file__))
 meme_folder = work_env.joinpath('meme')

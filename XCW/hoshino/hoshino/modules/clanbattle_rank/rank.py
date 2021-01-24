@@ -27,14 +27,28 @@ data = {
     'group': {},
 }
 
-
-sv = Service('工会排名', visible= True, enable_on_default= True, bundle='工会排名', help_='''
+sv_help = '''
 - [查询排名 公会名 会长名] 查询指定公会排名,如有重名需要附加会长名
 - [查询分段] 查询分段信息
 - [查询关注] 查询关注的公会信息
 - [添加关注 公会名 会长名] (需要管理员权限)将指定公会加入关注列表,如有重名需要附加会长名
 - [清空关注] (需要管理员权限)清空关注列表
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '公会排名',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助工会排名"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
 
 boss_data = {
     "hp": [

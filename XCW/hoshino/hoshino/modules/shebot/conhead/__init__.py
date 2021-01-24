@@ -9,6 +9,7 @@ import aiohttp
 from PIL import Image
 
 from .._res import Res as R
+from hoshino import config, Service, priv
 from hoshino.service import Service
 from hoshino.typing import HoshinoBot, CQEvent
 from hoshino.util import DailyNumberLimiter, FreqLimiter
@@ -17,11 +18,27 @@ from .data_source import detect_face, concat, gen_head
 from .opencv import add
 from .config import *
 
-sv = Service('接头霸王', visible= True, enable_on_default= True, bundle='接头霸王', help_='''
+sv_help = '''
 - [接头1 XX] XX为一张图片,三次元限定,否则生草
 - [接头2 XX] XX为一张图片,二次元限定,否则生草
 - [接头  XX] 默认二次元接头
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '接头霸王',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助接头霸王"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 _nlt = DailyNumberLimiter(5)
 _flt = FreqLimiter(5)
 

@@ -5,13 +5,29 @@ import datetime
 from io import BytesIO
 from PIL import Image
 
-from hoshino import Service
+from hoshino import Service, priv
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64
 
-sv = Service('搜番', visible= True, enable_on_default= True, bundle='搜番', help_='''
-[搜番+图片] 根据图片查询番剧(日本本土二次元番剧)
-'''.strip())
+sv_help = '''
+- [搜番 图片] 根据图片查询番剧(日本本土二次元番剧)
+'''.strip()
+
+sv = Service(
+    name = '搜番',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助搜番"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 enable_details = True #是否返回详细信息，启用此项查询速度会变慢
 minsim = 0.70 #匹配度，0.87以下的可能会不太准

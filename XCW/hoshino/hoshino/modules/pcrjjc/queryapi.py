@@ -5,13 +5,13 @@ import json
 apiroot = 'https://help.tencentbot.top'
 
 async def getprofile(viewer_id: int, interval: int = 1, full: bool = False) -> dict:
-    reqid = json.loads((await (await get(f'{apiroot}/enqueue?full={full}&target_viewer_id={viewer_id}')).content).decode('utf8'))['reqeust_id']
+    reqid = json.loads((await (await get(f'{apiroot}/enqueue?full={full}&target_viewer_id={viewer_id}', timeout=5)).content).decode('utf8'))['reqeust_id']
 
     if reqid is None:
         return "id err"
 
     while True:
-        query = json.loads(requests.get(f'{apiroot}/query?request_id={reqid}').content.decode('utf8'))
+        query = json.loads((await (await get(f'{apiroot}/query?request_id={reqid}', timeout=5)).content).decode('utf8'))
         status = query['status']
         if status == 'done':
             return query['data']

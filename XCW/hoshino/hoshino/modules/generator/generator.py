@@ -8,18 +8,35 @@ from io import BytesIO
 from random import choice
 from PIL import Image, ImageDraw, ImageFont, ImageFilter
 
-from hoshino import R, Service
+from hoshino import R, Service, priv
 from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64, FreqLimiter
 
-sv = Service('生成器', visible= True, enable_on_default= True, bundle='生成器', help_='''
-生成器
+sv_help = '''
+生成器s:
 [营销号 主体/事件/另一种说法] 营销号生成器
 [狗屁不通 主题] 狗屁不通生成器
 [记仇 天气/主题] 记仇表情包生成器
 [我朋友说他好了] 无中生友，无艾特时随机群员
 [日记 天气/主题] 舔狗日记生成器
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '生成器',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = True, #是否默认启用
+    bundle = '娱乐', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助搜生成器"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+    
+
 
 _flmt = FreqLimiter(300)
 

@@ -5,11 +5,27 @@ from hoshino import Service, priv
 from hoshino.typing import CQEvent
 from .config import *
 
-sv = Service('推特订阅', bundle='推特订阅', visible= True, enable_on_default= False, help_='''
+sv_help = '''
 - [添加订阅 订阅名 RSS地址(/twitter/user/username)]
 - [删除订阅 订阅名]
 - [查看所有订阅]
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '推特订阅',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助推特订阅"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 def load_config():
     try:

@@ -1,13 +1,29 @@
 import asyncio, json, os, random
 
 import hoshino
-from hoshino import Service, aiorequests
+from hoshino import Service, priv, aiorequests
 from hoshino.modules.pcrmiddaymusic import _song_data
 from hoshino.typing import CQEvent, MessageSegment
 
-sv = Service('午间音乐', visible= True, enable_on_default= False, bundle='午间音乐', help_='''
+sv_help = '''
 每日午间自动推送pcr相关音乐, 也可直接在群内发送"来点音乐"请求pcr歌曲
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = '午间音乐',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助午间音乐"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 config_using = set()
 CONFIG_PATH = './hoshino/modules/pcrmiddaymusic/pushed_music.json'

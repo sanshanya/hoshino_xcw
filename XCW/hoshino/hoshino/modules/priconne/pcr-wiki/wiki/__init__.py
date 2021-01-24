@@ -4,13 +4,27 @@ from .. import chara
 from .data import *
 
 sv_help = '''
-[@bot简介ue] 角色简介
-[@bot技能ue] 角色技能
-[@bot专武ue] 角色专武
-[@bot羁绊ue] 角色羁绊
+- [@bot简介ue] 角色简介
+- [@bot技能ue] 角色技能
+- [@bot专武ue] 角色专武
+- [@bot羁绊ue] 角色羁绊
 '''.strip()
 
-sv = Service('公主连结wiki', help_=sv_help, bundle='公主连结wiki')
+sv = Service(
+    name = '公主连结wiki',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '查询', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助公主连结wiki"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 def get_chara(name, types):
     id_ = chara.name2id(name)

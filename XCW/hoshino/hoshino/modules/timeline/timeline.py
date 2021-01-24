@@ -3,7 +3,8 @@ from hoshino.typing import CQEvent
 from .dao.timelinesqlitedao import TLSqliteDao
 from .dao.dbnamesqlitedao import TLDBNameDao
 
-sv = Service('pcr轴', bundle='pcr轴', help_='''
+sv_help = '''
+*这功能我都不用~~~~~
 录入轴 <A/B><1/2/3/4/5> <伤害> <说明> <轴>
 查找轴 [A/B][1/2/3/4/5]
 查找轴 [编号]
@@ -12,7 +13,23 @@ sv = Service('pcr轴', bundle='pcr轴', help_='''
 赞同轴 <编号> [赞同数,非管理员只能填1/-1]
 查看轴库名
 切换轴库 <新轴库名>
-'''.strip())
+'''.strip()
+
+sv = Service(
+    name = 'pcr轴',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #是否可见
+    enable_on_default = True, #是否默认启用
+    bundle = '会战', #属于哪一类
+    help_ = sv_help #帮助文本
+    )
+
+@sv.on_fullmatch(["帮助pcr轴"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help, at_sender=True)
+    
+
 
 
 def tid2id(tid):
