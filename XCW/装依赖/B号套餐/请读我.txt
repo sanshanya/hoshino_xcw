@@ -1,0 +1,2 @@
+自动装依赖.ps1 通过powershell运行,会自动搜寻子目录的requirements.txt并安装依赖
+所以请放在hoshino的run.py同目录下运行

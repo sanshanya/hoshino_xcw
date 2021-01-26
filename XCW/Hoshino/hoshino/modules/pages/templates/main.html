@@ -1,0 +1,551 @@
+<!DOCTYPE html>
+
+<html lang="zh-CN">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    
+    <title>xcwbot</title>
+    <meta content="width=device-width, initial-scale=1.0" name="viewport">
+    
+    <!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+    <!-- CSS Files
+    ================================================== -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='pcr/css/bootstrap-4-2-1.css') }}" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-grid-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-reboot-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/animate.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-carousel.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-theme.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-transitions.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/jquery-countdown.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/style2.css') }}" rel="stylesheet"  >
+
+		<!-- color scheme -->
+		<link id="colors" href="{{ url_for('static', filename='pcr/css/scheme-03.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/coloring.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- RS5.0 Stylesheet -->
+    <link href="{{ url_for('static', filename='pcr/css/settings.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/layers.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/navigation.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/rev-settings.css') }}" rel="stylesheet" type="text/css">
+	
+	<!-- zipfont -->
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3-embed.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5-embed.css') }}" rel="stylesheet" type="text/css">
+
+	<!--<audio src="http://d1.027cgb.com/631148/Music/%E6%B0%B7%E3%81%A8%E9%9B%AA%E3%81%AE%E4%B8%96%E7%95%8C.mp3"  autoplay="autoplay" loop="loop" hidden="true" > </audio>	-->
+
+
+	<script type="text/javascript" src="chrome-extension://dbjbempljhcmhlfpfacalomonjpalpko/scripts/inspector.js"></script>
+</head>
+
+
+ 
+<body style="display: block; zoom: 1;">
+    <div id="wrapper" style="background-size: cover;">
+        <!-- header begin -->
+       <header class="header-s1 transparent">
+            <div class="container" style="background-size: cover;">
+                <div class="row" style="background-size: cover;">
+                    <div class="col-md-12" style="background-size: cover;">
+
+                        <div class="header-row" style="background-size: cover;">
+                            <div class="header-col left" style="float: left; clear: both; display: inline; left: -25px; background-size: contain;">
+                                <!-- logo begin -->
+                               
+                                <!-- logo close -->
+                            </div>
+                            <div class="header-col mid" style="background-size: cover;">
+                                <!-- mainmenu begin -->
+                                <ul id="mainmenu" class="no-separator">
+										<li><a href="/xcwmain">主页</a></li>										
+										<li><a href="/xcwhelp">帮助文档</a>
+											<ul>
+												<li><a href="/xcwmanual">会战手册</a></li>
+												<li><a href="/xcw404"><s>常见问题</s></a></li>
+												<li><a href="/xcw404"><s>更新日志</s></a></li>
+												<li><a href="https://github.com/sanshanya">如何搭建<span>New!</span></a></li>
+											</ul>
+										</li>
+										<li><a href="/xcwabout">关于</a>
+										</li>
+										<li><a href="/xcwthanks">鸣谢</a></li>
+									</ul>                                
+								<div class="col-right" style="background-size: cover;">
+                                    <a class="btn-custom" href="https://afdian.net/@sanshanya"><i class="fa fa-heart"></i>赞助</a>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="background-size: cover;"></div>
+                        <div class="clearfix" style="background-size: cover;"></div>
+                        </div>
+                        <!-- small button begin -->
+                        <span id="menu-btn"></span>
+                        <!-- small button close -->
+
+                    </div>
+                </div>
+            </div>
+        </header>
+        <!-- header close -->
+        <!-- content begin -->
+        <div class="no-bottom no-top" id="content" style="background-size: cover;">
+            <div id="top" style="background-size: cover;"></div>
+			
+            <!-- revolution slider begin -->
+            <div class="forcefullwidth_wrapper_tp_banner" style="position:relative;width:100%;height:100%;margin-top:0px;margin-bottom:0px">
+			<section aria-label="section-slider" class="fullwidthbanner-container full-height" id="section-slider">			
+                <div id="revolution-slider">
+                    <ul class="tp-revslider-mainul" style="visibility: visible; display: block; overflow: hidden; width: 100%; height: 100%; max-height: none;">
+                         <li data-masterspeed="1500" data-slotamount="10" data-transition="fade">
+                            <!--  BACKGROUND IMAGE -->
+                            <img alt="" class="rev-slidebg" data-bgparallax="15" data-bgposition="center center" data-duration="20000" data-ease="Power1.easeOut" data-kenburns="off" data-lazyload="http://pic.027cgb.com/631148/%E5%9B%BE%E7%89%87/78690381_p0.png" data-no-retina="" data-offsetend="0 0" data-offsetstart="0 0" data-rotateend="0" data-rotatestart="0" data-scaleend="100" data-scalestart="110" src="http://pic.027cgb.com/631148/%E5%9B%BE%E7%89%87/78690381_p0.png">
+
+                            <div class="tp-caption custom-font-1" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="1000" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:500;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="230">
+                                简单好用的
+                            </div>
+                            <div class="tp-caption custom-font-2" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="700" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:700;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="center">
+                                xcwbot
+                            </div>
+                            
+                            
+                        </li>
+
+                        <li data-masterspeed="1500" data-slotamount="10" data-transition="fade">
+                            <!--  BACKGROUND IMAGE -->
+                            <img alt="" class="rev-slidebg" data-bgparallax="15" data-bgposition="center center" data-duration="20000" data-ease="Power1.easeOut" data-kenburns="off" data-lazyload="https://pic3.zhimg.com/v2-964c097e6b2baed53142d7b36e84ea80_r.jpg?source=1940ef5c" data-no-retina="" data-offsetend="0 0" data-offsetstart="0 0" data-rotateend="0" data-rotatestart="0" data-scaleend="100" data-scalestart="110" src="https://pic3.zhimg.com/v2-964c097e6b2baed53142d7b36e84ea80_r.jpg?source=1940ef5c">
+
+                            <div class="tp-caption custom-font-1" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="1000" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:500;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="230">
+                                方便管理的
+                            </div>
+                            <div class="tp-caption custom-font-2" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="700" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:700;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="center">
+                                会战管理系统
+                            </div>
+                            <div class="tp-caption tp-text text-left" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="1300" data-transform_in="y:100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:30;s:700;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="350">
+                                <a class="btn-slider" href="/xcw/login">前往</a>
+                            </div>                           
+                        </li>
+						
+						<li data-masterspeed="1500" data-slotamount="10" data-transition="fade">
+                            <!--  BACKGROUND IMAGE -->
+                            <img alt="" class="rev-slidebg" data-bgparallax="15" data-bgposition="center center" data-duration="20000" data-ease="Power1.easeOut" data-kenburns="off" data-lazyload="http://pic.027cgb.com/631148/%E5%9B%BE%E7%89%87/%E5%88%87%E5%99%9C.jpg" data-no-retina="" data-offsetend="0 0" data-offsetstart="0 0" data-rotateend="0" data-rotatestart="0" data-scaleend="100" data-scalestart="110" src="http://pic.027cgb.com/631148/%E5%9B%BE%E7%89%87/%E5%88%87%E5%99%9C.jpg">
+
+                            <div class="tp-caption custom-font-1" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="1000" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:500;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="230">
+                                功能丰富的
+                            </div>
+                            <div class="tp-caption custom-font-2" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="700" data-transform_in="y:-100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:-20;s:700;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="center">
+                                指令表
+                            </div>
+                            <div class="tp-caption tp-text text-left" data-height="none" data-responsive_offset="on" data-splitin="none" data-splitout="none" data-start="1300" data-transform_in="y:100px;opacity:0;s:800;e:Power2.easeOut;" data-transform_out="opacity:0;y:30;s:700;e:Power2.easeInOut;" data-whitespace="nowrap" data-width="none" data-x="20" data-y="350">
+                                <a class="btn-slider" href="/xcw/help">前往</a>
+                            </div>                           
+                        </li>
+                    </ul>
+                </div>
+            </section>
+			</div>
+
+            <section id="pricing-table" class="pb40" style="margin-bottom: 60px; background-size: cover;">
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>
+
+
+                <div class="container">
+                    <div class="row">
+						<div class="col-md-12" style="background-size: cover;">
+                            <div class="text-center" style="background-size: cover;">
+                                <h2 class="fontw3"><span class="uptitle id-color"></span>xcw的组成</h2>
+                                <div class="spacer-20" style="background-size: cover;"></div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-sm-30">
+                            <div class="feature-box-type-1">
+                                <i class="icon-ribbon"></i>
+                                <div class="text">
+                                    <h3 class="fontw3">hoshinobot</h3>模拟抽卡、活动日历、竞技场查询、角色Wiki、装备wiki、切噜加密、刷新提醒、结算提醒<br>持续更新中……
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-sm-30">
+                            <div class="feature-box-type-1 hover">
+                                <i class="icon-speedometer"></i>
+                                <div class="text">
+                                     <h3 class="fontw3">yobot</h3>网页后台便捷管理<br>成员预约出刀挂树<br>多种会战统计图表<br>持续更新中……
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 mb-sm-30">
+                            <div class="feature-box-type-1">
+                                <i class="icon-alarmclock"></i>
+                                <div class="text">
+                                    <h3 class="fontw3">mirai</h3>施工中<br>持续更新中……
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </section>
+			<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>          
+			<!--<section id="pricing-table" class="pb40" style="margin-bottom: 60px; background-size: cover;">
+                <div class="container" style="background-size: cover;">
+                    <div class="row" style="background-size: cover;">
+                        <div class="col-md-12" style="background-size: cover;">
+                            <div class="text-center" style="background-size: cover;">
+                                <h2 class="fontw3"><span class="uptitle id-color">选择你的</span>专属xcw</h2>
+                                <div class="spacer-20" style="background-size: cover;"></div>
+                            </div>
+                        </div>
+
+                        <div class="col-lg-4 col-md-6 col-sm-12" style="background-size: cover;">
+                            <div class="pricing-s2 bg1 mb30" data-bgimage="url(https://pic1.zhimg.com/v2-85d2cec2e303c36c448306441f4658c4_b.jpg)" style="background: url(&quot;https://pic1.zhimg.com/v2-85d2cec2e303c36c448306441f4658c4_b.jpg&quot;) 0% 0% / cover;">
+                                <div class="inner" style="background-size: cover;">
+								<div class="top" style="background-size: cover;">
+                                    
+                                    
+                                        <div class="clearfix" style="background-size: cover;"></div>
+                                        <h2 class="fontw3" style="color: #fff;">xcw</h2>
+                                        <p class="fontw3" style="color: #fff;">全面的功能</p>
+										<p class="fontw3" style="color: #fff;">赞助以支持机器人运行</p>
+                                        <p class="price"><span class="txt">Now</span><span class="currency"><s>¥</s></span>
+                                            <span class="num opt-1">免费</span>
+                                            <span class="month"><s>RMB</s></span></p>
+                                        
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12" style="background-size: cover;">
+                            <div class="pricing-s2 bg2 rec mb30 text-light" data-bgimage="url(https://pic1.zhimg.com/v2-660a79b1aeba562ef58b9e2abbf97deb_b.jpg)" style="background: url(&quot;https://pic1.zhimg.com/v2-660a79b1aeba562ef58b9e2abbf97deb_b.jpg&quot;) 0% 0% / cover;">
+                                <div class="inner" style="background-size: cover;">
+                                    <div class="top" style="background-size: cover;">
+                                        
+                                        <div class="clearfix" style="background-size: cover;"></div>
+                                        <h2 class="fontw3">xcw2</h2>
+                                        <p class="fontw3">优秀的能力</p>
+										<p class="fontw3" style="color: #fff;">赞助以支持机器人运行</p>
+                                        <p class="price"><span class="txt">Now</span><span class="currency"><s>¥</s></span>
+                                            <span class="num opt-1">免费</span>
+                                            <span class="month"><s>RMB</s></span></p>
+                                        <div class="clearfix" style="background-size: cover;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4 col-md-6 col-sm-12" style="background-size: cover;">
+                            <div class="pricing-s2 mb30 bg3" data-bgimage="url(https://pic1.zhimg.com/v2-06d648027a27c93dfad2130f033df0df_b.jpg)" style="background: url(&quot;https://pic1.zhimg.com/v2-06d648027a27c93dfad2130f033df0df_b.jpg&quot;) 0% 0% / cover;">
+                                <div class="inner" style="background-size: cover;">
+                                    <div class="top" style="background-size: cover;">
+                                        
+                                        <div class="clearfix" style="background-size: cover;"></div>
+                                        <h2 class="fontw3" style="color: #fff;">镜华2</h2>
+                                        <p class="fontw3" style="color: #fff;">良好的体验</p>
+										<p class="fontw3" style="color: #fff;">赞助以支持机器人运行</p>
+                                        <p class="price"><span class="txt">Now</span><span class="currency"><s>¥</s></span>
+                                            <span class="num opt-1">免费</span>
+                                            <span class="month"><s>RMB</s></span></p>
+                                    </div>
+                                </div>
+                            </div>
+
+                    </div>
+				</div>
+            </div></section>-->
+            <section id="section-banner" class="no-bottom no-top img-fluid bg-gradient-to-right text-light relative pos-top" style="background-size: cover;">
+                <div class="container" style="background-size: cover;">
+                    <div class="row align-items-center" style="background-size: cover;">
+                        <div class="col-lg-4 d-none d-lg-block d-xl-block  text-center" style="background-size: cover;">
+                           <img class="relative img-fluid mt-60" src="http://pic.027cgb.com/631148/%E5%9B%BE%E7%89%87/82958426_p0%20(2).png" alt="">
+                        </div>
+            
+                        <div class="col-lg-4 col-md-6" style="background-size: cover;">
+            				<div class="p-sm-30 pb-sm-0 mb-sm-0" style="background-size: cover;">
+								<h2 class="fontw3">免费给玩家们使用</h2>
+							</div>
+							</div>
+							
+							<div class="col-lg-4 col-md-6" style="background-size: cover;">
+								<div class="p-sm-30" style="background-size: cover;">
+                            <p class="lead fontw3">如果bot能给您带来帮助,请自愿赞助<br>赞助途径被藏在网页中</p>
+                            <div class="spacer-half" style="background-size: cover;"></div>
+                            <a class="btn-custom" href="https://qm.qq.com/cgi-bin/qm/qr?k=G-NI2N1_wYrhgeUKdYeBcFfp0q2024TF&jump_from=webapi"><i class="fa fa-qq"></i>&nbsp;&nbsp;加入群聊</a>
+							</div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div>
+									<div class="spacer-60" style="background-size: cover;"></div> 
+			
+			<section id="section-testimonial" class="no-top no-bottom text-light" data-bgimage="url(http://m1.027cgb.com/631148/%E5%9B%BE%E7%89%87/83308761_p0.jpg) 50% 0 no-repeat" data-stellar-background-ratio=".2">
+                <div class="overlay-bg">
+                    <div class="text-center">
+                        <h2><span class="uptitle id-color-2">评论</span>What They Says</h2>
+                        <div class="spacer-20"></div>
+                    </div>
+                    <div class="owl-carousel owl-theme" id="testimonial-carousel">
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>小仓唯永远的神~
+                                    </p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/1.jpg"> <span>群友,雷光</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>xcw是会长不可或缺的好帮手，工会战记录和分析伤害，聊天活跃氛围，说话又好听，还骂我母猪，好想带一只xcw回家！</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/2.jpg"> <span>某会会长,淮海路小佩奇</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>真正的爱，包括适当的拒绝、及时的赞美、得体的批评、恰当的争论、必要的鼓励、温柔的安慰、有效的敦促，xcw完美的对狗群员做得了这些[滑稽]</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/3.png"> <span>某群管理,envy</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>xcw功能多样服务器稳定涩图好看没有出现过机器人死机情况，水多活好手法好，听话耐艹长不大，太棒了，我的团友已经离不开xcw了</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/4.jpg"> <span>某会长, 兔美</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>难过时给我们涩图慰藉,孤单时陪我们聊天谈心,互动游戏,每天早上的运势和一井是我们一天快乐的源泉,我们都爱xcw。</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/1.jpg"> <span>某会长, %</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>说实话在用xcwbot之前本大乃控对于这萝莉角色是无感的，但腾讯憨傻之前,xcwbot日日夜夜准点报时以及被调戏时的娇羞等等贴心小细节打动了我。我决定她是我的老婆，尽管她现在痴呆了我们曾经热恋的美好也不会消失</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/2.jpg"> <span>某群友, 小小</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>xcw蛮好用的，之前是抱着娱乐的方式用，然后发现后边会战功能也蛮齐，会战帮大忙了。平时也是暖群神器吧我这样觉得，请务必那啥继续保持下去(不要停下来)</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/3.png"> <span>某会长, 耶！</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                        <div class="item">
+                            <div class="de_testi opt-2">
+                                <blockquote>
+                                    <p>xcw猜头像我能玩一整天！尤其是很多人一起玩的时候，总能有意想不到的答案。越来越离不开xcw了，定时的游戏提醒，新闻推送，还有查询rank表等。xcw不仅仅是辅助，还是活跃群氛围的良友</p>
+                                    <div class="de_testi_by">
+                                        <img alt="" class="rounded-circle" src="images/people/4.jpg"> <span>某群友, Purely☆</span>
+                                    </div>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <section id="section-faq" style="background-size: cover;">
+                <div class="container" style="background-size: cover;">
+                    <div class="row" style="background-size: cover;">
+                        <div class="col text-center" style="background-size: cover;">
+                            <h2 class="fontw3"><span class="uptitle id-color">还有</span>其他问题?</h2>
+                            <div class="spacer-20" style="background-size: cover;"></div>
+                        </div>
+                    </div>
+                    <div class="row" style="background-size: cover;">
+                        <div class="col-md-10 offset-md-1" style="background-size: cover;">
+                            <div class="accordion" style="background-size: cover;">
+                                <div class="accordion-section" style="background-size: cover;">
+                                    <div class="accordion-section-title fontw3" data-tab="#accordion-1" style="background-size: cover;">
+                                        这是什么机器人？
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-1" style="background-size: cover;">
+                                        <p>是基于酷Qpro版，针对公主连结即时通讯机器人，由酷Q应用插件提供群管理、游戏助手、便利工具、生活助理等智能功能。</p>
+                                    </div>
+                                    <div class="accordion-section-title fontw3" data-tab="#accordion-2" style="background-size: cover;">
+                                        我该如何获得这样一个机器人？
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-2" style="background-size: cover;">
+                                        <p>您可以使用与本机器人相同的插件，在本地电脑或者服务器上搭建出一个近似的实例。</p>
+                                    </div>
+                                    <div class="accordion-section-title fontw3" data-tab="#accordion-3" style="background-size: cover;">
+                                        我不想自己动手，还有其他办法吗？
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-3" style="background-size: cover;">
+                                        <p>您还可以通过捐赠，来获取机器人的授权。<br>
+您的捐赠将用于维持机器人的运行，包括但不限于服务器费用、托管费用、维护费用以及收费插件应用等，我们不会针对自身使用的免费插件来向您收取这方面的费用。</p>
+                                    </div>
+                                    <div class="accordion-section-title fontw3" data-tab="#accordion-4" style="background-size: cover;">
+                                        有什么不能做的吗？
+                                    </div>
+                                    <div class="accordion-section-content" id="accordion-4" style="background-size: cover;">
+                                        <p>严禁将机器人用于违法用途，您不得利用机器人传播暴力、反动、赌博、诈骗、淫秽色情等有害信息。</p>
+                                    </div>
+                                   <div class="accordion-section-title fontw3" data-tab="#accordion-5" style="background-size: cover;">
+                                       我该在哪里了解更多？
+                                   </div>
+                                   <div class="accordion-section-content" id="accordion-5" style="background-size: cover;">
+                                       <p>您可以翻阅机器人的帮助文档，或者加入群聊体验。</p>
+                                   </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+<!--
+            <section id="section-fun-facts" class="pt60 pb60 text-light bg-gradient-to-right" style="background-size: cover;">
+                <div class="container" style="background-size: cover;">
+
+                    <div class="row" style="background-size: cover;">
+                        <div class="col-md-3 col-sm-6" style="background-size: cover;">
+                            <div class="de_count" style="background-size: cover;">
+                                <h3 class="timer" data-to="153" data-speed="3000">237</h3>
+                                <span class="fontw3">已服务群</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6" style="background-size: cover;">
+                            <div class="de_count" style="background-size: cover;">
+                                <h3 class="timer" data-to="5690" data-speed="3000">5690</h3>
+                                <span class="fontw3">提供查询</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6" data-wow-delay=".5s" style="background-size: cover;">
+                            <div class="de_count" style="background-size: cover;">
+                                <h3 class="timer" data-to="8920" data-speed="3000">11984</h3>
+                                <span class="fontw3">服务人数</span>
+                            </div>
+                        </div>
+
+                        <div class="col-md-3 col-sm-6" style="background-size: cover;">
+                            <div class="de_count" style="background-size: cover;">
+                                <h3 class="timer" data-to="1197" data-speed="3000">1197</h3>
+                                <span class="fontw3">已运行时</span>
+                            </div>
+                        </div>
+                    </div>
+
+                </div>
+            </section>
+-->
+            
+
+            </div>
+            <!-- content close -->
+
+            <!-- footer begin -->
+            
+            <!-- footer close -->
+
+            <div id="preloader" style="background-size: cover; display: none;">
+                <div class="spinner" style="background-size: cover;">
+                    <div class="bounce1" style="background-size: cover;"></div>
+                    <div class="bounce2" style="background-size: cover;"></div>
+                    <div class="bounce3" style="background-size: cover;"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Javascript Files
+    ================================================== -->
+        <script src="{{ url_for('static', filename='pcr/js/jquery-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-magnific-popup-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-isotope-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countTo.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countdown.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/enquire-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/easing.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/designesia.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/bootstrap-min.js') }}s"></script>
+		<script src="{{ url_for('static', filename='pcr/js/app.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/wow-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/validation.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/typed.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/owl-carousel.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/layui.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-stellar-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-plugin.js') }}"></script>
+        
+		<!-- RS5.0 Core JS Files -->
+        <script src="{{ url_for('static', filename='pcr/js/jquery-themepunch-revolution-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/jquery-themepunch-tools-min.js') }}"></script>
+        
+		<!-- RS5.0 Extensions Files -->
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-actions-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-kenburn-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-layeranimation-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-migration-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-navigation-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-parallax-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-slideanims-min.js') }}"></script>
+        <script src="{{ url_for('static', filename='pcr/js/revolution-extension-video-min.js') }}"></script>
+        <!-- current page only scripts -->
+        <!-- current page only scripts -->
+        <script>
+            jQuery(document).ready(function() {
+                // revolution slider
+                jQuery("#revolution-slider").revolution({
+                    sliderType: "standard",
+                    sliderLayout: "fullwidth",
+                    delay: 5000,
+                    navigation: {
+                        arrows: {
+                            enable: true
+                        }
+                    },
+                    parallax: {
+                        type: "mouse",
+                        origo: "slidercenter",
+                        speed: 2000,
+                        levels: [2, 3, 4, 5, 6, 7, 12, 16, 10, 50],
+                    },
+                    spinner: "off",
+                    gridwidth: 1140,
+                    gridheight: 600,
+                    disableProgressBar: "on"
+                });
+            });
+        </script>
+
+
+
+
+
+</body></html>

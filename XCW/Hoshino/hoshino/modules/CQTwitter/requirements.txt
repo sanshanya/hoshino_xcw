@@ -1,0 +1,8 @@
+feedparser~=5.2.1
+pyquery~=1.4.3
+requests~=2.21.0
+httpx~=0.12.1
+emoji~=0.5.4
+googletrans~=2.4.0
+Pillow~=8.0.1
+uuid~=1.30

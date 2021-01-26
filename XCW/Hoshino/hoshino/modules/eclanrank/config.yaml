@@ -1,0 +1,83 @@
+# 管理员
+admins:
+  - 389897773
+
+# 缓存存放目录
+cache_dir: ./data/
+
+
+# 触发的命令
+comm:
+  # 查询一个公会排行  可以是公会名字 可以是排名
+  keyword: ["[会公工查][战会询][排查公][行名询会]"]
+
+  # 锁定一个公会 可以直接使用会战排行查询或者每个设定的时间推送
+  locked: ["[会公工][战会][锁绑]定"]
+  # 解锁一个公会
+  unlocked: ["[会公工][战会]解[锁除绑]"]
+  # 查看当前绑定的公会
+  defaultLucked: ["[会公工][战会][排查][行名询]$"]
+  # 查看当前档线
+  
+
+#规则
+rules:
+  # 是否只允许管理员锁定或解锁公会
+  only_admin_can_locked: true
+
+  # 是否每个群只能绑定一个公会
+  only_one_locked: false
+
+
+
+  # -------------------------------
+  # 是否开启实时推送
+  enable_clan_cron: false
+
+  # 对锁定的公会多长时间更新广播一次 单位小时
+  lock_clan_cron_time: 1
+
+  # -------------------------------
+
+
+  # -------------------------------
+  # 定时任务
+  enable_broadcast_time: true
+  # 设置默认每天早上5点半推送一次
+  broadcast_time:
+    day_of_week: '*'
+    hour: 5
+    minute: 30
+  # -------------------------------
+
+
+  # -------------------------------
+  # 获取数据的服务器地址
+  base_url: https://service-kjcbcnmw-1254119946.gz.apigw.tencentcs.com
+  # 获取数据的请求头
+  headers:
+    Content-Type: application/json
+    Referer: https://kengxxiao.github.io/Kyouka/
+    Custom-Source: erinilis
+  # -------------------------------
+
+
+history_clan:
+  白羊座: '2020-05-18 15:00:00'
+  金牛座: '2020-06-12 15:00:00'
+  双子座: '2020-07-09 15:00:00'
+  巨蟹座: '2020-08-06 15:00:00'
+
+
+str:
+  ts_formet: '%Y/%m/%d/ %H:%M:%S'
+
+  # 自定义查询信息显示
+  print_rank_info: |
+    更新: {ts}
+    排名: {rank}  {rank_ext}
+    公会: {clan_name}
+    会长: {leader_name}
+    UID: {leader_viewer_id}
+    分数: {score}  {score_ext}
+    进度: {process}
