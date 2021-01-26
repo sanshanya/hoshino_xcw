@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<!-- saved from url=(0031)https://pcr.botlink.xyz/manual/ -->
+<html lang="zh-CN">
+<head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+		
+		<title>公会战使用手册</title>
+		<meta content="width=device-width, initial-scale=1.0" name="viewport">
+		
+		
+
+		
+
+		<!--[if lt IE 9]>
+    <script src="js/html5shiv.js"></script>
+    <![endif]-->
+
+		<!-- CSS Files
+    ================================================== -->
+		<link rel="stylesheet" href="{{ url_for('static', filename='pcr/css/bootstrap-4-2-1.css') }}" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-grid-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/bootstrap-reboot-min.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/animate.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-carousel.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-theme.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/owl-transitions.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/magnific-popup.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/jquery-countdown.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/style2.css') }}" rel="stylesheet"  >
+
+		<!-- color scheme -->
+		<link id="colors" href="{{ url_for('static', filename='pcr/css/scheme-03.css') }}" rel="stylesheet" type="text/css">
+		<link href="{{ url_for('static', filename='pcr/css/coloring.css') }}" rel="stylesheet" type="text/css">
+
+    <!-- RS5.0 Stylesheet -->
+    <link href="{{ url_for('static', filename='pcr/css/settings.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/layers.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/navigation.css') }}" rel="stylesheet" type="text/css">
+    <link href="{{ url_for('static', filename='pcr/css/rev-settings.css') }}" rel="stylesheet" type="text/css">
+	
+	<!-- zipfont -->
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3-embed.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW3.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5.css') }}" rel="stylesheet" type="text/css">
+	<link href="{{ url_for('static', filename='pcr/css/TXQYW5-embed.css') }}" rel="stylesheet" type="text/css">
+
+	<!--<audio src="http://d1.027cgb.com/631148/Music/%E6%B0%B7%E3%81%A8%E9%9B%AA%E3%81%AE%E4%B8%96%E7%95%8C.mp3"  autoplay="autoplay" loop="loop" hidden="true" > </audio>	-->
+
+
+	<script type="text/javascript" src="chrome-extension://dbjbempljhcmhlfpfacalomonjpalpko/scripts/inspector.js"></script>
+</head>
+
+	<body style="display: block; zoom: 1;">
+		<div id="wrapper" style="background-size: cover;">
+			<!-- header begin -->
+			<header class="header-s1 transparent">
+            <div class="container" style="background-size: cover;">
+                <div class="row" style="background-size: cover;">
+                    <div class="col-md-12" style="background-size: cover;">
+
+                        <div class="header-row" style="background-size: cover;">
+                            <div class="header-col left" style="float: left; clear: both; display: inline; left: -25px; background-size: contain;">
+                                <!-- logo begin -->
+                               
+                                <!-- logo close -->
+                            </div>
+                            <div class="header-col mid" style="background-size: cover;">
+                                <!-- mainmenu begin -->
+                                <ul id="mainmenu" class="no-separator">
+										<li><a href="/xcwmain">主页</a></li>										
+										<li><a href="/xcwhelp">帮助文档</a>
+											<ul>
+												<li><a href="/xcwmanual">会战手册</a></li>
+												<li><a href="/xcw404"><s>常见问题</s></a></li>
+												<li><a href="/xcw404"><s>更新日志</s></a></li>
+												<li><a href="https://github.com/sanshanya">如何搭建<span>New!</span></a></li>
+											</ul>
+										</li>
+										<li><a href="/xcwabout">关于</a>
+										</li>
+										<li><a href="/xcwthanks">鸣谢</a></li>
+									</ul>                                
+								<div class="col-right" style="background-size: cover;">
+                                    <a class="btn-custom" href="https://afdian.net/@sanshanya"><i class="fa fa-heart"></i>赞助</a>
+                                </div>
+                            </div>
+                            <div class="clearfix" style="background-size: cover;"></div>
+                        <div class="clearfix" style="background-size: cover;"></div>
+                        </div>
+                        <!-- small button begin -->
+                        <span id="menu-btn"></span>
+                        <!-- small button close -->
+
+                    </div>
+                </div>
+            </div>
+        </header>
+			<!-- header close -->
+			<!-- content begin -->
+			<div class="no-bottom no-top" id="content" style="background-size: cover;">
+
+				<!-- revolution slider begin -->
+				<!-- section begin -->
+				<section class="full-height no-top no-bottom text-light" data-bgimage="url(https://pic3.zhimg.com/v2-21f93cce7887650cd08e1a7b4054ecf5_r.jpg?source=1940ef5c) 50% 0 no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;https://pic3.zhimg.com/v2-21f93cce7887650cd08e1a7b4054ecf5_r.jpg?source=1940ef5c&quot;) 50% 0px / cover no-repeat;">
+
+					<div class="overlay-bg t80" style="background-color: rgba(0, 0, 0, 0.1); background-size: cover;">
+						<div class="center-y relative" data-scroll-speed="4" style="background-size: cover; transform: translateY(0px);">
+							<div class="container" style="background-size: cover;">
+								<div class="row align-items-center" style="background-size: cover;">
+									<div class="col-md-6" style="background-size: cover;">
+
+										<h1><strong>公会战使用手册</strong><span class="label">NEW</span></h1>
+
+
+										<p class="lead fontw3">
+											使用 Bot 管理公会战，需要所有成员共同遵守使用规则<br>
+											Bot 只是辅助作用，与成员多沟通才能提高分数
+										</p>
+
+										<div class="spacer-20" style="background-size: cover;"></div>
+
+										<a href="http://175.24.70.191:9222/xcw/manual2" class="btn-custom scroll-to">查看旧版</a>
+
+									</div>
+
+									<div class="col-md-6" style="background-size: cover;">
+										<img src="./公会战手册_files/screen.png" class="img-fluid" alt="">
+									</div>
+
+									<div class="clearfix" style="background-size: cover;"></div>
+
+								</div>
+							</div>
+						</div>
+					</div>
+			</section></div>
+
+			
+			<!-- section close -->
+
+			<section style="padding: 90px 0px 0px; background-size: cover;">
+				<div class="container" style="background-size: cover;">
+					<div class="row" style="background-size: cover;">
+						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+							<h4 class="id-color">快速上手的</h4>
+							<h2>操作流程</h2>
+							<p>更多详细流程或指令请查看帮助文档或旧版手册</p>
+							<div class="spacer-20" style="background-size: cover;"></div>
+						</div>
+
+						<!-- feature box begin -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">1</span>
+								<div class="text" style="background-size: cover;">
+									<h3>初次使用</h3>
+									在群聊中发送<code class="pcrcode">创建国服公会</code><br>
+									公会成员在群聊中发送<code class="pcrcode">加入公会</code>
+								</div>
+							</div>
+						</div>
+						<!-- feature box close -->
+
+						<!-- feature box begin -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">2</span>
+								<div class="text" style="background-size: cover;">
+									<h3>会战进行</h3>
+									成员出刀前，在群聊中发送<code class="pcrcode">申请出刀</code><br>
+									出刀完毕后，发送<code class="pcrcode">报刀+伤害数字</code>上报结果
+								</div>
+							</div>
+						</div>
+						<!-- feature box close -->
+
+						<!-- feature box begin -->
+						<div class="col-md-4 col-sm-6 feature-box mb40" style="background-size: cover;">
+							<div class="box-icon-simple left" style="background-size: cover;">
+								<span class="num">3</span>
+								<div class="text" style="background-size: cover;">
+									<h3>结束收尾</h3>
+									会战结束后，由会战管理切换一个空白档案，用来存放下次公会战数据
+								</div>
+							</div>
+						</div>
+						<!-- feature box close -->
+					</div>
+				</div>
+			</section>
+
+			<section data-bgcolor="#fff" style="background-color: rgb(255, 255, 255); background-size: cover;">
+				<div class="container" style="background-size: cover;">
+					<div class="row" style="background-size: cover;">
+						<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+							<h4 class="id-color">简单&nbsp;&nbsp;&nbsp;便捷&nbsp;&nbsp;&nbsp;高效</h4>
+							<h2>后台管理</h2>
+							<p>查刀、催刀、统计分析，这里全都有</p>
+							<div class="spacer-20" style="background-size: cover;"></div>
+						</div>
+
+						<div class="col-md-8 offset-md-2" style="background-size: cover;">
+							<img src="./公会战手册_files/teamwarfare.png" class="img-fluid" alt="">
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+			<section class="full-height no-top no-bottom text-light" data-bgimage="url(https://pic2.zhimg.com/v2-9d23dfb6db94fe7ab36441675e12e153_r.jpg?source=1940ef5c) 50% 50% no-repeat" data-stellar-background-ratio=".2" style="height: 769px; background: url(&quot;https://pic2.zhimg.com/v2-9d23dfb6db94fe7ab36441675e12e153_r.jpg?source=1940ef5c&quot;) 30% 0px / cover no-repeat;">
+				<div class="overlay-bg" style="background-size: cover;">
+					<div class="container center-y" style="background-size: cover;">
+						<div class="row" style="background-size: cover;">
+
+							<div class="col-md-6 offset-md-3 text-center" style="background-size: cover;">
+
+								<h2>如何使用</h2><br>
+
+
+								<p class="lead">
+									初次登入后台时，需要私聊向机器人发送<code class="pcrcode-white">登录</code>，获取临时登录链接<br><br>如果无法接收到链接，请发送<code class="pcrcode-white">重置密码</code>，尝试获取临时密码登录
+								</p>
+
+								<div class="spacer-20" style="background-size: cover;"></div>
+
+								<a href="http://175.24.70.191:9222/yobot/login" class="btn-custom scroll-to">进入会战管理系统</a>
+
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</section>
+
+
+
+		</div>
+		<!-- content close -->
+
+		<!-- footer begin -->
+		
+		<!-- footer close -->
+
+
+
+		<div id="preloader" style="background-size: cover; display: none;">
+			<div class="spinner" style="background-size: cover;">
+				<div class="bounce1" style="background-size: cover;"></div>
+				<div class="bounce2" style="background-size: cover;"></div>
+				<div class="bounce3" style="background-size: cover;"></div>
+			</div>
+		</div>
+		
+
+		<!-- Javascript Files
+    ================================================== -->
+		<script src="{{ url_for('static', filename='pcr/js/jquery-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-magnific-popup-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-isotope-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countTo.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-countdown.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/enquire-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/easing.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/designesia.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/bootstrap-min.js') }}s"></script>
+		<script src="{{ url_for('static', filename='pcr/js/app.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/wow-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/validation.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/typed.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/owl-carousel.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/layui.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-stellar-min.js') }}"></script>
+		<script src="{{ url_for('static', filename='pcr/js/jquery-plugin.js') }}"></script>
+	
+
+
+</body></html>

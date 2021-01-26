@@ -1,0 +1,129 @@
+# epixiv
+p站搜图功能
+
+epixiv文件夹复制到nonebot的模块目录就可
+
+然后配置启用的模块添加 'epixiv'
+
+> 需要安装依赖
+>
+> pip install pyyaml -i https://pypi.tuna.tsinghua.edu.cn/simple
+>
+> pip install sqlitedict -i https://pypi.tuna.tsinghua.edu.cn/simple
+>
+> pip install pixivpy -i https://pypi.tuna.tsinghua.edu.cn/simple
+---
+
+## 配置文件
+```yaml
+cache_dir: ./data/
+
+# p站账号密码
+pixiv:
+  username: ''
+  password: ''
+
+# 触发的命令
+comm:
+  # 对应为 例：  来一份智乃色图 √
+  get_image_header: 来一份
+  get_image_footer: 色图
+  # 翻页功能 例：  来一份智乃色图下一份 √
+  next_page: 下一份
+
+  # 查看剩下的图片 例:  全部图片#83296104
+  show_meta_pages: 全部图片#
+
+  # 查看推荐 例:   相同口味#83296104
+  recommend: 相同口味#
+
+  # 仅搜索tag信息
+  ptag: ptag#
+
+#规则
+rules:
+  # 每次来一份发多少张色图 √
+  show_image_count: 10
+
+  # 是否合并消息  就一个消息发所有图 mirai的话很大几率会失败
+  merge_message: false
+
+  # 搜索最新排序数量 越高质量越好 需要时间越长 倍数30 √
+  search_sort_num: 20
+
+  # 当搜索不到n张图时候自动提高健全级别 √
+  search_sanity_level_count: 10
+
+  # 同时下载图片的线程数 √
+  download_image_thread_num: 10
+
+  # 搜索后结果会保存进数据库 该参数决定什么时候重新获取 √
+  refresh_day: 3
+
+  # 是否使用关键字补全  也进行标签转换 如日文或者罗马音
+  keyword_auto_complete: true
+
+  # 显示多少个补全
+  auto_complete_count: 6
+
+  # 是否启用标签查询 一边是在最后给出标签说明 出自哪里 图片之类
+  enable_tag_request: true
+
+  # 群内是否允许r18
+  group_r18: false
+
+  # 私聊是否允许r18
+  private_r18: true
+
+  # 后面加上啥东西可以开启r18模式
+  r18_flag: R18
+
+str:
+  print: |
+    标题：{title}
+    p站：https://pixiv.net/i/{id}
+    原图：{original}
+    推荐：{recommend}
+    {img}
+
+  auto_complete: |
+    作品: {parentTag}
+    标签: {tag}
+    罗马音: {romaji}
+    {abstract}
+    {local_img}
+
+    也许可能你想搜索的是以下标签：
+    {ac}
+
+  show_meta_pages: |
+    原图: {original}
+    {img}
+
+setting:
+
+  # 图片镜像缓存服务
+  # 分别有
+  # https://search.pstatic.net/common?src=
+  # https://imageproxy.pimg.tw/resize?url=
+  # https://images.weserv.nl/?url=
+  # https://pic1.xuehuaimg.com/proxy/
+  # 不使用直接清空内容
+  proxy_img_service: 'https://imageproxy.pimg.tw/resize?url='
+
+  # 启用短网址
+  short_url_enable: true
+  # 申请地址 https://urlc.cn/ 自己申请的可管理短链接
+  short_api: 'https://urlc.cn/api/?key={key}&format=json&url={url}'
+  short_key: 'ApThkrKWZbzu'
+  short_error: 'error'
+  short_error_value: 1
+  short_json_str: 'short'
+
+  # 备用缩短地址
+  #  short_api: 'https://is.gd/create.php?format=json&url={url}'
+  #  short_key: ''
+  #  short_error: ''
+  #  short_error_value: 1
+  #  short_json_str: 'shorturl'
+```
