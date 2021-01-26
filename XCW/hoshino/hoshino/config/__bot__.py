@@ -82,7 +82,6 @@ MODULES_ON = {
     #'setu',#原生色图功能
     'translate',#原生翻译功能
     # 'twitter',#推特订阅，需要配置本目录下的twitter.py
-    #'yobot',#yobot会战功能,yobot在本版本推荐独立使用
     'hourcallyao',#买药提醒
     'reload',#重启
     'tarot',#塔罗牌
