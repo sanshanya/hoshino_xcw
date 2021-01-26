@@ -143,6 +143,8 @@ MODULES_ON = {
     'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2,地址https://github.com/qq1176321897/pcrjjc2
     'bilidynamicpush',#B站动态
     'CQTwitter',#rss订阅推特
+    'pcr-rank',#自动更新rank
+    'pcravatarfind',#找头像
 }
 
 version = 'hoshino_xcw_0.9'
