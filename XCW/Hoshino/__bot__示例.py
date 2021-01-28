@@ -50,7 +50,7 @@ pixiv_id = ''                           #pixiv账号,无需会员
 pixiv_password = ''                     #pixiv账号对应的密码
 ###################################
 '''-------本部分建议不要改动-------'''
-IMAGE_PATH = "../miraiGO/data/images"                 #MiraiGO用这条,保持默认即可
+IMAGE_PATH = "../go-cqhttp/data/images"                 #MiraiGO用这条,保持默认即可
 COMMAND_START = {''}    # 命令前缀（空字符串匹配任何消息）
 COMMAND_SEP = set()     # 命令分隔符（hoshino不需要该特性，保持为set()即可）
 
