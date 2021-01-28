@@ -1,8 +1,25 @@
-from hoshino import Service
+from hoshino import Service, priv
 from .spider import *
 
-svtw = Service('台服官网新闻', bundle='pcr订阅', help_='台服官网新闻')
-svbl = Service('B服官网新闻', bundle='pcr订阅', help_='B服官网新闻')
+svtw = Service(
+    name = '台服官网新闻',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = '台服官网新闻' #帮助文本
+    )
+svbl = Service(
+    name = 'B服官网新闻',  #功能名
+    use_priv = priv.NORMAL, #使用权限   
+    manage_priv = priv.ADMIN, #管理权限
+    visible = True, #False隐藏
+    enable_on_default = False, #是否默认启用
+    bundle = '订阅', #属于哪一类
+    help_ = 'B服官网新闻' #帮助文本
+    )
+
 
 async def news_poller(spider:BaseSpider, sv:Service, TAG):
     if not spider.item_cache:
