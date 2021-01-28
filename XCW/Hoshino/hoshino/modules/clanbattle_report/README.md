@@ -24,9 +24,9 @@
 
 例: 
 ```
-生成会战报告 http://localhost:9222/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
-生成离职报告 @内鬼 http://localhost:9222/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
-设置工会api http://localhost:9222/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
+生成会战报告 http://localhost:8080/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
+生成离职报告 @内鬼 http://localhost:8080/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
+设置工会api http://localhost:8080/yobot/clan/1234567890/statistics/api/?apikey=abcdefg
 生成会战报告
 生成离职报告 @内鬼
 ```
