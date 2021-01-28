@@ -38,7 +38,7 @@ sv = Service(
 
 @sv.on_fullmatch(["帮助gacha"])
 async def bangzhu(bot, ev):
-    await bot.send(ev, sv_help, at_sender=True)
+    await bot.send(ev, sv_help)
     
 
 jewel_limit = DailyNumberLimiter(15000)
