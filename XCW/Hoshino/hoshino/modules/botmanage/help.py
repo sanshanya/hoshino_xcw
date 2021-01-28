@@ -30,7 +30,10 @@ XXX为功能名
 
 TOP_MANUAL4 = '''
 ※本版本yobot已独立，关键词：
-- [!帮助]
+- 发送帮助时的网页链接即为yobot的帮助
+想要了解yobot：
+- [帮助]
+- [手册]
 '''.strip()
 
 TOP_MANUAL5 = '''
