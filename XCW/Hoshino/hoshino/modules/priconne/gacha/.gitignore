@@ -1,0 +1,10 @@
+# 备份的原版本文件
+backup.json
+# 本地版本号文件
+local_ver.json
+
+# python
+__pycache__/
+
+# 测试文件
+test.py
