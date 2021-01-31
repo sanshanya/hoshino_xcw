@@ -1,5 +1,5 @@
 import os
-from hoshino import Service, priv
+from hoshino import Service
 from hoshino.priv import *
 from hoshino import aiorequests
 from os import path
@@ -23,8 +23,6 @@ sv = Service(
 @sv.on_fullmatch(["帮助rank表"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
-    
-
 
 server_addr = "https://pcresource.coldthunder11.com/rank/"
 
