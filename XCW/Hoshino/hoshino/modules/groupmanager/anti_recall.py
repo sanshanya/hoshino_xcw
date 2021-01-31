@@ -1,7 +1,6 @@
 from nonebot import *
 from hoshino import R, Service, priv, util
 
-bot=get_bot()
 
 sv_help = '''
 - 防止撤回desi~
@@ -21,25 +20,17 @@ sv = Service(
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
     
-
-def CQ_trans(cqcode:str) -> str:
-    CQcode = cqcode
-    CQcode = CQcode.replace('&#44;',',')
-    CQcode = CQcode.replace('&amp;','&')
-    CQcode = CQcode.replace('&#91;','[')
-    CQcode = CQcode.replace('&#93;',']')
-    return CQcode
     
 @sv.on_notice('group_recall')
-async def new_longwang(session: NoticeSession):
+async def anti_(session: NoticeSession):
     uid = session.event['user_id']
     gid = session.event['group_id']
     pid = session.event['operator_id']
     mid = session.event['message_id']
-    msgs = await bot.get_msg(message_id=mid)
-    CQcode = msgs['message']
-    msg = CQ_trans(CQcode)
+    msgs = await session.bot.get_msg(message_id=mid)
+    msg = msgs['message']
+    user_msg = await session.bot.get_group_member_info(group_id=gid, user_id=uid, no_cache=False)
     at = MessageSegment.at(pid)
-    name = msgs['sender']['nickname']
+    name = user_msg['card'] if user_msg['card'] else user_msg['nickname']
     msg = f'{at}撤回了{name}的消息\n>{msg}'
     await session.send(msg)

@@ -20,13 +20,16 @@ sv_help = '''
 - [全部问答] 查看本群设置的回答
 - 只有管理可以删别人设置的哦~~~
 ※进阶用法：
+发送[epa进阶用法]可查看
+'''.strip()
+sv_help1 = '''
 - [有人/大家说AA回答=BB] 
 - [我说AA回答=BB] 
 对于bot而言你说AA就是在说BB
-使用后果自负~
 示例：
-我说随机涩图回答=echo [CQ:image,file=https://呐.art/p.jpg,cache=0]
-（回响功能开启时有效）
+我说随机涩图回答=echo CQ码
+CQ码示例：[CQ:image,file=https://呐.art/p.jpg,cache=0]
+CQ码有很多用法，大部分CQ码都能与echo(回响)完美配合
 '''.strip()
 
 sv = Service(
@@ -43,7 +46,10 @@ sv = Service(
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
     
-
+@sv.on_fullmatch(["epa进阶用法"])
+async def bangzhu(bot, ev):
+    await bot.send(ev, sv_help1)
+    
 config = util.get_config()
 db = util.init_db(config['cache_dir'])
 
