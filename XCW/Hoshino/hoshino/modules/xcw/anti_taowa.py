@@ -25,13 +25,3 @@ async def nodolls(bot, ev):
     msg = ev.message.extract_plain_text().strip().strip(":").strip("。")
     reply = f'禁止{msg}套娃'
     await bot.send(ev, reply)
-
-def dddolls(s: str):
-    l = len(s)
-    s = ''.join(s(0:l//2)),join(s),join((l//2:))
-    return s
-@sv.on_message('group')
-async def nodolls(bot, ev):
-    message = ev['message']
-    res=dddolls(message)
-    await bot.send(ev,res)

@@ -34,7 +34,7 @@ filetype==1.0.7
 logzero
 jieba
 pinyin
-xlrd==1.2.0
+xlrd>= 1.20
 pycryptodome
 pycryptodomex
 httpx
@@ -44,3 +44,4 @@ pyquery~=1.4.3
 emoji~=0.5.4
 googletrans~=2.4.0
 uuid~=1.30
+openpyxl
