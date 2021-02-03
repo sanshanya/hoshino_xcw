@@ -1,6 +1,6 @@
 from nonebot import MessageSegment
 
-from hoshino import Service, priv, util
+from hoshino import Service, priv, util, jewel
 from hoshino.typing import CQEvent
 from hoshino.modules.priconne import chara
 from hoshino.modules.priconne import _pcr_data
@@ -186,7 +186,11 @@ async def on_input_chara_name(bot, ev: CQEvent):
                 user_card = uid2card(ev.user_id, user_card_dict)
                 msg_part = f'{user_card}猜对了，真厉害！TA已经猜对{winning_count}次了~\n(此轮游戏将在时间到后自动结束，请耐心等待)'
                 c = chara.fromid(winner_judger.get_correct_chara_id(ev.group_id))
-                msg =  f'正确答案是: {c.name}{c.icon.cqcode}\n{msg_part}'
+                jewel_counter = jewel.jewelCounter()
+                winning_jewel = 35
+                jewel_counter._add_jewel(ev.group_id, ev.user_id, winning_jewel)
+                msg_part2 = f'{user_card}获得了{winning_jewel}宝石'
+                msg =  f'正确答案是: {c.name}{c.icon.cqcode}\n{msg_part}\n{msg_part2}'
                 await bot.send(ev, msg)
     except Exception as e:
         await bot.send(ev, '错误:\n' + str(e))

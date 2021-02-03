@@ -2,7 +2,7 @@ import asyncio
 import os
 import random
 
-from hoshino import Service, priv, util
+from hoshino import Service, priv, util, jewel
 from hoshino.typing import MessageSegment, CQEvent
 from . import game_util, GameMaster
 
@@ -95,3 +95,4 @@ async def on_input_index(bot, ev: CQEvent):
         game.record_winner(ev.user_id)
     else:
         game.record_loser(ev.user_id)
+

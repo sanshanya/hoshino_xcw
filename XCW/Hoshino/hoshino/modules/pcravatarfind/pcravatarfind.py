@@ -2,7 +2,7 @@ import random, os, sqlite3, asyncio, operator, re
 from PIL import Image
 
 import hoshino
-from hoshino import Service, priv, util, log, R
+from hoshino import Service, priv, util, log, R, jewel
 from hoshino.modules.priconne import chara
 from hoshino.typing import MessageSegment, CQEvent
 
@@ -120,5 +120,9 @@ async def on_input_coordinate(bot, ev: CQEvent):
         game.winner = ev.user_id
         n = game.record()
         msg_part = f'{MessageSegment.at(ev.user_id)}猜对了，真厉害！TA已经猜对{n}次了~\n(此轮游戏将在时间到后自动结束，请耐心等待)'
-        msg =  f'正确坐标是: {game.answer}\n{msg_part}'
+        jewel_counter = jewel.jewelCounter()
+        winning_jewel = 60
+        jewel_counter._add_jewel(ev.group_id, ev.user_id, winning_jewel)
+        msg_part2 = f'{ev.user_id}获得了{winning_jewel}宝石'
+        msg =  f'正确坐标是: {game.answer}\n{msg_part}\n{msg_part2}'
         await bot.send(ev, msg)

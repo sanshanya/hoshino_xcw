@@ -9,7 +9,7 @@ import requests
 from bs4 import BeautifulSoup
 
 import hoshino
-from hoshino import Service, priv
+from hoshino import Service, priv, jewel
 from hoshino.modules.priconne import chara
 from hoshino.typing import MessageSegment, CQEvent
 from . import GameMaster
@@ -175,5 +175,9 @@ async def on_input_chara_name(bot, ev: CQEvent):
         game.winner = ev.user_id
         n = game.record()
         gm.exit_game(ev.group_id)
-        msg = f"正确答案是: {c.name}{c.icon.cqcode}\n{MessageSegment.at(ev.user_id)}猜对了，真厉害！TA已经猜对{n}次了~"
+        jewel_counter = jewel.jewelCounter()
+        winning_jewel = 70
+        jewel_counter._add_jewel(ev.group_id, ev.user_id, winning_jewel)
+        msg_part2 = f'获得了{winning_jewel}宝石'
+        msg = f"正确答案是: {c.name}{c.icon.cqcode}\n{MessageSegment.at(ev.user_id)}猜对了，真厉害！TA已经猜对{n}次了~\n{msg_part2}"
         await bot.send(ev, msg)

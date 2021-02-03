@@ -7,7 +7,7 @@ import math
 from datetime import datetime, timedelta
 from io import BytesIO
 from PIL import Image
-from hoshino import Service, priv
+from hoshino import Service, priv, jewel
 from hoshino.modules.priconne import _pcr_data
 from hoshino.modules.priconne import chara
 from hoshino.typing import CQEvent
@@ -19,6 +19,7 @@ sv_help = '''
 - [声望系统帮助] 
 - [国王的遗书]
 - [国王的羊皮纸]
+- [骑士的转生手册]
 '''.strip()
 
 sv = Service(
@@ -138,18 +139,17 @@ Login600 =[
 async def duel_help(bot, ev: CQEvent):
     msg='''
 ╔                                       ╗    
-    这是吾登上国王之位的经验:
-   1.招募女友的费用与女友数有关
-   2.前期收益最高的是[贵族祈祷]
-   3.贵族每天的薪酬与女友数有关
-   4.前期开局不好可以重生
-   5.招募女友成功与失败概率大概对半开
-   6.决斗如果一方不开枪认输双方都得不了钱
-   7.登上了国王宝座后这个游戏才刚开始
-   8.当女友数满时决斗可以获取[巨量]金币
-   9.决斗的收益随爵位[指数增长]
-    决斗是最高的荣誉
-    千万别与恶魔做交易
+    贵族决斗相关指令
+   1.贵族签到(每日一次)
+   2.查询贵族
+   3.贵族决斗+艾特
+   4.领金币/查金币
+   5.贵族舞会(招募女友)
+   6.查女友+角色名
+   7.升级贵族
+   8.重置决斗(限管理，决
+   斗卡住时用)
+   9.分手+角色名(需分手费)
 ╚                                        ╝
 '''  
     data ={
@@ -176,8 +176,7 @@ async def duel_help_guowang(bot, ev: CQEvent):
    7.登上了国王宝座后这个游戏才刚开始
    8.当女友数满时决斗可以获取[巨量]金币
    9.决斗的收益随爵位[指数增长]
-    决斗是最高的荣誉
-    千万别与恶魔做交易
+   10.尽早[开启声望系统]
 ╚                                        ╝
 '''  
     data ={
@@ -190,6 +189,28 @@ async def duel_help_guowang(bot, ev: CQEvent):
             }
     await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data)
 
+@sv.on_fullmatch(['骑士的转生手册'])
+async def duel_help_qishi(bot, ev: CQEvent):
+    msg='''
+╔                                       ╗    
+   [贵族转生]次数有限
+   [重置金币]却是无限的
+   转生后声望系统会保留
+   [宝石兑换声望 XX]
+   [声望兑换宝石 XX]
+   宝石和声望是1：1的关系
+   但是宝石从哪里来呢？
+╚                                        ╝
+'''  
+    data ={
+            "type": "node",
+            "data": {
+                "name": '贵族小冰',
+                "uin": '2854196306',
+                "content": msg
+            }
+            }
+    await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data)
 
 @sv.on_fullmatch(['国王的羊皮纸'])
 async def duel_help_mowang(bot, ev: CQEvent):
@@ -203,8 +224,8 @@ async def duel_help_mowang(bot, ev: CQEvent):
     卖女友能获得的钱随爵位指数增长
     而买女友的金币是随女友数增长
     我可以从中获取足够的金钱
-    - [兑换声望 XX]
-    - [兑换金币 XX]
+    - [金币兑换声望 XX]
+    - [兑换金币声望 XX]
     钱即是荣誉
     但与恶魔交易是有风险的
     每一次交易
@@ -1435,8 +1456,9 @@ async def nobleduel(bot, ev: CQEvent):
             await bot.send(ev, msg)
 
     #结算下注金币，判定是否为超时局
-    if is_overtime == 1:
+    if is_overtime == 1 and n!=6:
         msg = '本局为超时局，不进行金币结算，支持的金币全部返还'
+        duel_judger.set_support(ev.group_id)
         duel_judger.turn_off(ev.group_id)
         await bot.send(ev, msg)
         return
@@ -1566,7 +1588,7 @@ async def add_score(bot, ev: CQEvent):
         await bot.send(ev, '错误:\n' + str(e))
 
 @sv.on_fullmatch(['贵族抽签', '贵族祈祷'])
-async def add_score(bot, ev: CQEvent):
+async def chouqian_score(bot, ev: CQEvent):
     try:
         score_counter = ScoreCounter2()
         gid = ev.group_id
@@ -1852,7 +1874,7 @@ async def sellma(bot, ev: CQEvent):
             c = chara.fromid(cid)
             msg = f'\n你将皇后{c.name}的灵魂献祭给恶魔来换取金币\n全国震怒,你的[声望]降至冰点,你的财富被用来平定叛乱,你和失去记忆的{c.name}分开\n{c.icon.cqcode}'
             await bot.finish(ev, msg, at_sender=True)
-        num = 3000*level*2+10**level
+        num = 3000*level*2+12**level
         score_counter._add_score(gid, uid, num)
         duel._delete_card(gid, uid, cid)
         c = chara.fromid(cid)
@@ -1860,8 +1882,8 @@ async def sellma(bot, ev: CQEvent):
         await bot.send(ev, msg, at_sender=True)
 
 #国王以上声望部分
-@sv.on_prefix(('兑换声望'))
-async def cheat_score(bot, ev: CQEvent):
+@sv.on_prefix(('金币兑换声望'))
+async def jinbi_score(bot, ev: CQEvent):
     gid = ev.group_id
     uid = ev.user_id
     duel = DuelCounter()
@@ -1887,8 +1909,8 @@ async def cheat_score(bot, ev: CQEvent):
         msg = f'[CQ:at,qq={uid}]通过恶魔的契约兑换了{num}声望'
         await bot.send(ev, msg)
 
-@sv.on_prefix(('兑换金币'))
-async def cheat_score(bot, ev: CQEvent):
+@sv.on_prefix(('声望兑换金币'))
+async def shenwang_score(bot, ev: CQEvent):
     gid = ev.group_id
     uid = ev.user_id
     duel = DuelCounter()
@@ -1914,6 +1936,34 @@ async def cheat_score(bot, ev: CQEvent):
         msg = f'[CQ:at,qq={uid}]通过恶魔的契约兑换了{get_score}金币'
         await bot.send(ev, msg)
 
+@sv.on_prefix(('宝石兑换声望'))
+async def baoshi_score(bot, ev: CQEvent):
+    gid = ev.group_id
+    uid = ev.user_id
+    duel = DuelCounter()
+    level = duel._get_level(gid, uid)
+    score_counter = ScoreCounter2()
+    prestige = score_counter._get_prestige(gid,uid)
+    score = score_counter._get_score(gid, uid)
+    jewel_counter = jewel.jewelCounter()
+    jewel = jewel_counter._get_jewel(gid, uid)
+    if prestige == None:
+        await bot.finish(ev, '您还未开启声望系统哦', at_sender=True)
+    num = ev.message.extract_plain_text().strip()
+    if not num.isdigit() and '*' not in num:
+        await bot.send(ev, '数量？？？')
+        return
+    num = eval(num)
+    get_prestige = num
+    if jewel < num:
+        msg = f'宝石与声望汇率1:1,你现在有{jewel}宝石' 
+        await bot.send(ev, msg)
+        return
+    else:
+        jewel_counter._reduce_jewel(gid,uid,num)
+        score_counter._add_prestige(gid,uid,get_prestige)
+        msg = f'[CQ:at,qq={uid}]通过宝石兑换了{get_prestige}声望'
+        await bot.send(ev, msg)
 
 @sv.on_fullmatch('开启声望系统')
 async def open_prestige(bot, ev: CQEvent):
@@ -1924,20 +1974,23 @@ async def open_prestige(bot, ev: CQEvent):
     score_counter = ScoreCounter2()
     prestige = score_counter._get_prestige(gid,uid)
     if prestige == None :
-        if level != 6:
-            await bot.finish(ev, '只有国王才可以开启声望系统哦', at_sender=True)    
+        if level < 3:
+            await bot.finish(ev, '伯爵以上的地位才可以开启声望系统哦', at_sender=True)    
         else:
             score_counter._set_prestige(gid,uid,0)
-            msg = '成功开启声望系统！国王殿下，向着成为皇帝的目标进发吧'
+            msg = '成功开启声望系统！殿下，向着更远的目标进发吧'
             await bot.send(ev, msg, at_sender=True)
     else:
         msg = '你已经开启过声望系统,请不要再开启'
         await bot.send(ev, msg, at_sender=True)
+        
+
+
     
 @sv.on_fullmatch('声望系统帮助')
 async def prestige_help(bot, ev: CQEvent):
     msg='''
-成为国王后才可以开启声望系统
+成为伯爵后才可以开启声望系统
 开启后可以通过决斗等方式获取声望
 声望系统相关指令如下
 1. 开启声望系统
