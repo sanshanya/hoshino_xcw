@@ -2,18 +2,35 @@ import re
 
 from nonebot import *
 from . import util, api, dupan_link, share, ru
-from hoshino import Service, priv  # 如果使用hoshino的分群管理取消注释这行
+from hoshino import Service,priv  # 如果使用hoshino的分群管理取消注释这行
 
 #
-
-# 初始化配置文件
-config = util.get_config()
-
-# 初始化nonebot
-_bot = get_bot()
-
 sv_help = '''
-暂不使用
+- [p#XX或pan#XX]	解析一个度盘链接
+XX的格式 链接 提取码
+- [p#秒传链接]
+- [https://pan.baidu.com/s/xxx#提取码]	
+- [ru#YY]	获取秒传链接	
+YY格式 分享地址 提取码
+'''.strip()
+
+sv_help1 = '''
+Chrome浏览器
+      安装浏览器扩展程序 User-Agent Switcher for Chrome
+      https://chrome.google.com/webstore/detail/user-agent-switcher-for-c/djflhoibgkdhkhhcedjiklpkjnoahfmg
+      右键点击扩展图标 -> 选项
+      New User-agent name 填入 百度网盘分享下载
+      New User-Agent String 填入 LogStatistic
+      Group 填入 百度网盘
+      Append? 选择 Replace
+      Indicator Flag 填入 Log，点击 Add 保存
+      保存后点击扩展图标，出现"百度网盘"，进入并选择"百度网盘分享下载"。
+'''.strip()
+
+sv_help2 = '''
+IDM（推荐）
+      选项 -> 下载 -> 手动添加任务时使用的用户代理（UA）-> 填入 LogStatistic
+      右键复制下载链接，在 IDM 新建任务，粘贴链接即可下载。
 '''.strip()
 
 sv = Service(
@@ -29,9 +46,19 @@ sv = Service(
 @sv.on_fullmatch(["帮助网盘解析"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
-    
 
-# 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
+@sv.on_fullmatch(["网盘下载"])
+async def bangzhu_(bot, ev):
+    await bot.send(ev, sv_help1, at_sender=True)
+
+# 初始化配置文件
+config = util.get_config()
+
+# 初始化nonebot
+_bot = get_bot()
+
+
+@sv.on_message('group')  # 如果使用hoshino的分群管理取消注释这行 并注释下一行的 @_bot.on_message("group")
 # @_bot.on_message  # nonebot使用这
 async def pan_main(*params):
     bot, ctx = (_bot, params[0]) if len(params) == 1 else params
@@ -79,7 +106,7 @@ async def get_share(ctx, keyword, pan_url: str,
     if not pan_url:
         return '文件无法创建下载链接..\n'
 
-    tip = f'发送 panhelp 查看使用方法\n'
+    tip = f'发送 网盘下载 查看使用方法\n'
     file_r = dupan_link.pan_parse(keyword)
     sp = util.send_process(ctx, 0, 3)
 

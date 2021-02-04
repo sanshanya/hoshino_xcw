@@ -1418,8 +1418,8 @@ async def nobleduel(bot, ev: CQEvent):
 
     else:
         c = chara.fromid(selected_girl)
-        duel._add_card(gid, winner, selected_girl)
         duel._delete_card(gid, loser, selected_girl)
+        duel._add_card(gid, winner, selected_girl)
         msg = f'[CQ:at,qq={loser}]您输掉了贵族决斗，您被抢走了女友\n{c.name}{c.icon.cqcode}'
         await bot.send(ev, msg)
         #判断赢家的角色列表里是否有复制人可可萝
@@ -1908,6 +1908,7 @@ async def jinbi_score(bot, ev: CQEvent):
         score_counter._reduce_score(gid,uid,need_score)
         msg = f'[CQ:at,qq={uid}]通过恶魔的契约兑换了{num}声望'
         await bot.send(ev, msg)
+        
 
 @sv.on_prefix(('声望兑换金币'))
 async def shenwang_score(bot, ev: CQEvent):
@@ -1946,7 +1947,7 @@ async def baoshi_score(bot, ev: CQEvent):
     prestige = score_counter._get_prestige(gid,uid)
     score = score_counter._get_score(gid, uid)
     jewel_counter = jewel.jewelCounter()
-    jewel = jewel_counter._get_jewel(gid, uid)
+    jewel_now = jewel_counter._get_jewel(gid, uid)
     if prestige == None:
         await bot.finish(ev, '您还未开启声望系统哦', at_sender=True)
     num = ev.message.extract_plain_text().strip()
@@ -1955,14 +1956,43 @@ async def baoshi_score(bot, ev: CQEvent):
         return
     num = eval(num)
     get_prestige = num
-    if jewel < num:
-        msg = f'宝石与声望汇率1:1,你现在有{jewel}宝石' 
+    if jewel_now < num:
+        msg = f'宝石与声望汇率1:1,你现在有{jewel_now}宝石' 
         await bot.send(ev, msg)
         return
     else:
         jewel_counter._reduce_jewel(gid,uid,num)
         score_counter._add_prestige(gid,uid,get_prestige)
         msg = f'[CQ:at,qq={uid}]通过宝石兑换了{get_prestige}声望'
+        await bot.send(ev, msg)
+        
+@sv.on_prefix(('声望兑换宝石'))
+async def baoshi1_score(bot, ev: CQEvent):
+    gid = ev.group_id
+    uid = ev.user_id
+    duel = DuelCounter()
+    level = duel._get_level(gid, uid)
+    score_counter = ScoreCounter2()
+    prestige = score_counter._get_prestige(gid,uid)
+    score = score_counter._get_score(gid, uid)
+    jewel_counter = jewel.jewelCounter()
+    jewel_now = jewel_counter._get_jewel(gid, uid)
+    if prestige == None:
+        await bot.finish(ev, '您还未开启声望系统哦', at_sender=True)
+    num = ev.message.extract_plain_text().strip()
+    if not num.isdigit() and '*' not in num:
+        await bot.send(ev, '数量？？？')
+        return
+    num = eval(num)
+    get_jewel = num
+    if prestige < num:
+        msg = f'宝石与声望汇率1:1,你现在有{prestige}声望' 
+        await bot.send(ev, msg)
+        return
+    else:
+        score_counter._reduce_prestige(gid,uid,num)
+        jewel_counter._add_jewel(gid,uid,get_jewel)
+        msg = f'[CQ:at,qq={uid}]通过声望兑换了{get_jewel}宝石'
         await bot.send(ev, msg)
 
 @sv.on_fullmatch('开启声望系统')

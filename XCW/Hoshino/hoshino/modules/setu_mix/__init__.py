@@ -283,7 +283,7 @@ async def send_ranking_setu(bot, ev):
                 print('撤回失败')
             await asyncio.sleep(1)
 
-@sv.on_fullmatch("匿名色图")
+@sv.on_prefix("匿名色图")
 async def send_random_setu(bot, ev):    
     uid = ev['user_id']
     gid = ev['group_id']
@@ -372,7 +372,7 @@ async def send_random_setu(bot, ev):
     data_all=[data1,data2,data3,data4,data5,data6,data7,data8,data9]
     await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
 
-@sv.on_fullmatch("show匿名色图")
+@sv.on_prefix("show匿名色图")
 async def send_random_setu(bot, ev):    
     uid = ev['user_id']
     gid = ev['group_id']

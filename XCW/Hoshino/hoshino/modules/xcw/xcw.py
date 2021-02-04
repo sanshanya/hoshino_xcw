@@ -200,7 +200,7 @@ async def xcw_0bao(bot, ev) -> MessageSegment:
         
 @sv.on_fullmatch('啊这', only_to_me=False)
 async def az(bot, ev):
-    if random.random() < 0.1:
+    if random.random() < 0.5:
         await bot.send(ev, R.img('xcw/image/成熟点.jpg').cqcode)
        
 @sv.on_keyword(('上课了'))

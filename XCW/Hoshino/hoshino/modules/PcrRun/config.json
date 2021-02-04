@@ -1,0 +1,302 @@
+{
+ "1":{  
+	  "name":"霞",
+      "icon":"🔍",
+	  "speed":[1,2,2,2,2,1,1,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"助手跑到哪里去了？霞向前快跑了2步。",
+					"skill_effect":"forward(id,2,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"霞使用了[束缚之径]！，霞前进1步，霞之外全员沉默1回合！",
+					"skill_effect":"forward(id,1,position)\nn_give_silence(select_all(id),1,silence)"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"霞使用了UB[罪恶囚笼] ，霞前进2步，霞之外全员暂停1回合！",
+					"skill_effect":"forward(id,2,position)\nn_give_pause(select_all(id),1,pause)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"霞突然变成了魔法少女！霞前进3步，霞之外全员沉默1回合，暂停1回合。",
+				    "skill_effect":"forward(id,3,position)\nn_give_silence(select_all(id),1,silence)\nn_give_pause(select_all(id),1,pause)"
+					}
+			   }
+								
+	}  ,
+	  
+	  
+ "2":{  
+	  "name":"佩可",
+      "icon":"🍙",
+	  "speed":[1,1,2,2,1,1,2],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"佩可吃完了一个饭团，猛冲3步！跑的太快感觉好饿，沉默自己一回合。",
+					"skill_effect":"forward(id,3,position)\ngive_silence(id,1,silence)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"'肚子空空的......'佩可后退1步去找找饭团。",
+					"skill_effect":"backward(id,1,position)\ntext=prob_text(prob_forward(0.5,id,3,position),'找到饭团了，又回头走了3步。','')"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"佩可使用了UB[公主突进]！佩可猛冲5步，并休息一回合。",
+					"skill_effect":"forward(id,5,position)\ngive_pause(id,1,pause)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"'超全力全开！'佩可将自己以外第一名击退4步，并猛冲5步。",
+				    "skill_effect":"forward(id,5,position)\nbackward(select_fast(position,id),4,position)"
+					}
+			   }
+								
+	}  	,  
+ "3":{  
+	  "name":"吉塔",
+      "icon":"🎸",
+	  "speed":[1,2,2,2,2,1,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"“今天先帮你代一刀吧。”吉塔前进1步，",
+					"skill_effect":"forward(id,1,position)\ngid=select_random(id)\nforward(gid,1,position)\ntext=f'并帮{gid}号选手代了1刀，使其前进1步。'"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"“今天3刀出完了吗？”吉塔督促了团员，吉塔前进3步，其他全员前进1步。",
+					"skill_effect":"forward(id,3,position)\nn_forward(select_all(id),1,position)"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"吉塔使用了UB[暴风雨之剑]！猛冲了4步。",
+					"skill_effect":"forward(id,4,position)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"“@全体成员，今晚合刀！”吉塔发动了全会合刀。其他全员前进2步。吉塔前进5步。",
+				    "skill_effect":"forward(id,5,position)\nn_forward(select_all(id),2,position)"
+					}
+			   }
+								
+	}  	,  
+"4":{  
+	  "name":"凯留",
+      "icon":"🐱",
+	  "speed":[1,2,2,2,2,1,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"真拿你没办法呢，看我的吧！凯留向前快跑了1步，并且将自己外第一名击退了2步。",
+					"skill_effect":"forward(id,1,position)\nbackward(select_fast(position,id),2,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"“我只是个监视者......”凯留发动了[二五仔]，后退了1步，",
+					"skill_effect":"backward(id,1,position)\ngid=select_random(id)\nbackward(gid,2,position)\ntext=f'并将{gid}号选手击退了2步。'"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"凯留使用了UB[格林炸裂]!凯留前进了1步，除凯留外全体后退2步！",
+					"skill_effect":"forward(id,1,position)\nn_backward(select_all(id),2,position)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"[新春炸裂]！！！凯留突然穿上了和服，猛冲了8步！！！",
+				    "skill_effect":"forward(id,8,position)"
+					}
+			   }
+								
+	}  	,  	  
+"5":{  
+	  "name":"初音",
+      "icon":"⭐️",
+	  "speed":[1,2,2,2,2,2,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"初音使用了超能力飞行，向前飞了两步。",
+					"skill_effect":"forward(id,2,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"“好困啊，先睡一觉吧......”初音睡着了，暂停1回合，",
+					"skill_effect":"give_pause(id,1,pause)\ngid=select_random(id)\ngive_pause(gid,1,pause)\ntext=f'并拉了{gid}号选手一起睡。'"
+					},		
+				"3":{
+					"skill_porb":0.09,
+					"skill_text":"初音使用了UB[流星]。其他全员后退1步，初音前进了2步。",
+					"skill_effect":"forward(id,2,position)\nn_backward(select_all(id),1,position)"
+					},
+				"4":{
+				    "skill_porb":0.03,
+				    "skill_text":"初音不知不觉升到了六星，使用了[大荒星陨]！其他全员暂停一回合并后退3步！",
+				    "skill_effect":"n_backward(select_all(id),3,position)\nn_give_pause(select_all(id),1,pause)"
+					}
+			   }
+								
+	} , 	  	  
+	  
+"6":{  
+	  "name":"镜华",
+      "icon":"💦",
+	  "speed":[1,2,1,2,1,2,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"“你，你再盯着我，我要喊警察了哦......”镜华快跑1步喊来警察，将自己外第1位击退一步。",
+					"skill_effect":"forward(id,1,position)\nbackward(select_fast(position,id),1,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"[冰枪术]！镜华前进了1步。",
+					"skill_effect":"forward(id,1,position)\ntext=prob_text(prob_forward(0.4,id,3,position),'暴击了！又额外走了3步。','')"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"镜华使用了UB[宇宙蓝色闪光]!镜华前进了3步，",
+					"skill_effect":"forward(id,3,position)\ngid=select_random(id)\nbackward(gid,4,position)\ntext=f'并将{gid}号选手击退了4步。'"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"镜华戴上了万圣帽子！镜华前进了4步，且下一回合必放UB，其他全员前进1步。",
+				    "skill_effect":"forward(id,4,position)\ngive_ub(id,1,ub)\nn_forward(select_all(id),1,position)"
+					}
+			   }
+								
+	} , 
+
+
+"7":{  
+	  "name":"纺希",
+      "icon":"✂️",
+	  "speed":[1,2,2,1,2,2,1,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"[琴弦捕获]！ 纺希将自己外第1位向后拉2步，使自己外最末位前进2步，自己前进了1步。",
+					"skill_effect":"forward(id,1,position)\nfid=select_fast(position,id)\nsid=select_last(position,id)\nbackward(fid,2,position)\nforward(sid,2,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"[螺旋纱线]！纺希将自己外第1位向后拉1步，并暂停1回合！",
+					"skill_effect":"fid=select_fast(position,id)\nbackward(fid,1,position)\ngive_pause(fid,1,pause)"
+					},		
+				"3":{
+					"skill_porb":0.09,
+					"skill_text":"纺希使用了UB[不幸的束缚]！纺希与自己外第一位交换位置后，又前进了1步！",
+					"skill_effect":"fid=select_fast(position,id)\nchange_position(id,fid,position)\nforward(id,1,position)"
+					},
+				"4":{
+				    "skill_porb":0.03,
+				    "skill_text":"纺希穿上了万圣衣服，自己前进3步，自己外第1位暂停2回合。",
+				    "skill_effect":"forward(id,3,position)\ngive_pause(select_fast(position,id),2,pause)"
+					}
+			   }
+								
+	} , 
+
+
+
+"8":{  
+	  "name":"栞",
+      "icon":"😷",
+	  "speed":[1,1,2,2,2,2,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"[全力之矢]！栞使自己外第一名后退2步，第二名后退1步，下一回合必放UB。",
+					"skill_effect":"backward(select_number(position,id,2),1,position)\nbackward(select_fast(position,id),2,position)\ngive_ub(id,1,ub)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"栞骑上了喵特酱，前进了2步。下一回合必放UB。自己有些头晕，暂停一回合。",
+					"skill_effect":"forward(id,2,position)\ngive_ub(id,1,ub)\ngive_pause(id,1,pause)"
+					},		
+				"3":{
+					"skill_porb":0.09,
+					"skill_text":"栞使用了UB[附魔之矢]！",
+					"skill_effect":"step=2*kan_num\nforward(id,step,position)\nkan_num1=1\ntext=f'前进了{step}步，并且变得更强了。'\nprint(kan_num1)"
+					},
+				"4":{
+				    "skill_porb":0.03,
+				    "skill_text":"栞突然变成了魔法少女！栞前进了4步，且下一回合必放UB！",
+				    "skill_effect":"forward(id,4,position)\ngive_ub(id,1,ub)"
+					}
+			   }
+								
+	} , 
+
+
+
+"9":{  
+	  "name":"美美",
+      "icon":"🐰",
+	  "speed":[1,2,2,2,2,2,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"“哥哥快来和美美一起玩吧！”美美将自己外第1名和第2名击退2步。",
+					"skill_effect":"backward(select_number(position,id,2),2,position)\nbackward(select_fast(position,id),2,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"[兔子先生声援]！美美前进2步，并使自己外最后1名前进两步。",
+					"skill_effect":"forward(id,2,position)\nforward(select_last(position,id),2,position)"
+					},		
+				"3":{
+					"skill_porb":0.08,
+					"skill_text":"美美使用了UB[兔子先生斩击！美美前进了2步，自己外第1名后退3步，第2名后退4步！",
+					"skill_effect":"forward(id,2,position)\nbackward(select_number(position,id,2),4,position)\nbackward(select_fast(position,id),3,position)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"“让你看看万圣节的魔法吧！[天兔霸断剑]！”美美前进了3步，全体后退1步，自己外第1名额外后退4步！",
+				    "skill_effect":"forward(id,3,position)\nn_backward(select_all(id),1,position)\nbackward(select_fast(position,id),4,position)"
+					}
+			   }
+								
+	} , 
+
+
+"10":{  
+	  "name":"可可萝",
+      "icon":"🐴",
+	  "speed":[1,2,2,2,2,1,1,1],
+	  "skill":{
+				"1":{
+					"skill_porb":0.1,
+					"skill_text":"“和主人的心之连结让我产生了这股力量呢。”可可萝前进2步,主人前进1步。",
+					"skill_effect":"forward(id,2,position)\nforward(kokoro_num,1,position)"
+					},
+				"2":{
+					"skill_porb":0.1,
+					"skill_text":"[三重斩击]可可萝向前冲了4步，",
+					"skill_effect":"forward(id,4,position)\ntext=prob_text(prob_backward(0.75,id,3,position),'又向后退了3步。','卡住了！没有回来。')"
+					},		
+				"3":{
+					"skill_porb":0.09,
+					"skill_text":"可可萝使用了UB[极光绽放]！可可萝前进4步，主人前进2步，其他全体前进1步。",
+					"skill_effect":"forward(id,4,position)\nforward(kokoro_num,1,position)\nn_forward(select_all(id),1,position)"
+					},
+				"4":{
+				    "skill_porb":0.02,
+				    "skill_text":"“想着主人跳舞，身心都暖了起来”。可可萝跳起了舞，前进4步，主人下回合必放UB。",
+				    "skill_effect":"forward(id,4,position)\ngive_ub(kokoro_num,1,ub)"
+					}
+			   }
+								
+	} 
+
+
+
+
+
+
+	
+}

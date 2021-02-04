@@ -27,9 +27,11 @@ sv_help1 = '''
 - [我说AA回答=BB] 
 对于bot而言你说AA就是在说BB
 示例：
-我说随机涩图回答=echo CQ码
-CQ码示例：[CQ:image,file=https://呐.art/p.jpg,cache=0]
-CQ码有很多用法，大部分CQ码都能与echo(回响)完美配合
+我说1回答=xcwkkp 
+或者
+我说1回答=echo CQ码
+CQ码部分
+- [CQ码帮助]
 '''.strip()
 
 sv = Service(
