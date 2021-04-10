@@ -32,7 +32,4 @@ async def increace_welcome(session: NoticeSession):
         return  # ignore myself
     gid = session.event['group_id']
     uid = session.event['user_id']
-    if gid in welcomes:
-        await session.send(welcomes[gid], at_sender=True)
-    else:
-        await session.send(f'欢迎入群~', at_sender=True)
+    await session.send(f'欢迎入群~', at_sender=True)
