@@ -1,4 +1,6 @@
 {
+    "upstream": "https://pcresource.coldthunder11.com/rank/",
+    "resize_pic": false,
     "source": {
         "cn": {
             "name": "席巴鸽",

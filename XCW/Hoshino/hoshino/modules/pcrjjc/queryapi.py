@@ -2,7 +2,7 @@ from hoshino.aiorequests import get
 import time
 import json
 
-apiroot = 'https://help.tencentbot.top'
+apiroot = 'http://help.tencentbot.top'#if can not use try'http://竞技场.公主连结.中国'
 
 async def getprofile(viewer_id: int, interval: int = 1, full: bool = False) -> dict:
     reqid = json.loads((await (await get(f'{apiroot}/enqueue?full={full}&target_viewer_id={viewer_id}', timeout=5)).content).decode('utf8'))['reqeust_id']

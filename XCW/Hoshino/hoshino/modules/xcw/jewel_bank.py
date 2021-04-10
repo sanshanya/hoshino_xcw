@@ -65,7 +65,32 @@ async def description_guess_group_ranking(bot, ev: CQEvent):
         msg = '本群宝石排行榜:\n'
         for i in range(min(len(group_ranking), 10)):
             if group_ranking[i][1] != 0:
-                msg += f'第{i+1}名: {group_ranking[i][0]}, : {group_ranking[i][1]}次\n'
+                msg += f'第{i+1}名: {group_ranking[i][0]}, : {group_ranking[i][1]}颗\n'
         await bot.send(ev, msg.strip())
     except Exception as e:
         await bot.send(ev, '错误:\n' + str(e))
+        
+@sv.on_prefix(('充值宝石'))
+async def cheat_score(bot, ev: CQEvent):
+    if not priv.check_priv(ev, priv.SUPERUSER):
+        await bot.finish(ev, '不要想着走捷径哦', at_sender=True)
+    gid = ev.group_id
+    uid = ev.user_id
+    sid = None
+    num = ev.message.extract_plain_text().strip()
+    if not num.isdigit() and '*' not in num:
+        await bot.send(ev, '数量？？？')
+        return
+    num = eval(num)
+    for m in ev.message:
+        if m.type == 'at' and m.data['qq'] != 'all':
+            sid = int(m.data['qq'])
+        elif m.type == 'at' and m.data['qq'] == 'all':
+            await bot.send(ev, '人干事？', at_sender=True)
+            return
+    if sid is None:
+        sid = uid
+    jewel_counter._add_jewel(gid, sid, num)
+    score = jewel_counter._get_jewel(gid, sid)
+    msg = f'已为[CQ:at,qq={sid}]充值{num}宝石\n现在共有{score}宝石'
+    await bot.send(ev, msg)

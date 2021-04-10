@@ -1,0 +1,9 @@
+cache_dir: ./data/
+
+
+comm:
+  # 触发的命令 ys#游戏UID
+  player_uid: ys#
+
+#必须设置才能使用 可以登录米游社 获取cookie 主要内容为 account_id=******; cookie_token=*********;
+cookie: account_id=******; cookie_token=******;

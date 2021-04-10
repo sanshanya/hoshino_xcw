@@ -5,6 +5,7 @@ from hoshino import aiorequests
 from os import path
 import json
 from nonebot import scheduler
+from PIL import Image
 
 sv_help = '''
 - [日/台/陆rank] rank推荐
@@ -26,16 +27,21 @@ async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
 
 server_addr = "https://pcresource.coldthunder11.com/rank/"
-
+resize_pic = False
 config = None
 
 async def load_config():
     global config
+    global server_addr
     config_path = path.join(path.dirname(__file__),"config.json")
     with open(config_path,"r",encoding="utf8")as fp:
         config = json.load(fp)
+        server_addr = config['upstream']
+        resize_pic = config['resize_pic']
     if not path.exists(path.join(path.abspath(path.dirname(__file__)),"cache")):
         os.mkdir(path.join(path.abspath(path.dirname(__file__)),"cache"))
+    if not path.exists(path.join(path.abspath(path.dirname(__file__)),"cache","pic")):
+        os.mkdir(path.join(path.abspath(path.dirname(__file__)),"cache","pic"))
         await update_cache()
 
 def save_config():
@@ -46,29 +52,59 @@ def save_config():
         str = json.dumps(config,indent=4,ensure_ascii=False)
         fp.write(str)
 
-async def update_cache():
+async def download_rank_pic(url):
+    sv.logger.info(f"正在下载{url}")
+    resp = await aiorequests.head(url)
+    content_length = int(resp.headers["Content-Length"])
+    sv.logger.info(f"块大小{str(content_length)}")
+    #分割200kb下载
+    block_size = 1024*200
+    range_list = []
+    current_start_bytes = 0
+    while True:
+        if current_start_bytes + block_size >= content_length:
+            range_list.append(f"{str(current_start_bytes)}-{str(content_length)}")
+            break
+        range_list.append(f"{str(current_start_bytes)}-{str(current_start_bytes + block_size)}")
+        current_start_bytes += block_size + 1
+    pic_bytes_list = []
+    for block in range_list:
+        sv.logger.info(f"正在下载块{block}")
+        headers = {"Range":f"bytes={block}"}
+        resp = await aiorequests.get(url,headers = headers)
+        res_content = await resp.content
+        pic_bytes_list.append(res_content)
+    return b"".join(pic_bytes_list)
+
+async def update_rank_pic_cache(force_update:bool):
+    config_names = ["cn","tw","jp"]
+    for conf_name in config_names:
+        config_path = path.join(path.dirname(__file__),"cache",f"{conf_name}.json")
+        with open(config_path,"r",encoding="utf8")as fp:
+            rank_config = json.load(fp)
+        for img_name in rank_config["files"]:
+            if not force_update:
+                if path.exists(path.join(path.abspath(path.dirname(__file__)),"cache","pic",f"{conf_name}_{img_name}")):
+                    continue
+            rank_img_url = f"{server_addr}{config['source'][conf_name]['channel']}/{config['source'][conf_name]['route']}/{img_name}"
+            img_content = await download_rank_pic(rank_img_url)
+            with open(path.join(path.abspath(path.dirname(__file__)),"cache","pic",f"{conf_name}_{img_name}"),"ab")as fp:
+                fp.seek(0)
+                fp.truncate()
+                fp.write(img_content)
+
+async def update_cache(force_update:bool=False):
     sv.logger.info("正在更新Rank表缓存")
-    resp = await aiorequests.get(f"{server_addr}{config['source']['cn']['channel']}/{config['source']['cn']['route']}/config.json")
-    res = await resp.text
-    cn_cache_path = path.join(path.abspath(path.dirname(__file__)),"cache","cn.json")
-    with open(cn_cache_path,'a',encoding='utf8')as fp:
-        fp.seek(0)
-        fp.truncate()
-        fp.write(res)
-    resp = await aiorequests.get(f"{server_addr}{config['source']['tw']['channel']}/{config['source']['tw']['route']}/config.json")
-    res = await resp.text
-    cn_cache_path = path.join(path.abspath(path.dirname(__file__)),"cache","tw.json")
-    with open(cn_cache_path,'a',encoding='utf8')as fp:
-        fp.seek(0)
-        fp.truncate()
-        fp.write(res)
-    resp = await aiorequests.get(f"{server_addr}{config['source']['jp']['channel']}/{config['source']['jp']['route']}/config.json")
-    res = await resp.text
-    cn_cache_path = path.join(path.abspath(path.dirname(__file__)),"cache","jp.json")
-    with open(cn_cache_path,'a',encoding='utf8')as fp:
-        fp.seek(0)
-        fp.truncate()
-        fp.write(res)
+    config_names = ["cn","tw","jp"]
+    for conf_name in config_names:
+        resp = await aiorequests.get(f"{server_addr}{config['source'][conf_name]['channel']}/{config['source'][conf_name]['route']}/config.json")
+        res = await resp.text
+        cache_path = path.join(path.abspath(path.dirname(__file__)),"cache",f"{conf_name}.json")
+        with open(cache_path,"a",encoding="utf8")as fp:
+            fp.seek(0)
+            fp.truncate()
+            fp.write(res)
+    await update_rank_pic_cache(force_update)
     sv.logger.info("Rank表缓存更新完毕")
 
 @sv.on_rex(r"^(\*?([日台国陆b])服?([前中后]*)卫?)?rank(表|推荐|指南)?$")
@@ -91,7 +127,7 @@ async def rank_sheet(bot, ev):
             rank_config = json.load(fp)
         rank_imgs = []
         for img_name in rank_config["files"]:
-            rank_imgs.append(f"{server_addr}{config['source']['jp']['channel']}/{config['source']['jp']['route']}/{img_name}")
+            rank_imgs.append(f'file:///{path.join(path.dirname(__file__),"cache","pic",f"jp_{img_name}")}')
         msg.append(rank_config["notice"])
         pos = match.group(3)
         if not pos or "前" in pos:
@@ -108,7 +144,7 @@ async def rank_sheet(bot, ev):
             rank_config = json.load(fp)
         rank_imgs = []
         for img_name in rank_config["files"]:
-            rank_imgs.append(f"{server_addr}{config['source']['tw']['channel']}/{config['source']['tw']['route']}/{img_name}")
+            rank_imgs.append(f'file:///{path.join(path.dirname(__file__),"cache","pic",f"tw_{img_name}")}')
         msg.append(rank_config["notice"])
         for rank_img in rank_imgs:
             msg.append(f"[CQ:image,file={rank_img}]")
@@ -120,7 +156,7 @@ async def rank_sheet(bot, ev):
             rank_config = json.load(fp)
         rank_imgs = []
         for img_name in rank_config["files"]:
-            rank_imgs.append(f"{server_addr}{config['source']['cn']['channel']}/{config['source']['cn']['route']}/{img_name}")
+            rank_imgs.append(f'file:///{path.join(path.dirname(__file__),"cache","pic",f"cn_{img_name}")}')
         msg.append(rank_config["notice"])
         for rank_img in rank_imgs:
             msg.append(f"[CQ:image,file={rank_img}]")
@@ -242,10 +278,10 @@ async def change_rank_source(bot, ev):
     config["source"][server]["channel"] = channel
     config["source"][server]["route"] = source_jo["route"]
     save_config()
-    await update_cache()
+    await update_cache(True)
     await bot.send(ev, "更新源设置成功", at_sender=True)
 
-@sv.on_fullmatch("更新rank源缓存")
+@sv.on_fullmatch("更新rank表缓存")
 async def update_rank_cache(bot, ev):
     if config == None:
         await load_config()

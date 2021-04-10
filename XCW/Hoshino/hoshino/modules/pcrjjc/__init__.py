@@ -33,8 +33,6 @@ sv = Service(
 @sv.on_fullmatch(["帮助竞技场推送"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
-    
-
 
 Inited = False
 pcrprofile = None
@@ -45,7 +43,7 @@ tr = None
 
 @sv.on_fullmatch('jjc帮助', only_to_me=False)
 async def send_jjchelp(bot, ev):
-    await bot.send(ev, sv_help, at_sender=True)
+    await bot.send(ev, sv_help)
 
 def Init():
     global Inited

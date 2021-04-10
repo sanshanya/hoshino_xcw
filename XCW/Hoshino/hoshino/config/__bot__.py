@@ -13,10 +13,10 @@ DEBUG = False           # 调试模式,不建议开启
 ###################################
 '''---拥有最高权限的用户们的QQ---'''
 SUPERUSERS = [1234567895]    # 填写超级用户的QQ号，可填多个用半角逗号","隔开
-PYS ={335557741}            #高级权限用户的QQ号
+PYS ={1764461263}            #高级权限用户的QQ号
 ###################################
 '''---------昵称及网址----------'''
-NICKNAME = r'镜华|小仓唯|露娜|at,qq=2380695163'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot,推荐修改
+NICKNAME = r'镜华|小仓唯|露娜|at,qq=1764461263'           # 设置bot的昵称，at，qq=xxxxxxxx处为bot的QQ号,呼叫昵称等同@bot,推荐修改
 IP = '333.33.33.3'                                      #修改为你的服务器ip,推荐修改
 public_address = '333.33.33.3:8080'                     #修改为你的服务器ip+端口,推荐修改
 PassWord = '123456'                                           #登录一些只限维护人知道密码的网页
@@ -105,7 +105,7 @@ MODULES_ON = {
     'pcravatarguess',#图片猜角色
     'pcrdescguess',#通过角色描述猜角色,需要设置go-cqhttp的心跳间隔,推荐3
     'nmsl',#抽象抽象抽抽抽像像像
-    'baidupan',#百度盘解析
+    #'baidupan',#百度盘解析
     'meme_web',#memegenerator的web化,勿同时开启
     'pcrmiddaymusic',#公主连结午间音乐
     'image_generate',#取代原image
@@ -120,14 +120,14 @@ MODULES_ON = {
     'pokemanpcr',#戳一戳卡片小游戏
     'pages',#bot网页端
     'clanbattle_rank',#会战排名查询插件
-    #'clanbattle_info',#自动报刀插件,开启前请按说明配置,难度较高
+    #'clanbattle_info',#自动报刀插件,开启前请按说明，配置难度较高
     'nbnhhsh',#将抽象短语转化为好好说话
     'nowtime',#发送"报时"有惊喜
     'pcrsealkiller',#海豹杀手
     'setu_mix',#俩涩图插件合二为一
     'hoshino_training',#慎重启用,前往https://github.com/zyujs/hoshino_training查看说明
     #'rss',#适用于Hoshino v2的rss订阅插件,详情https://github.com/zyujs/rss
-    'Genshin_Impact',#原神系列
+    'Genshin',#原神系列，其中的genshinuid需要填入你的米游社cookies才能使用
     #'pcravatarguesskiller',#人机猜头像，通常用于群有两个及以上Bot
     #'pcrdescguesskiller',#人机猜角色，通常用于群有两个及以上Bot
     'pcr_calendar',#全服务器通用日历表，关键词为日历
@@ -138,11 +138,12 @@ MODULES_ON = {
     'revgif',#GIF图倒放
     'groupmanager',#群管插件
     #'yocool',#安装yocool
-    'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2,地址https://github.com/qq1176321897/pcrjjc2
+    'pcrjjc',#竞技场背刺推送,更推荐pcrjjc2_xcw
+    #'pcrjjc2_xcw',#开启pcrjjc2_xcw前，请前往hoshino_xcw\XCW\Hoshino\hoshino\modules\pcrjjc2_xcw里的account.json,填入一个高等级的公主连结账号（废弃号），"account"填账号，"password"填密码，"admin"填你的QQ号，其余不用管如果是国服的话
     'bilidynamicpush',#B站动态
     'CQTwitter',#rss订阅推特
     'pcr-rank',#自动更新rank
     'pcravatarfind',#找头像
 }
 
-version = 'hoshino_xcw_0.9'
+version = 'hoshino_xcw_1.0'

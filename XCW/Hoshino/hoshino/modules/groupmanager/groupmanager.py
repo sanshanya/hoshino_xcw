@@ -15,6 +15,7 @@ sv_help = '''
 - [设置管理员 @sb] 
 - [取消管理员 @sb] 
 - [修改名片@sb xxx] 吧sb的群名片设置为xxx
+- [发送群公告 XXX]
 '''.strip()
 
 sv = Service(
@@ -180,3 +181,9 @@ async def set_group_name(bot, ev):
     name = ev.message.extract_plain_text()
     await util.group_name(bot, ev, gid, name)
 
+@sv.on_prefix(('发送公告','设置公告'))
+async def send_group_notice(bot, ev):
+    gid = ev.group_id
+    uid = ev.user_id
+    text = ev.message.extract_plain_text()
+    await util.group_notice(bot, ev, gid, text)
