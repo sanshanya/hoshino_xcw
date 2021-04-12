@@ -1,3 +1,4 @@
+#鉴于新版go-cqhttp支持临时私聊,对pjjc2作出部分修改
 from json import load, dump
 from nonebot import get_bot, on_command
 from hoshino import priv, config
@@ -18,12 +19,25 @@ sv_help = f'''
 [竞技场订阅状态] 查看排名变动推送绑定状态
 [详细查询 (uid)] 查询详细状态
 [竞技场切换订阅 群聊/私聊] 私聊需要本群开启可发起临时会话
+私聊需要Bot成为管理
 '''.strip()
 
 
 sv = SafeService('竞技场推送',help_=sv_help, bundle='查询')
 
-
+async def self_member_info(bot, ev, gid):
+    for sid in hoshino.get_self_ids():
+        self_id = sid
+        try:
+            gm_info = await bot.get_group_member_info(
+                group_id = gid,
+                user_id = self_id,
+                no_cache = True
+            )
+            return gm_info
+        except Exception as e:
+            hoshino.logger.exception(e)
+            
     
 @sv.on_fullmatch('帮助竞技场推送', only_to_me=False)
 async def send_jjchelp(bot, ev):
@@ -203,9 +217,13 @@ pjjc：{res["grand_arena_rank"]}''', at_sender=True)
 @sv.on_rex('竞技场切换订阅 ?(群聊|私聊)')
 async def change_arena_sub(bot, ev):
     global binds, lck
-
+    
     uid = str(ev['user_id'])
-
+    
+    self_info = await self_member_info(bot, ev, gid)
+    if self_info['role'] != 'owner' and self_info['role'] != 'admin':
+        await bot.finish(ev, '\n我需要管理权限', at_sender=True)
+        
     async with lck:
         if not uid in binds:
             await bot.send(ev,'您还未绑定竞技场',at_sender=True)
