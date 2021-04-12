@@ -10,49 +10,24 @@ from traceback import format_exc
 from .safeservice import SafeService
 import time
 
-
 sv_help = f'''
-当前版本{config.version}
-发送[lssv]查看功能名称表
-发送[帮助XXX] XXX为具体功能名
-可查看功能详情
-本bot为免费bot，邀请入群即可使用
-赞助或获取付费BOT前往
-https://afdian.net/@sanshanya
-'''.strip()
-
-sv_help1 = f'''
 [竞技场绑定 uid] 绑定竞技场排名变动推送，默认双场均启用，仅排名降低时推送
 [竞技场查询 (uid)] 查询竞技场简要信息，绑定后无需uid
 [启用/停止(公主)竞技场订阅] 启用/停止(公主)竞技场排名变动推送
 [删除竞技场订阅] 删除竞技场排名变动推送绑定
 [竞技场订阅状态] 查看排名变动推送绑定状态
 [详细查询 (uid)] 查询详细状态
-[切换订阅 群聊/私聊] 私聊请确保有bot好友
+[竞技场切换订阅 群聊/私聊] 私聊需要本群开启可发起临时会话
 '''.strip()
 
 
 sv = SafeService('竞技场推送',help_=sv_help, bundle='查询')
 
-@sv.on_fullmatch('帮助', only_to_me=False)
-async def send_jjchelp(bot, ev):
-    self_ids = bot._wsr_api_clients.keys()
-    for sid in self_ids:
-        gl = await bot.get_group_list(self_id=sid)
-        msg = f"本Bot目前服务群数目{len(gl)}"
-    await bot.send(ev, f'{sv_help}\n{msg}')
 
-@sv.on_fullmatch('check-m', only_to_me=False)
-async def send_jjchelp(bot, ev):
-    self_ids = bot._wsr_api_clients.keys()
-    for sid in self_ids:
-        gl = await bot.get_group_list(self_id=sid)
-        msg = f"本Bot目前服务群数目{len(gl)}"
-    await bot.send(ev, f'{msg}')
     
 @sv.on_fullmatch('帮助竞技场推送', only_to_me=False)
 async def send_jjchelp(bot, ev):
-    await bot.send(ev, sv_help1)
+    await bot.send(ev, sv_help)
         
 curpath = dirname(__file__)
 config = join(curpath, 'binds.json')
@@ -136,7 +111,7 @@ def save_binds():
     with open(config, 'w') as fp:
         dump(root, fp, indent=4)
 
-@sv.on_rex(r'^竞技场绑定 ?(\d{13})$')
+@sv.on_rex(r'^竞技场绑定 ?(\d{13})$') #你可以修改第128行进行默认群聊与私聊的修改
 async def on_arena_bind(bot, ev):
     global binds, lck
 
@@ -225,7 +200,7 @@ pjjc：{res["grand_arena_rank"]}''', at_sender=True)
             await bot.finish(ev, f'查询出错，{e}', at_sender=True)
 
 
-@sv.on_rex('切换订阅 ?(群聊|私聊)')
+@sv.on_rex('竞技场切换订阅 ?(群聊|私聊)')
 async def change_arena_sub(bot, ev):
     global binds, lck
 
@@ -242,7 +217,7 @@ async def change_arena_sub(bot, ev):
             elif ev['match'].group(1) == '私聊':
                 binds[uid]['message'] = 'private'
                 save_binds()
-                await bot.finish(ev, f'切换订阅至私聊成功，请添加BOT为好友', at_sender=True)
+                await bot.finish(ev, f'切换订阅至私聊成功', at_sender=True)
 
 @sv.on_rex('(启用|停止)(公主)?竞技场订阅')
 async def change_arena_sub(bot, ev):
@@ -308,7 +283,7 @@ async def send_arena_sub_status(bot,ev):
     公主竞技场订阅：{'开启' if info['grand_arena_on'] else '关闭'}''',at_sender=True)
 
 
-@sv.scheduled_job('interval', minutes=.30)
+@sv.scheduled_job('interval', minutes=.30) #轮询时间,自行根据负载修改
 async def on_arena_schedule():
     global cache, binds, lck
     bot = get_bot()
@@ -337,6 +312,7 @@ async def on_arena_schedule():
                 if binds[info["uid"]]['message'] == 'private':
                     await bot.send_private_msg(
                         user_id = int(info["uid"]),
+                        group_id = int(info['gid']),
                         message = f'jjc：{last[0]}->{res[0]} ▼{res[0]-last[0]}'
                     )
                 else:
@@ -348,6 +324,7 @@ async def on_arena_schedule():
                 if binds[info["uid"]]['message'] == 'private':
                     await bot.send_private_msg(
                         user_id = int(info["uid"]),
+                        group_id = int(info['gid']),
                         message = f'pjjc：{last[1]}->{res[1]} ▼{res[1]-last[1]}'
                     )
                 else:
