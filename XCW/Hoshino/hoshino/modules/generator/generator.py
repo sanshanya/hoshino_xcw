@@ -13,7 +13,7 @@ from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64, FreqLimiter
 
 sv_help = '''
-生成器s:
+生成器:
 [营销号 主体/事件/另一种说法] 营销号生成器
 [狗屁不通 主题] 狗屁不通生成器
 [记仇 天气/主题] 记仇表情包生成器
@@ -31,7 +31,7 @@ sv = Service(
     help_ = sv_help #帮助文本
     )
 
-@sv.on_fullmatch(["帮助搜生成器"])
+@sv.on_fullmatch(["帮助生成器"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
     

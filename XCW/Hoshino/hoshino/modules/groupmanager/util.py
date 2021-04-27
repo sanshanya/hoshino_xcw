@@ -17,17 +17,17 @@ async def group_member_info(bot, ev, gid, uid):
 
 #获取Bot的群信息
 async def self_member_info(bot, ev, gid):
-    for sid in hoshino.get_self_ids():
-        self_id = sid
-        try:
-            gm_info = await bot.get_group_member_info(
-                group_id = gid,
-                user_id = self_id,
-                no_cache = True
-            )
-            return gm_info
-        except Exception as e:
-            hoshino.logger.exception(e)
+    info = await bot.get_login_info()
+    self_id = info["user_id"]
+    try:
+        gm_info = await bot.get_group_member_info(
+            group_id = gid,
+            user_id = self_id,
+            no_cache = True
+        )
+        return gm_info
+    except Exception as e:
+        hoshino.logger.exception(e)
 
 #群荣誉信息
 async def honor_info(bot, ev, gid, honor_type):

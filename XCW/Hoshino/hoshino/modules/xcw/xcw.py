@@ -27,7 +27,7 @@ sv = Service(
 @sv.on_fullmatch(["帮助xcw"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
-    
+
 
 '''-----随机发送文件夹内容①----------'''
 xcw_folder_mawo = R.get('img/xcw/record/mawo/').path

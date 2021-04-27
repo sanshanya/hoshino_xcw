@@ -18,7 +18,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name = '竞技场查询',  #功能名
+    name = '竞技场作业',  #功能名
     use_priv = priv.NORMAL, #使用权限   
     manage_priv = priv.ADMIN, #管理权限
     visible = True, #是否可见

@@ -8,7 +8,7 @@ from hoshino import Service, priv
 
 PRIV_TIP = f'群主={priv.OWNER} 群管={priv.ADMIN} 群员={priv.NORMAL} bot维护组={priv.SUPERUSER}'
 bot = get_bot()
-@on_command('lssv', aliases=('服务列表', '功能列表'), permission=perm.GROUP_ADMIN, only_to_me=False, shell_like=True)
+@on_command('lssv', aliases=('服务列表', '功能列表'), only_to_me=False, shell_like=True)
 async def lssv(session:CommandSession):
     parser = ArgumentParser(session=session)
     parser.add_argument('-a', '--all', action='store_true')

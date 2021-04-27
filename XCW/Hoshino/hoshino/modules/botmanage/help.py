@@ -3,19 +3,11 @@ from hoshino.typing import CQEvent
 
 sv = Service('_help_', manage_priv=priv.SUPERUSER, visible=False)
 
-TOP_MANUAL1 = '''
-使用说明:
-方括号[ ]内为关键词
-'''.strip()
 
-TOP_MANUAL2 = '''
-※本bot有五类功能，触发关键词：
-- [帮助订阅]
-- [帮助查询]
-- [帮助娱乐]
-- [帮助通用]
-- [帮助会战]
-以上关键词中[帮助]可替换为[详细帮助]
+TOP_MANUAL2 = f'''
+当前版本{config.version}
+查看帮助前往
+www.xcwbot.top/help/
 '''.strip()
 
 TOP_MANUAL3 = '''
@@ -28,37 +20,7 @@ XXX为功能名
 - [lssv]
 '''.strip()
 
-TOP_MANUAL4 = '''
-※本版本yobot已独立，关键词：
-- 发送帮助时的网页链接即为yobot的帮助
-想要了解yobot：
-- [帮助]
-- [手册]
-'''.strip()
 
-TOP_MANUAL5 = '''
-※查看单个功能详情
-开启功能后发送：
-- [帮助XXX] （无空格）
-XXX为功能名
-'''.strip()
-
-BANGZHU_GN = '''
-※查看单个功能详情
-开启功能后发送：
-- [帮助XXX] （无空格）
-XXX为功能名
-'''.strip()
-
-BANGZHU_KG = '''
-※本部分仅群管及以上权限有效
-※控制功能开关:
-- [开启 XXX] （有空格）
-- [禁用 XXX] （有空格）
-XXX为功能名
-※本群功能开关总览:
-- [lssv]
-'''.strip()
 
 def gen_bundle_manual(bundle_name, service_list, gid):
     manual = [bundle_name]
@@ -86,50 +48,9 @@ async def send_help(bot, ev: CQEvent):
     bundles = Service.get_bundles()
     services = Service.get_bundles()
     if not bundle_name:
-        data_all = []
-        data1 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": TOP_MANUAL1
-            }
-            }
-        data2 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": TOP_MANUAL2
-            }
-            }    
-        data3 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": TOP_MANUAL3
-            }
-            }
-        data4 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": TOP_MANUAL4
-            }
-            }
-        data5 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": TOP_MANUAL5
-            }
-            }
-        data_all=[data1,data2,data3,data4,data5]
-        await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
-        await bot.send(ev, f'当前版本{config.version}')
+        msg = f'{TOP_MANUAL2}'
+        await bot.send_group_msg(group_id=ev['group_id'], message=msg)
+        return
     elif bundle_name in bundles:
         msg = gen_bundle_manual(bundle_name, bundles[bundle_name], ev.group_id)
         data_all = []
@@ -140,16 +61,8 @@ async def send_help(bot, ev: CQEvent):
                 "uin": '2854196306',
                 "content": msg
             }
-            }
-        data2 ={
-            "type": "node",
-            "data": {
-                "name": '小冰冰',
-                "uin": '2854196306',
-                "content": BANGZHU_GN
-            }
             }    
-        data_all=[data1,data2]
+        data_all=[data1]
         await bot.send_group_forward_msg(group_id=ev['group_id'], messages=data_all)
         
 
@@ -176,4 +89,4 @@ async def send_help(bot, ev: CQEvent):
         
 @sv.on_fullmatch(["帮助功能开关"])
 async def bangzhu_kg(bot, ev):
-    await bot.send(ev, BANGZHU_KG)
+    await bot.send(ev, TOP_MANUAL3)
