@@ -13,7 +13,7 @@ from hoshino.typing import CQEvent, MessageSegment
 from hoshino.util import pic2b64, FreqLimiter
 
 sv_help = '''
-生成器:
+生成器s:
 [营销号 主体/事件/另一种说法] 营销号生成器
 [狗屁不通 主题] 狗屁不通生成器
 [记仇 天气/主题] 记仇表情包生成器
@@ -150,6 +150,7 @@ async def friend(bot, ev: CQEvent):
     for m in ev.message:
         if m.type == 'at' and m.data['qq'] != 'all':
             arr = [int(m.data['qq'])]
+            sid = int(m.data['qq'])
             is_at = True
     if not is_at:
         try:
@@ -158,10 +159,17 @@ async def friend(bot, ev: CQEvent):
             member_list = await bot.get_group_member_list(self_id=ev.self_id, group_id=ev.group_id)
             for member in member_list:
                 arr.append(member['user_id'])
+            sid = choice(arr)                
+    info = await bot.get_group_member_info(
+        group_id=ev.group_id,
+        user_id=sid,
+        no_cache=True
+    )
+    name = info['card'] or info['nickname']
     match = ev['match']
     msg = match.group('kw')
     msg = msg.replace('他','我').replace('她','我')
-    image = Image.open(BytesIO(get_pic(choice(arr))))
+    image = Image.open(BytesIO(get_pic(sid)))
     img_origin = Image.new('RGBA', (100, 100), (255, 255, 255))
     scale = 3
     # 使用新的半径构建alpha层
@@ -180,7 +188,7 @@ async def friend(bot, ev: CQEvent):
     # 创建Draw对象:
     image_text = Image.new('RGB', (450, 150), (255, 255, 255))
     draw = ImageDraw.Draw(image_text)
-    draw.text((0, 0), '朋友', fill = (0, 0, 0), font = font)
+    draw.text((0, 0), name, fill = (0, 0, 0), font = font)
     draw.text((0, 40), msg, fill = (125, 125, 125), font = font2)
 
     image_back = Image.new('RGB', (700,150), (255, 255, 255))

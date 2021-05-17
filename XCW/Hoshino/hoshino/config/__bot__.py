@@ -144,6 +144,7 @@ MODULES_ON = {
     'CQTwitter',#rss订阅推特
     'pcr-rank',#自动更新rank
     'pcravatarfind',#找头像
+    'shaojo',
 }
 
 version = 'hoshino_xcw_1.0'

@@ -241,14 +241,6 @@ async def tarot(session: CommandSession):
 		msg += '\n每10秒会翻开一张牌哦'
 		await session.send(msg)
 		await asyncio.sleep(1.6)
-		await session.send('xcw倒数三声，就揭晓第一张牌哦！')
-		await asyncio.sleep(1.4)
-		await session.send('3')
-		await asyncio.sleep(1)
-		await session.send('2')
-		await asyncio.sleep(1)
-		await session.send('1')
-		await asyncio.sleep(0.6)
 		
 		
 		#读取
