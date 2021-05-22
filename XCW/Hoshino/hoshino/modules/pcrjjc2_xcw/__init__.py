@@ -1,4 +1,3 @@
-#鉴于新版go-cqhttp支持临时私聊,对pjjc2作出部分修改
 from json import load, dump
 from nonebot import get_bot, on_command
 from hoshino import priv, config
@@ -11,37 +10,41 @@ from traceback import format_exc
 from .safeservice import SafeService
 import time
 
-sv_help = f'''
+
+sv_help1 = f'''
 [竞技场绑定 uid] 绑定竞技场排名变动推送，默认双场均启用，仅排名降低时推送
 [竞技场查询 (uid)] 查询竞技场简要信息，绑定后无需uid
 [启用/停止(公主)竞技场订阅] 启用/停止(公主)竞技场排名变动推送
 [删除竞技场订阅] 删除竞技场排名变动推送绑定
 [竞技场订阅状态] 查看排名变动推送绑定状态
 [详细查询 (uid)] 查询详细状态
-[竞技场切换订阅 群聊/私聊] 私聊需要本群开启可发起临时会话
-私聊需要Bot成为管理
+[切换订阅 群聊/私聊] 默认为群聊
 '''.strip()
 
 
 sv = SafeService('竞技场推送',help_=sv_help, bundle='查询')
 
-async def self_member_info(bot, ev, gid):
-    for sid in hoshino.get_self_ids():
-        self_id = sid
-        try:
-            gm_info = await bot.get_group_member_info(
-                group_id = gid,
-                user_id = self_id,
-                no_cache = True
-            )
-            return gm_info
-        except Exception as e:
-            hoshino.logger.exception(e)
-            
+@sv.on_fullmatch('帮助竞技场推送', only_to_me=False)
+async def send_jjchelp(bot, ev):
+    self_ids = bot._wsr_api_clients.keys()
+    for sid in self_ids:
+        gl = await bot.get_group_list(self_id=sid)
+        msg = f"本Bot目前服务群数目{len(gl)}"
+    await bot.send(ev, f'{sv_help1}\n{msg}')
+
+
+
+@sv.on_fullmatch('check-m', only_to_me=False)
+async def send_jjchelp(bot, ev):
+    self_ids = bot._wsr_api_clients.keys()
+    for sid in self_ids:
+        gl = await bot.get_group_list(self_id=sid)
+        msg = f"本Bot目前服务群数目{len(gl)}"
+    await bot.send(ev, f'{msg}')
     
 @sv.on_fullmatch('帮助竞技场推送', only_to_me=False)
 async def send_jjchelp(bot, ev):
-    await bot.send(ev, sv_help)
+    await bot.send(ev, sv_help1)
         
 curpath = dirname(__file__)
 config = join(curpath, 'binds.json')
@@ -125,7 +128,7 @@ def save_binds():
     with open(config, 'w') as fp:
         dump(root, fp, indent=4)
 
-@sv.on_rex(r'^竞技场绑定 ?(\d{13})$') #你可以修改第128行进行默认群聊与私聊的修改
+@sv.on_rex(r'^竞技场绑定 ?(\d{13})$')
 async def on_arena_bind(bot, ev):
     global binds, lck
 
@@ -156,7 +159,6 @@ async def on_query_arena_all(bot, ev):
         if id == None:
             uid = str(ev['user_id'])
             if not uid in binds:
-                await bot.finish(ev, '您还未绑定竞技场', at_sender=True)
                 return
             else:
                 id = binds[uid]['id']
@@ -184,7 +186,7 @@ jjc场次：{res['user_info']["arena_group"]}
 jjc创建日：{arena_str}
 pjjc场次：{res['user_info']["grand_arena_group"]}
 pjjc创建日：{grand_arena_str}
-角色数：{res['user_info']["unit_num"]}/77
+角色数：{res['user_info']["unit_num"]}/82
 ''', at_sender=True)
         except ApiException as e:
             await bot.finish(ev, f'查询出错，{e}', at_sender=True)
@@ -200,7 +202,6 @@ async def on_query_arena(bot, ev):
         if id == None:
             uid = str(ev['user_id'])
             if not uid in binds:
-                await bot.finish(ev, '您还未绑定竞技场', at_sender=True)
                 return
             else:
                 id = binds[uid]['id']
@@ -214,19 +215,15 @@ pjjc：{res["grand_arena_rank"]}''', at_sender=True)
             await bot.finish(ev, f'查询出错，{e}', at_sender=True)
 
 
-@sv.on_rex('竞技场切换订阅 ?(群聊|私聊)')
+@sv.on_rex('切换订阅 ?(群聊|私聊)')
 async def change_arena_sub(bot, ev):
     global binds, lck
-    
+
     uid = str(ev['user_id'])
-    
-    self_info = await self_member_info(bot, ev, gid)
-    if self_info['role'] != 'owner' and self_info['role'] != 'admin':
-        await bot.finish(ev, '\n我需要管理权限', at_sender=True)
-        
+
     async with lck:
         if not uid in binds:
-            await bot.send(ev,'您还未绑定竞技场',at_sender=True)
+            return
         else:
             if ev['match'].group(1) == '群聊':
                 binds[uid]['message'] = 'group'
@@ -235,7 +232,7 @@ async def change_arena_sub(bot, ev):
             elif ev['match'].group(1) == '私聊':
                 binds[uid]['message'] = 'private'
                 save_binds()
-                await bot.finish(ev, f'切换订阅至私聊成功', at_sender=True)
+                await bot.finish(ev, f'切换订阅至私聊成功，需要+bot好友', at_sender=True)
 
 @sv.on_rex('(启用|停止)(公主)?竞技场订阅')
 async def change_arena_sub(bot, ev):
@@ -246,7 +243,7 @@ async def change_arena_sub(bot, ev):
 
     async with lck:
         if not uid in binds:
-            await bot.send(ev,'您还未绑定竞技场',at_sender=True)
+            return
         else:
             binds[uid][key] = ev['match'].group(1) == '启用'
             save_binds()
@@ -275,7 +272,6 @@ async def delete_arena_sub(bot,ev):
 
 
     if not uid in binds:
-        await bot.finish(ev, '未绑定竞技场', at_sender=True)
         return
 
     async with lck:
@@ -291,17 +287,18 @@ async def send_arena_sub_status(bot,ev):
 
     
     if not uid in binds:
-        await bot.send(ev,'您还未绑定竞技场', at_sender=True)
+        return
     else:
         info = binds[uid]
         await bot.finish(ev,
     f'''
     当前竞技场绑定ID：{info['id']}
     竞技场订阅：{'开启' if info['arena_on'] else '关闭'}
-    公主竞技场订阅：{'开启' if info['grand_arena_on'] else '关闭'}''',at_sender=True)
+    公主竞技场订阅：{'开启' if info['grand_arena_on'] else '关闭'}
+    通知方式：{'私聊' if info['message']== 'private' else '群聊'}''',at_sender=True)
 
 
-@sv.scheduled_job('interval', minutes=.30) #轮询时间,自行根据负载修改
+@sv.scheduled_job('interval', minutes=.30)
 async def on_arena_schedule():
     global cache, binds, lck
     bot = get_bot()
@@ -330,7 +327,6 @@ async def on_arena_schedule():
                 if binds[info["uid"]]['message'] == 'private':
                     await bot.send_private_msg(
                         user_id = int(info["uid"]),
-                        group_id = int(info['gid']),
                         message = f'jjc：{last[0]}->{res[0]} ▼{res[0]-last[0]}'
                     )
                 else:
@@ -342,7 +338,6 @@ async def on_arena_schedule():
                 if binds[info["uid"]]['message'] == 'private':
                     await bot.send_private_msg(
                         user_id = int(info["uid"]),
-                        group_id = int(info['gid']),
                         message = f'pjjc：{last[1]}->{res[1]} ▼{res[1]-last[1]}'
                     )
                 else:

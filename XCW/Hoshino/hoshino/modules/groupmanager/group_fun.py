@@ -50,7 +50,7 @@ async def whois_dragon_king(bot, ev):
         dk_avater = ta_info['current_talkative']['avatar'] + '640' + f'&t={dk}'
         await bot.send(ev, f'[CQ:at,qq={dk}]\n{action}\n[CQ:image,file={dk_avater}]')
         
-
+'''
 @sv.on_prefix(('送礼物','，土豪，我也要礼物~','给我礼物','我要礼物','要礼物','饿饿'),only_to_me=False)
 async def send_gift(bot, ev):
     uid = ev.user_id
@@ -64,7 +64,8 @@ async def send_gift(bot, ev):
             return
     if sid is None:
         sid = uid
-    await bot.send(ev, f'[CQ:gift,qq={sid},id={random.randint(0,13)}]')
+    await bot.send(ev, f'[CQ:gift,qq={sid},id=1]')
+'''
 '''
 @sv.on_prefix(('点赞','赞我'),only_to_me=False)
 async def send_zan(bot, ev):
@@ -89,3 +90,27 @@ async def send_gift(bot, ev):
     gid = ev.group_id
     res = str(ev.message.extract_plain_text())
     await bot.send(ev, f'[CQ:tts,text={res}]')
+    
+@sv.on_prefix('申请小尾巴')
+async def yiba(bot, ev):
+    uid = ev.user_id
+    sid = None
+    gid = ev.group_id
+    for m in ev.message:
+        if m.type == 'at' and m.data['qq'] != 'all':
+            sid = int(m.data['qq'])
+    if sid is None:
+        sid = uid
+    fcode = u'\u202e'
+    ecode = u'\u202d'
+    kw = ev.message.extract_plain_text().strip()
+    weiba = fcode+kw[::-1]+ecode
+    info = await bot.get_group_member_info(group_id = gid, user_id = uid, no_cache = True)
+    oldcard = info['card'] or info['nickname']
+    newcard = oldcard+weiba
+    try:
+        await util.card_edit(bot, ev, uid, sid, gid, newcard)
+    except Exception as e:
+        sv.logger.error(e)
+        await bot.send(ev, '好像不能亲手给你戴上呢> <，请自己全选复制换上去吧~', at_sender=True)
+        await bot.send(ev, newcard)
