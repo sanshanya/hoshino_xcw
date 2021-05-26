@@ -7,7 +7,7 @@ from PIL import Image, ImageDraw, ImageFont
 import hoshino
 from hoshino import Service, priv, R
 from hoshino.typing import *
-from hoshino.util import FreqLimiter, concat_pic, pic2b64, silence
+from hoshino.util import FreqLimiter, concat_pic, pic2b64, silence, filt_message
 
 from .. import chara
 
@@ -18,7 +18,7 @@ sv_help = '''
 '''.strip()
 
 sv = Service(
-    name = '竞技场作业',  #功能名
+    name = '竞技场查询',  #功能名
     use_priv = priv.NORMAL, #使用权限   
     manage_priv = priv.ADMIN, #管理权限
     visible = True, #是否可见
@@ -30,8 +30,6 @@ sv = Service(
 @sv.on_fullmatch(["帮助竞技场查询"])
 async def bangzhu(bot, ev):
     await bot.send(ev, sv_help, at_sender=True)
-     
-
 
 from . import arena
 
@@ -111,6 +109,7 @@ async def _arena_query(bot, ev: CQEvent, region: int):
         _, name, score = chara.guess_id(unknown)
         if score < 70 and not defen:
             return  # 忽略无关对话
+        unknown = filt_message(unknown)
         msg = f'无法识别"{unknown}"' if score < 70 else f'无法识别"{unknown}" 您说的有{score}%可能是{name}'
         await bot.finish(ev, msg)
     if not defen:
@@ -132,13 +131,16 @@ async def _arena_query(bot, ev: CQEvent, region: int):
     try:
         res = await arena.do_query(defen, uid, region)
     except hoshino.aiorequests.HTTPError as e:
-        if e.response["code"] == 117:
+        code = e.response["code"]
+        if code == 117 or code == -429:
             await bot.finish(ev, "高峰期服务器限流！请前往pcrdfans.com/battle")
+        else:
+            await bot.finish(ev, f'code{code} 查询出错，请联系维护组调教\n请先前往pcrdfans.com进行查询', at_sender=True)
     sv.logger.info('Got response!')
 
     # 处理查询结果
     if res is None:
-        await bot.finish(ev, '查询出错，请联系维护组调教\n请先移步pcrdfans.com进行查询', at_sender=True)
+        await bot.finish(ev, '数据库未返回数据，请再次尝试查询或前往pcrdfans.com', at_sender=True)
     if not len(res):
         await bot.finish(ev, '抱歉没有查询到解法\n※没有作业说明随便拆 发挥你的想象力～★\n作业上传请前往pcrdfans.com', at_sender=True)
     res = res[:min(6, len(res))]    # 限制显示数量，截断结果
@@ -159,12 +161,13 @@ async def _arena_query(bot, ev: CQEvent, region: int):
     #     "你赞过" if e['user_like'] > 0 else "你踩过" if e['user_like'] < 0 else ""
     # ]) for e in res]
 
-    # defen = [ chara.fromid(x).name for x in defen ]
-    # defen = f"防守方【{' '.join(defen)}】"
+    defen = [ chara.fromid(x).name for x in defen ]
+    defen = f"防守方【{' '.join(defen)}】"
     at = str(MessageSegment.at(ev.user_id))
 
     msg = [
-        # defen,
+        defen,
+        # at,
         f'已为骑士{at}查询到以下进攻方案：',
         str(teams),
         # '作业评价：',

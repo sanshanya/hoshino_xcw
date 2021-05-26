@@ -10,6 +10,7 @@ PCR会战管理命令 v2
 """
 
 import os
+import asyncio
 from datetime import datetime, timedelta
 from typing import List
 from matplotlib import pyplot as plt
@@ -104,7 +105,7 @@ async def add_member(bot:NoneBot, ctx:Context_T, args:ParseResult):
             raise NotFoundError(f'Error: 无法获取群员信息，请检查{uid}是否属于本群')
     if not name:
         m = await bot.get_group_member_info(self_id=ctx['self_id'], group_id=bm.group, user_id=uid)
-        name = m['card'] or m['nickname'] or str(m['user_id'])
+        name = util.escape(m['card']) or util.escape(m['nickname']) or str(m['user_id'])
 
     mem = bm.get_member(uid, bm.group) or bm.get_member(uid, 0)     # 兼容cmdv1
     if mem:
@@ -791,12 +792,12 @@ async def _do_show_remain(bot:NoneBot, ctx:Context_T, args:ParseResult, at_user:
     rlist.sort(key=lambda x: x[3] + x[4], reverse=True)
     msg = [ f"\n{clan['name']}今日余刀：" ]
     n = len(rlist)
-    for i in range(0, n, 10):
-        for uid, _, name, r_n, r_e in rlist[i:min(i+10, n)]:
-            if r_n or r_e:
-                msg.append(f"剩{r_n}刀 补时{r_e}刀 | {ms.at(uid) if at_user else name}")
-        await bot.send(ctx, '\n'.join(msg))
-        msg.clear()
+    # for i in range(0, n, 10):
+    for uid, _, name, r_n, r_e in rlist:
+        if r_n or r_e:
+            msg.append(f"剩{r_n}刀 补时{r_e}刀 | {ms.at(uid) if at_user else name}")
+        # await bot.send(ctx, '\n'.join(msg))
+        # msg.clear()
     if not n:
         await bot.send(ctx, f"今日{clan['name']}所有成员均已下班！各位辛苦了！", at_sender=True)
     else:
@@ -835,9 +836,9 @@ async def list_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
         await bot.send(ctx, "未检索到出刀记录")
         return
     msg = [ f'{clan["name"]}出刀记录：\n编号|出刀者|周目|Boss|伤害|标记' ]
-    for i in range(0, n, 10):
+    for i in range(0, n, 8):
         challenstr = 'E{eid:0>3d}|{name}|r{round}|b{boss}|{dmg: >7,d}{flag_str}'
-        for c in challen[i:min(n, i+10)]:
+        for c in challen[i:min(n, i+8)]:
             mem = bm.get_member(c['uid'], c['alt'])
             c['name'] = mem['name'] if mem else c['uid']
             flag = c['flag']
@@ -845,3 +846,4 @@ async def list_challenge(bot:NoneBot, ctx:Context_T, args:ParseResult):
             msg.append(challenstr.format_map(c))
         await bot.send(ctx, '\n'.join(msg))
         msg.clear()
+        await asyncio.sleep(0.5)

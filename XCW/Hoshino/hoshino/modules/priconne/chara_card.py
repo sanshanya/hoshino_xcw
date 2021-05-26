@@ -10,12 +10,11 @@ import hoshino
 from hoshino import R, log, sucmd, util
 from hoshino.typing import CommandSession
 
-from . import _pcr_data_dlc as _pcr_data
+from . import _pcr_data
 
 logger = log.new_logger('chara', hoshino.config.DEBUG)
 UNKNOWN = 1000
 UnavailableChara = {
-    1072,   # 可萝爹
 }
 
 try:
@@ -23,7 +22,7 @@ try:
     gadget_star = R.img('priconne/gadget/star.png').open()
     gadget_star_dis = R.img('priconne/gadget/star_disabled.png').open()
     gadget_star_pink = R.img('priconne/gadget/star_pink.png').open()
-    unknown_chara_icon = R.img(f'priconne/unit_dlc/icon_unit_{UNKNOWN}31.png').open()
+    unknown_chara_icon = R.img(f'priconne/unit/icon_unit_{UNKNOWN}31.png').open()
 except Exception as e:
     logger.exception(e)
 
@@ -107,8 +106,24 @@ def gen_team_pic(team, size=64, star_slot_verbose=True):
 
 def download_chara_icon(id_, star):
     url = f'https://redive.estertion.win/icon/unit/{id_}{star}1.webp'
-    save_path = R.img(f'priconne/unit_dlc/icon_unit_{id_}{star}1.png').path
+    save_path = R.img(f'priconne/unit/icon_unit_{id_}{star}1.png').path
     logger.info(f'Downloading chara icon from {url}')
+    try:
+        rsp = requests.get(url, stream=True, timeout=5)
+    except Exception as e:
+        logger.error(f'Failed to download {url}. {type(e)}')
+        logger.exception(e)
+    if 200 == rsp.status_code:
+        img = Image.open(BytesIO(rsp.content))
+        img.save(save_path)
+        logger.info(f'Saved to {save_path}')
+    else:
+        logger.error(f'Failed to download {url}. HTTP {rsp.status_code}')
+
+def download_card_full(id_, star):
+    url = f'https://redive.estertion.win/card/full/{id_}{star}1.webp'
+    save_path = R.img(f'priconne/card/card_full_{id_}{star}1.png').path
+    logger.info(f'Downloading chara caed from {url}')
     try:
         rsp = requests.get(url, stream=True, timeout=5)
     except Exception as e:
@@ -140,22 +155,40 @@ class Chara:
     @property
     def icon(self):
         star = '3' if 1 <= self.star <= 5 else '6'
-        res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}{star}1.png')
+        res = R.img(f'priconne/unit/icon_unit_{self.id}{star}1.png')
         if not res.exist:
-            res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}31.png')
+            res = R.img(f'priconne/unit/icon_unit_{self.id}31.png')
         if not res.exist:
-            res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}11.png')
+            res = R.img(f'priconne/unit/icon_unit_{self.id}11.png')
         if not res.exist:   # FIXME: 不方便改成异步请求
             download_chara_icon(self.id, 6)
             download_chara_icon(self.id, 3)
             download_chara_icon(self.id, 1)
-            res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}{star}1.png')
+            res = R.img(f'priconne/unit/icon_unit_{self.id}{star}1.png')
         if not res.exist:
-            res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}31.png')
+            res = R.img(f'priconne/unit/icon_unit_{self.id}31.png')
         if not res.exist:
-            res = R.img(f'priconne/unit_dlc/icon_unit_{self.id}11.png')
+            res = R.img(f'priconne/unit/icon_unit_{self.id}11.png')
         if not res.exist:
-            res = R.img(f'priconne/unit_dlc/icon_unit_{UNKNOWN}31.png')
+            res = R.img(f'priconne/unit/icon_unit_{UNKNOWN}31.png')
+        return res
+    
+    @property
+    def card(self):
+        star = '3' if 1 <= self.star <= 5 else '6'
+        res = R.img(f'priconne/card/card_full_{self.id}{star}1.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{self.id}31.png')
+        if not res.exist:   # FIXME: 不方便改成异步请求
+            download_card_full(self.id, 6)
+            download_card_full(self.id, 3)
+            res = R.img(f'priconne/card/card_full_{self.id}{star}1.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{self.id}31.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{self.id}61.png')
+        if not res.exist:
+            res = R.img(f'priconne/card/card_full_{UNKNOWN}31.png')
         return res
 
 
@@ -190,5 +223,4 @@ class Chara:
             s = gadget_equip.resize((l, l), Image.LANCZOS)
             pic.paste(s, (a, b, a+l, b+l), s)
         return pic
-
 
