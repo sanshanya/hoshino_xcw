@@ -1,1 +1,1 @@
-nonebot[scheduler]~=1.6.0
+nonebot[scheduler]~=1.8.0
